@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "481998559301",
+    "firebase_url": "https://scheduleapp-boof.firebaseio.com",
+    "project_id": "scheduleapp-boof",
+    "storage_bucket": "scheduleapp-boof.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481998559301:android:a5d736a18db043ce",
+        "android_client_info": {
+          "package_name": "com.scheduleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481998559301-a3bnon64smrjoa5pdo5ia6gc6p75e1g7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.scheduleapp",
+            "certificate_hash": "ff43e23887b2ae683994df8ac84441de3495152b"
+          }
+        },
+        {
+          "client_id": "481998559301-d63uhgut04ojof2dvinfo8cp5o2ftcv4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkglE7uBn2YJhlA8BpVxlUFrMXx7SXFoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481998559301-d63uhgut04ojof2dvinfo8cp5o2ftcv4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
