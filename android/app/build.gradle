@@ -137,8 +137,16 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    //adding Authentication
+    
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.firebase:firebase-core:16.0.7'
     implementation 'com.google.firebase:firebase-core'
+
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    //  adding firebase UI 
+
 
      // Getting a "Could not find" error? Make sure you have
     // added the Google maven respository to your root build.gradle
