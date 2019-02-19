@@ -7,28 +7,28 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, {Component} from "react";
+import {Platform, StyleSheet, Text, View, ActivityIndicator} from "react-native";
+import {createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+// import the different screens for different scenario's
+import LoadingScreen from './src/components/LoadingScreen'
+import SignUpScreen from './src/components/SignUpScreen'
+import LoginScreen from './src/components/LoginScreen'
+import WelcomeScreen from './src/components/WelcomeScreen'
+import HomeScreen from './src/components/HomeScreen'
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
-  }
-}
+const AuthStackNavigator = createStackNavigator ({
+  Welcome: WelcomeScreen,
+  Login: LoginScreen,
+  SignUp: SignUpScreen,
+})
+export default createSwitchNavigator ({
+  Loading: LoadingScreen,
+  Auth: AuthStackNavigator
+})
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -48,3 +48,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
+
