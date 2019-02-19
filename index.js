@@ -10,8 +10,6 @@ import {name as appName} from './app.json';
 
 
 
-import { Home , Loading, Login} from './screennames'
-
 
 
 

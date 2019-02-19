@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
 class SignUp extends Component {
   constructor(props) {
@@ -10,9 +11,13 @@ class SignUp extends Component {
 
   render() {
     return (
-      <View>
-        <Text> textInComponent </Text>
-      </View>
+      <GoogleSigninButton
+       style={{ width: 192, height: 48 }}
+       size={GoogleSigninButton.Size.Wide}
+       color={GoogleSigninButton.Color.Dark}
+       onPress={this._signIn}
+       disabled={this.state.isSigninInProgress} />
+       
     );
   }
 }

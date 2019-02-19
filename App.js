@@ -36,7 +36,7 @@ const AuthStackNavigator = createStackNavigator ({
   },
 
 },
-  {initialRouteName: 'Login'});
+  {initialRouteName: 'SignUp'});
 
 
 const App = createAppContainer(AuthStackNavigator);
