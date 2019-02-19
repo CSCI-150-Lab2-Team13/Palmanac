@@ -19,14 +19,29 @@ import WelcomeScreen from './src/components/WelcomeScreen'
 import HomeScreen from './src/components/HomeScreen'
 
 const AuthStackNavigator = createStackNavigator ({
-  Welcome: WelcomeScreen,
-  Login: LoginScreen,
-  SignUp: SignUpScreen,
-})
-export default createSwitchNavigator ({
-  Loading: LoadingScreen,
-  Auth: AuthStackNavigator
-})
+  Home: {
+    screen: HomeScreen,
+  },
+  Loading: {
+    screen: LoadingScreen,
+  },
+  SignUp: {
+    screen:SignUpScreen,
+  },
+  Login: {
+    screen:LoginScreen,
+  },
+  Welcome: {
+    screen:WelcomeScreen,
+  },
+
+},
+  {initialRouteName: 'Loading'});
+
+
+const App = createAppContainer(AuthStackNavigator);
+
+export default App;
 
 
 
