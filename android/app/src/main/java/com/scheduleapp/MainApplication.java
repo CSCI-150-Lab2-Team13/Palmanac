@@ -5,6 +5,9 @@ import android.app.Application;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import com.goldenowl.twittersignin.TwitterSigninPackage;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -37,8 +40,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new FBSDKPackage(mCallbackManager),
-          new RNGestureHandlerPackage()
+            new TwitterSigninPackage(),
+            new RNGoogleSigninPackage(),
+            new RNGestureHandlerPackage(),
+          // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
+            new FBSDKPackage(mCallbackManager),
       );
     }
 

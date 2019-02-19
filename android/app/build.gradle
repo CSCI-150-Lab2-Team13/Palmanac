@@ -134,6 +134,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-twitter-signin')
+    implementation project(':react-native-google-signin')
+    implementation project(':react-native-gesture-handler')
     implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
     implementation project(':react-native-fbsdk')
     compile project(':react-native-gesture-handler')
