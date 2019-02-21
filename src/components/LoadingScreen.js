@@ -2,24 +2,15 @@ import React, { Component } from 'react';
 import {Platform, StyleSheet, Text, View, ActivityIndicator, AsyncStorage} from "react-native";
 import { SwitchNavigator } from 'react-navigation';
 
+import firebase from "react-native-firebase"
+
 
 class LoadingScreen extends Component {
-
-  constructor() {
-    super()
-    this.loadApp()
-  }
-
-  loadApp = async () => {
-    const userToken = await AsyncStorage.getItem('userToken')
-
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth')
-  }
 
   render() {
     return (
       <View style = {styles.container}>
-        <ActivityIndicator />
+        <ActivityIndicator size ="large"/>
       </View>
     );
   }

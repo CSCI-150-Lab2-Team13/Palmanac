@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react'
+import { Text, View } from 'react-native'
 
-export default class componentName extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
+export class HomeScreen extends Component {
   render() {
     return (
       <View>
-        <Text> hi You Stink  </Text>
+        <Text> Welcome to the HomeScreen </Text>
       </View>
-    );
+    )
   }
 }
+
+export default HomeScreen
+

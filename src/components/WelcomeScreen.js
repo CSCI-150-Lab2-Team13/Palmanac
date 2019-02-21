@@ -1,33 +1,18 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from 'react'
+import { Text, View,Button, TouchableOpacity } from 'react-native'
 
-class WelcomeScreen extends Component {
+
+export default class WelcomeScreen extends React.Component {
   render() {
     return (
-      <View> style = { StyleSheet.container}>
-        <Text> WelcomeScreen </Text>
+      <View>
+        <Text>Welcome to the Home Page </Text>
+       <Button title= "Home Page"
+        onPress={() => this.props.navigation.navigate({ routeName: 'Home'})}>
+        
+        </Button>
       </View>
-    );
+    )
   }
 }
 
-export default WelcomeScreen;
-
-const style = StyleSheet.create ({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-      },
-      welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-      },
-      instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
-      },
-});

@@ -9,14 +9,23 @@
 
 import React, {Component} from "react";
 import {Platform, StyleSheet, Text, View, ActivityIndicator} from "react-native";
-import {createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+import {createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator,
+  createStackNavigator, StackNavigator } from 'react-navigation';
 
 // import the different screens for different scenario's
 import LoadingScreen from './src/components/LoadingScreen'
 import SignUpScreen from './src/components/SignUpScreen'
-import LoginScreen from './src/components/LoginScreen'
 import WelcomeScreen from './src/components/WelcomeScreen'
 import HomeScreen from './src/components/HomeScreen'
+
+export default class App extends React.Component {
+  render() {
+    return <AppNavigator />;
+  }
+}
 
 const AuthStackNavigator = createStackNavigator ({
   Home: {
@@ -28,20 +37,15 @@ const AuthStackNavigator = createStackNavigator ({
   SignUp: {
     screen:SignUpScreen,
   },
-  Login: {
-    screen:LoginScreen,
-  },
   Welcome: {
     screen:WelcomeScreen,
   },
 
 },
-  {initialRouteName: 'SignUp'});
+  {initialRouteName: 'Welcome'});
 
 
-const App = createAppContainer(AuthStackNavigator);
-
-export default App;
+const AppNavigator = createAppContainer(AuthStackNavigator);
 
 
 

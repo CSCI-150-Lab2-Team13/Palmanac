@@ -6,6 +6,7 @@ import android.app.Application;
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Added for auth() calls
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -42,6 +43,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNFirebasePackage(),
+            new RNFirebaseAuthPackage(),
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),

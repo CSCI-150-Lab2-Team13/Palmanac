@@ -138,10 +138,13 @@ dependencies {
     implementation project(':react-native-firebase')
     implementation "com.google.android.gms:play-services-base:16.0.1"
     implementation "com.google.firebase:firebase-core:16.0.6"
+    implementation "com.google.firebase:firebase-auth:16.1.0"
+    //implementation "com.google.firebase:firebase-auth"
     //twitter
     implementation project(':react-native-twitter-signin')
     //google
     implementation project(':react-native-google-signin')
+    //compile "com.google.android.gms:play-services-auth:10.0.1"
     //gesture
     implementation project(':react-native-gesture-handler')
     compile project(':react-native-gesture-handler')
