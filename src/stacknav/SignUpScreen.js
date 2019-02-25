@@ -63,7 +63,6 @@ export default class SignUp extends Component {
            size={GoogleSigninButton.Size.Wide}
            color={GoogleSigninButton.Color.Dark}
            onPress={this.googleSignInHandler}
-           
             />
 
         </View>

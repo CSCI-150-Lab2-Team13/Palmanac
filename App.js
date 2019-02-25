@@ -15,21 +15,87 @@ import {createSwitchNavigator,
   createBottomTabNavigator,
   createStackNavigator, StackNavigator } from 'react-navigation';
 
-// import the different screens for different scenario's
-import LoadingScreen from './src/components/LoadingScreen'
-import SignUpScreen from './src/components/SignUpScreen'
-import WelcomeScreen from './src/components/WelcomeScreen'
-import HomeScreen from './src/components/HomeScreen'
+// import the different screens for different scenario's for StackNav
+import LoadingScreen from './src/stacknav/LoadingScreen'
+import SignUpScreen from './src/stacknav/SignUpScreen'
+import WelcomeScreen from './src/stacknav/WelcomeScreen'
+import HomeScreen from './src/stacknav/HomeScreen'
+
+//import the different screens for different scenario's for tabNav
+import Feed from './src/tabnav/Feed'
+import Profile from './src/tabnav/Profile'
+import Messages from './src/tabnav/Messages'
+
+//import the different screens for drawNav
+
+import Settings from './src/drawnav/SettingsScreen'
+
+/**
+ * - AppSwitchNavigator
+ *    - WelcomeScreen
+ *      - Login Buttons
+ *      - Sign Up Buttons
+ *    - AppDrawerNavigator
+ *          - Dashboard - DashboardStackNavigator(needed for header and to change the header based on the                     tab)
+ *            - DashboardTabNavigator
+ *              - Tab 1 - Feed
+ *              - Tab 2 - Profile
+ *              - Tab 3 - Messafes
+ *            - Any files you don't want to be a part of the Tab Navigator can go here.
+ */
 
 export default class App extends React.Component {
   render() {
-    return <AppNavigator />;
+    return <AppContainer />;
   }
 }
 
-const AuthStackNavigator = createStackNavigator ({
+
+const DashboardTabNavigator = createBottomTabNavigator({
+  Feed,
+  Profile,
+  Messages,
+}, 
+{
+  navigationOptions:({navigation})=>{
+    const {routeName} = navigation.state.routes[navigation.state.index]
+    return {
+      headerTitle: routeName
+    };
+  }
+});
+
+const DashboardStackNavigator = createStackNavigator ({
+  DashboardTabNavigator : DashboardTabNavigator
+
+  },
+  {
+    defaultNavigationOptions: ({navigation}) => {
+      return {
+        //headerLeft: <Icon name="md-menu" size={30} />
+      };
+    }
+
+  }
+);
+
+const AppDrawerNavigator = createDrawerNavigator( {
+
   Home: {
-    screen: HomeScreen,
+    screen:DashboardStackNavigator
+  },
+
+  Settings: {
+    screen: Settings
+  },
+
+});
+
+
+
+const AppSwitchNavigator = createStackNavigator ({
+  Home: {
+    screen: AppDrawerNavigator,
   },
   Loading: {
     screen: LoadingScreen,
@@ -45,8 +111,7 @@ const AuthStackNavigator = createStackNavigator ({
   {initialRouteName: 'Welcome'});
 
 
-const AppNavigator = createAppContainer(AuthStackNavigator);
-
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
 
 const styles = StyleSheet.create({
