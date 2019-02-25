@@ -7,28 +7,112 @@
  * @lint-ignore-every XPLATJSCOPYRIGHT1
  */
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, {Component} from "react";
+import {Platform, StyleSheet, Text, View, ActivityIndicator} from "react-native";
+import {createSwitchNavigator,
+  createAppContainer,
+  createDrawerNavigator,
+  createBottomTabNavigator,
+  createStackNavigator, StackNavigator } from 'react-navigation';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+// import the different screens for different scenario's for StackNav
+import LoadingScreen from './src/stacknav/LoadingScreen'
+import SignUpScreen from './src/stacknav/SignUpScreen'
+import WelcomeScreen from './src/stacknav/WelcomeScreen'
+import HomeScreen from './src/stacknav/HomeScreen'
 
-type Props = {};
-export default class App extends Component<Props> {
+//import the different screens for different scenario's for tabNav
+import Feed from './src/tabnav/Feed'
+import Profile from './src/tabnav/Profile'
+import Messages from './src/tabnav/Messages'
+
+//import the different screens for drawNav
+
+import Settings from './src/drawnav/SettingsScreen'
+
+/**
+ * - AppSwitchNavigator
+ *    - WelcomeScreen
+ *      - Login Buttons
+ *      - Sign Up Buttons
+ *    - AppDrawerNavigator
+ *          - Dashboard - DashboardStackNavigator(needed for header and to change the header based on the                     tab)
+ *            - DashboardTabNavigator
+ *              - Tab 1 - Feed
+ *              - Tab 2 - Profile
+ *              - Tab 3 - Messafes
+ *            - Any files you don't want to be a part of the Tab Navigator can go here.
+ */
+
+export default class App extends React.Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
-    );
+    return <AppContainer />;
   }
 }
+
+
+const DashboardTabNavigator = createBottomTabNavigator({
+  Feed,
+  Profile,
+  Messages,
+}, 
+{
+  navigationOptions:({navigation})=>{
+    const {routeName} = navigation.state.routes[navigation.state.index]
+    return {
+      headerTitle: routeName
+    };
+  }
+});
+
+const DashboardStackNavigator = createStackNavigator ({
+  DashboardTabNavigator : DashboardTabNavigator
+
+  },
+  {
+    defaultNavigationOptions: ({navigation}) => {
+      return {
+        //headerLeft: <Icon name="md-menu" size={30} />
+      };
+    }
+
+  }
+);
+
+const AppDrawerNavigator = createDrawerNavigator( {
+
+  Home: {
+    screen:DashboardStackNavigator
+  },
+
+  Settings: {
+    screen: Settings
+  },
+
+});
+
+
+
+const AppSwitchNavigator = createStackNavigator ({
+  Home: {
+    screen: AppDrawerNavigator,
+  },
+  Loading: {
+    screen: LoadingScreen,
+  },
+  SignUp: {
+    screen:SignUpScreen,
+  },
+  Welcome: {
+    screen:WelcomeScreen,
+  },
+
+},
+  {initialRouteName: 'Welcome'});
+
+
+const AppContainer = createAppContainer(AppSwitchNavigator);
+
 
 const styles = StyleSheet.create({
   container: {
@@ -48,3 +132,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
+

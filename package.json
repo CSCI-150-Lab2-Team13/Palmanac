@@ -8,7 +8,13 @@
   },
   "dependencies": {
     "react": "16.6.3",
-    "react-native": "0.58.4"
+    "react-native": "0.58.4",
+    "react-native-fbsdk": "^0.8.0",
+    "react-native-firebase": "^5.2.2",
+    "react-native-gesture-handler": "^1.0.15",
+    "react-native-google-signin": "^1.2.0",
+    "react-native-twitter-signin": "^1.1.1",
+    "react-navigation": "^3.3.0"
   },
   "devDependencies": {
     "babel-core": "7.0.0-bridge.0",
