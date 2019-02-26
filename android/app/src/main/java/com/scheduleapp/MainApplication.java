@@ -22,10 +22,15 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 
+
+import com.airbnb.android.react.maps.MapsPackage;
+
+
 import java.util.Arrays;
 import java.util.List;
+import android.support.multidex.MultiDexApplication;
 
-public class MainApplication extends Application implements ReactApplication {
+public class MainApplication extends MultiDexApplication  implements ReactApplication {
 
   private static CallbackManager mCallbackManager = CallbackManager.Factory.create();
   protected static CallbackManager getCallbackManager() {
@@ -48,7 +53,8 @@ public class MainApplication extends Application implements ReactApplication {
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),
           // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
-            new FBSDKPackage(mCallbackManager)
+            new FBSDKPackage(mCallbackManager),
+            new MapsPackage()
       );
     }
 
@@ -69,4 +75,6 @@ public class MainApplication extends Application implements ReactApplication {
     AppEventsLogger.activateApp(this);
     //...
   }
+
+
 }

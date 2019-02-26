@@ -20,7 +20,7 @@ import LoadingScreen from './src/stacknav/LoadingScreen'
 import SignUpScreen from './src/stacknav/SignUpScreen'
 import WelcomeScreen from './src/stacknav/WelcomeScreen'
 import HomeScreen from './src/stacknav/HomeScreen'
-
+import HardEventFormScreen from './src/forms/addHardEvent'
 //import the different screens for different scenario's for tabNav
 import Feed from './src/tabnav/Feed'
 import Profile from './src/tabnav/Profile'
@@ -105,6 +105,9 @@ const AppSwitchNavigator = createStackNavigator ({
   },
   Welcome: {
     screen:WelcomeScreen,
+  },
+  HardEvent: {
+    screen:HardEventFormScreen,
   },
 
 },
