@@ -98,6 +98,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.scheduleapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -133,12 +134,25 @@ android {
     }
 }
 
+
 dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation(project(':react-native-maps')){
+       exclude group: 'com.google.android.gms', module: 'play-services-base'
+       exclude group: 'com.google.android.gms', module: 'play-services-maps'
+   }
+    //implementation 'com.google.android.gms:play-services-base:15.0.1'
+    
+    implementation 'com.google.android.gms:play-services-maps:15.0.1'
+
+    //implementation project(':react-native-maps')
     //firebase 
     implementation project(':react-native-firebase')
+
     implementation "com.google.android.gms:play-services-base:16.0.1"
     implementation "com.google.firebase:firebase-core:16.0.6"
     implementation "com.google.firebase:firebase-auth:16.1.0"
+
     //implementation "com.google.firebase:firebase-auth"
     //twitter
     implementation project(':react-native-twitter-signin')
@@ -153,6 +167,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
     implementation project(':react-native-fbsdk')
 
+    
     //default
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
@@ -168,4 +183,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true
 apply plugin: 'com.google.gms.google-services'
