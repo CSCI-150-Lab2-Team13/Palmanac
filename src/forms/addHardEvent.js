@@ -4,21 +4,67 @@ import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 
+
+const h = 400;
+const w = 400;
+const ASPECT_RATIO = w / h;
+const LATITUDE = 0;
+const LONGITUDE = 0;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+
 export default class HardEventFormView extends Component {
     create() {
       const formValues = this.formGenerator.getValues();
       console.log('FORM VALUES', formValues);
     }
-    // declare this outside of render
+    constructor() {
+      super();
+      this.state = {
+        region: {
+          latitude: LATITUDE,
+          longitude: LONGITUDE,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      };
+    }
 
+    // declare this outside of render
+    componentDidMount() {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          this.setState({
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }
+          });
+        },
+      (error) => console.log(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      );
+      this.watchID = navigator.geolocation.watchPosition(
+        position => {
+          this.setState({
+            region: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }
+          });
+        }
+      );
+    }
+    componentWillUnmount() {
+      navigator.geolocation.clearWatch(this.watchID);
+    }
 
     render() {
-        var region = {
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        };
       return (
         <ScrollView style={styles.wrapper}>
           <View style={styles.topText}>
@@ -31,11 +77,16 @@ export default class HardEventFormView extends Component {
               }}
               fields={fields}
             />
-             <MapView
-                provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-                style={styles.map}
-                    initialRegion={region}
-                />
+              <MapView
+                provider={ PROVIDER_GOOGLE }
+                style={ styles.map }
+               // customMapStyle={  }
+                showsUserLocation={ true }
+                region={ this.state.region }
+               // onRegionChange={ region => this.setState({region}) }
+               // onRegionChangeComplete={ region => this.setState({region}) }
+                ></MapView>
+
           </View>
 
           <View style={styles.submitButton}>
@@ -52,6 +103,7 @@ export default class HardEventFormView extends Component {
    
   //AppRegistry.registerComponent('HardEventFormView', () => HardEventFormView);
 
+
   const styles = {
     wrapper: {
       flex: 1,
@@ -62,13 +114,13 @@ export default class HardEventFormView extends Component {
       paddingTop: 20,
     },
     container: {
-        height: 400,
-        width: 400,
+        height: h,
+        width: w,
         justifyContent: 'flex-end',
         alignItems: 'center',
       },
       map: {
-        height: 400,
+        height: h,
         marginTop: 80,
         
       },
