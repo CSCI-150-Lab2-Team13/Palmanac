@@ -6,9 +6,9 @@ import firebase from 'react-native-firebase'
 //facebook
 import { LoginButton,AccessToken, LoginManager } from 'react-native-fbsdk';
 // importing twitter button 
-import TwitterButton, { twitterLogin } from './TwitterSignIn'
-import  GoogleSign, { googleLogin } from './GoogleSignIn'
-import { facebookLogin } from './FacebookSignin';
+import { twitterLogin } from './TwitterSignIn'
+import   { googleLogin } from './GoogleSignIn'
+import { facebookLogin } from './FacebookSignIn'
 
 
 export default class SignUp extends Component {
