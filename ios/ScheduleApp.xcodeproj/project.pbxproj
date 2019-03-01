@@ -43,7 +43,6 @@
 		1FA607B4F0924AB6BE201829 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE9BDEE39158422E95A6327B /* libRCTFBSDK.a */; };
 		221C7107BC764E96B11FDD9D /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D870A018A33A4218A401A856 /* libRNGoogleSignin.a */; };
 		42F7E9C218D745788620A22E /* libRNTwitterSignIn.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 26EFBEE227404B34AC7FF4B0 /* libRNTwitterSignIn.a */; };
-		43FAE42B91144A059AFA1453 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B0DF4F994814AEF925B16E8 /* libRNFirebase.a */; };
 		D17220563C374ACF8B0D320D /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7491379514844D0892797337 /* libAirMaps.a */; };
 		1724BD8F79CB4503AC2CE637 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ECE4AF219DF54E858E47D575 /* AntDesign.ttf */; };
 		81DEE3DC9284425690930862 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 48C21021B7FE46FD837107F7 /* Entypo.ttf */; };
@@ -388,8 +387,6 @@
 		D870A018A33A4218A401A856 /* libRNGoogleSignin.a */ = {isa = PBXFileReference; name = "libRNGoogleSignin.a"; path = "libRNGoogleSignin.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		46D24CF4C84241B3B39AC029 /* RNTwitterSignIn.xcodeproj */ = {isa = PBXFileReference; name = "RNTwitterSignIn.xcodeproj"; path = "../node_modules/react-native-twitter-signin/ios/RNTwitterSignIn.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		26EFBEE227404B34AC7FF4B0 /* libRNTwitterSignIn.a */ = {isa = PBXFileReference; name = "libRNTwitterSignIn.a"; path = "libRNTwitterSignIn.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		1B6C211F5407411E92D58452 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		8B0DF4F994814AEF925B16E8 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		A493974713794E2B87DD3E1C /* AirMaps.xcodeproj */ = {isa = PBXFileReference; name = "AirMaps.xcodeproj"; path = "../node_modules/react-native-maps/lib/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		7491379514844D0892797337 /* libAirMaps.a */ = {isa = PBXFileReference; name = "libAirMaps.a"; path = "libAirMaps.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		ECE4AF219DF54E858E47D575 /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/native-base/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
@@ -452,7 +449,6 @@
 				1FA607B4F0924AB6BE201829 /* libRCTFBSDK.a in Frameworks */,
 				221C7107BC764E96B11FDD9D /* libRNGoogleSignin.a in Frameworks */,
 				42F7E9C218D745788620A22E /* libRNTwitterSignIn.a in Frameworks */,
-				43FAE42B91144A059AFA1453 /* libRNFirebase.a in Frameworks */,
 				D17220563C374ACF8B0D320D /* libAirMaps.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -647,7 +643,6 @@
 				09A91236A091435CB622902E /* RCTFBSDK.xcodeproj */,
 				2129D3FC5AFC4B53B3F0EE13 /* RNGoogleSignin.xcodeproj */,
 				46D24CF4C84241B3B39AC029 /* RNTwitterSignIn.xcodeproj */,
-				1B6C211F5407411E92D58452 /* RNFirebase.xcodeproj */,
 				A493974713794E2B87DD3E1C /* AirMaps.xcodeproj */,
 			);
 			name = Libraries;
@@ -1341,12 +1336,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScheduleApp.app/ScheduleApp";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1354,7 +1343,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1377,12 +1365,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScheduleApp.app/ScheduleApp";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1390,7 +1372,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1418,7 +1399,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1445,7 +1425,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1476,12 +1455,6 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1489,7 +1462,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1520,12 +1492,6 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1533,7 +1499,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1563,12 +1528,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1576,7 +1535,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};
@@ -1606,12 +1564,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1619,7 +1571,6 @@
 					"$(SRCROOT)\..\node_modules\react-native-fbsdk\ios\RCTFBSDK/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-signin\ios\RNGoogleSignin",
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
-					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 				);
 			};

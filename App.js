@@ -44,6 +44,18 @@ import Settings from './src/drawnav/SettingsScreen'
  *            - Any files you don't want to be a part of the Tab Navigator can go here.
  */
 
+
+//import firebase and initializing 
+var config = {
+  apiKey: "AIzaSyCbC-n--mjbOUSWOoTbjyxQcthtV7m5xhQ",
+  authDomain: "scheduleapp-boof.firebaseapp.com",
+  databaseURL: "https://scheduleapp-boof.firebaseio.com",
+  projectId: "scheduleapp-boof",
+  storageBucket: "scheduleapp-boof.appspot.com",
+  messagingSenderId: "481998559301"
+};
+firebase.initializeApp(config);
+
 export default class App extends React.Component {
   render() {
     return <AppContainer />;
