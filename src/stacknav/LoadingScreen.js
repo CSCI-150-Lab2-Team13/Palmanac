@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Platform, StyleSheet, Text, View, ActivityIndicator, AsyncStorage} from "react-native";
 import { SwitchNavigator } from 'react-navigation';
 
-import firebase from "react-native-firebase"
 
 
 class LoadingScreen extends Component {

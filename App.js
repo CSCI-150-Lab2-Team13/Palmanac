@@ -15,6 +15,8 @@ import {createSwitchNavigator,
   createBottomTabNavigator,
   createStackNavigator, StackNavigator } from 'react-navigation';
 
+  import firebase from '@firebase/app';
+
 // import the different screens for different scenario's for StackNav
 import LoadingScreen from './src/stacknav/LoadingScreen'
 import SignUpScreen from './src/stacknav/SignUpScreen'

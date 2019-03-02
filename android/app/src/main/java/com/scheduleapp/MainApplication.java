@@ -4,8 +4,9 @@ import android.app.Application;
 
 
 //adding to have facebook Login 
-import com.facebook.react.ReactApplication;
-import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Added for auth() calls
+import com.facebook.react.ReactApplication;
+
+
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -46,8 +47,6 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseAuthPackage(),
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),
