@@ -18,7 +18,7 @@ import {createSwitchNavigator,
   import firebase from '@firebase/app';
 
 // import the different screens for different scenario's for StackNav
-import LoadingScreen from './src/stacknav/LoadingScreen'
+import AuthLoading from './src/stacknav/AuthLoading'
 import SignUpScreen from './src/stacknav/SignUpScreen'
 import WelcomeScreen from './src/stacknav/WelcomeScreen'
 import HomeScreen from './src/stacknav/HomeScreen'
@@ -111,8 +111,8 @@ const AppSwitchNavigator = createStackNavigator ({
   Home: {
     screen: AppDrawerNavigator,
   },
-  Loading: {
-    screen: LoadingScreen,
+  Auth: {
+    screen: AuthLoading
   },
   SignUp: {
     screen:SignUpScreen,

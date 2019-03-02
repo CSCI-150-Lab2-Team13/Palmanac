@@ -5,7 +5,7 @@ import 'firebase/firestore';
 export const createUser = (email, password) => {
 	console.log('CreateUser has been called.')
 
-  firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(
+  firebase.auth().createUserWithEmailAndPassword(
 		email, password).catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code;
@@ -19,11 +19,23 @@ export const createUser = (email, password) => {
 				console.log(error);
 			});
 }
-
-export const signInUser = (email, password) => {
+export const signInUser = (email , password) => {
+	console.log('signInUser has been called')
 	firebase.auth().signInWithEmailAndPassword(email, password)
-		.catch((error) => console.log('createUser error: ', error));
+    .catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  if (errorCode === 'auth/wrong-password') {
+    alert('Wrong password.');
+  } else {
+    alert(errorMessage);
+  }
+  console.log(error);
+	});
+
 }
+
 
 export const logoutUser = () => {
 	firebase.auth().signOut();

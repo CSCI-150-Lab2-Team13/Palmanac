@@ -9,6 +9,7 @@ import 'firebase/firestore';
 import * as FirebaseAPI from '../firebase/FirebaseAPI'
 
 
+
 export default class SignUp extends Component {
 
   constructor(props) {
@@ -29,7 +30,7 @@ export default class SignUp extends Component {
       console.log('onAuthStatheChanged: ', user)
       
       if (user) {
-        navigation.navigate('Main');
+        navigation.navigate({routeName : 'Home'});
       }
     });
   }
@@ -62,7 +63,7 @@ export default class SignUp extends Component {
         <Button title="Sign Up" onPress={() => this.createUser()}/>
         <Button
           title="Already have an account? Login"
-          onPress={() => this.props.navigation.navigate('Login')}
+          onPress={() => this.signIn()}
         />
         <Button title = "Sign in with Facebook"
                 onPress = { facebookLogin}></Button>
