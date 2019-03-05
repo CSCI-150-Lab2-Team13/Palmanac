@@ -9,7 +9,7 @@ import _ from 'lodash';
 //       Add Selection of Calendar
 //       Add Selection of Invitees
 //       Add Selection of Group
-      const h = 400;
+const h = 400;
 const w = 400;
 const ASPECT_RATIO = w / h;
 const LATITUDE = 0;
@@ -174,7 +174,7 @@ export default class HardEventFormView extends Component {
             >
             </TextInput> */}
             {predictions}
-            <Text>{this.state.placeId}</Text>
+           
           </View>
 
           <View style={styles.submitButton}>
