@@ -1,5 +1,5 @@
 import { GoogleSignin } from 'react-native-google-signin';
-import firebase from 'react-native-firebase'
+
 
 // Calling this function will open Google for login.
 export async function googleLogin() {
