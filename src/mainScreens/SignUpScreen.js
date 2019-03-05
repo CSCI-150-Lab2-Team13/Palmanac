@@ -5,6 +5,8 @@ import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Butt
 
 import { logoutUser, createUser , signInUser} from '../firebase/FirebaseAPI';
 
+import { facebookLogin } from '../socialplugins/FacebookSignIn'
+
 import * as firebase from "firebase";
 
 export default class LoginScreen extends React.Component {
@@ -24,6 +26,15 @@ export default class LoginScreen extends React.Component {
     let password = this.state.password;
 
     signInUser (email, password)
+
+
+  }
+
+  async facebookSignIn() {
+    let email = this.state.email;
+    let password = this.state.password;
+
+    facebookLogin (email, password)
 
 
   }
@@ -77,6 +88,9 @@ export default class LoginScreen extends React.Component {
             <Button block style={styles.buttons} onPress={() => this.register()}>
               <Text>Register</Text>
             </Button>
+            <Button block style = {styles.buttons} onPress={() => this.facebookSignIn()}>
+              <Text> Log in with Facebook</Text>
+              </Button>
           </Form>
         </Content>
       </Container>
