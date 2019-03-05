@@ -38,5 +38,11 @@ export const signInUser = (email , password) => {
 
 
 export const logoutUser = () => {
-	firebase.auth().signOut();
+
+	firebase.auth().signOut().then(function () {
+		console.log('Sign-out successful.');
+	}).catch(function (error) {
+		console.log(error);
+	});
+
 }

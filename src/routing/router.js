@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-
+import { StyleSheet, Text, View, ScrollView, SafeAreaView , DrawerItems, Button, TouchableOpacity} from 'react-native';
 import { createStackNavigator, createAppContainer, createBottomTabNavigator, createDrawerNavigator, createSwitchNavigator } from "react-navigation";
 
 import AuthLoadingScreen from './AuthLoading';
 import HomeScreen from '../mainScreens/HomeScreen';
 import LoginScreen from '../mainScreens/SignUpScreen';
+
 
 
 
@@ -16,6 +17,21 @@ import Profile from '../bottomScreens/Profile'
 //import different screens for swipeleftscreens
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
+import { logoutUser } from '../firebase/FirebaseAPI';
+
+
+
+
+
+export const DrawerWithLogoutButton = (props) => (
+
+  <View style={{flex:1}}>
+  <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+      <DrawerItems {...props} />
+      <Button title="Logout" onPress={ logoutUser()}/>
+  </SafeAreaView>
+  </View>
+);
 
 
 
@@ -56,8 +72,11 @@ const DashboardTabNavigator = createBottomTabNavigator({
     Settings: {
       screen: Settings
     },
+    Logout: DrawerWithLogoutButton,
   
   });
+
+  
   
   
   
@@ -96,3 +115,25 @@ export default createSwitchNavigator(
     }
   );
 
+
+
+  const styles = StyleSheet.create({
+    item: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    label: {
+      margin: 16,
+      fontWeight: 'bold',
+      color: 'rgba(0, 0, 0, .87)',
+    },
+    iconContainer: {
+      marginHorizontal: 16,
+      width: 24,
+      alignItems: 'center',
+    },
+    icon: {
+      width: 24,
+      height: 24,
+    }
+  });
