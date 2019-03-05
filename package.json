@@ -9,7 +9,6 @@
   "dependencies": {
 
     "firebase": "^5.8.4",
-=======
     "lodash": "^4.17.11",
 
     "native-base": "^2.12.0",
