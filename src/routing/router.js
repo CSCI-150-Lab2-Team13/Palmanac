@@ -5,7 +5,7 @@ import { createStackNavigator, createAppContainer, createBottomTabNavigator, cre
 import AuthLoadingScreen from './AuthLoading';
 import HomeScreen from '../mainScreens/HomeScreen';
 import LoginScreen from '../mainScreens/SignUpScreen';
-
+import HardEventFormScreen from '../forms/addHardEvent'
 
 
 
@@ -73,6 +73,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
       screen: Settings
     },
     Logout: DrawerWithLogoutButton,
+    HardEvent: {
+      screen: HardEventFormScreen
+    },
   
   });
 

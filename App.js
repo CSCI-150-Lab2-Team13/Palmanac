@@ -20,7 +20,7 @@ import createSwitchNavigator from './src/routing/router';
 // import the different screens for different scenario's for StackNav
 import SignUpScreen from './src/mainScreens/SignUpScreen'
 import HomeScreen from './src/mainScreens/HomeScreen'
-import HardEventFormScreen from './src/forms/addHardEvent'
+
 
 
 //import the different screens for drawNav

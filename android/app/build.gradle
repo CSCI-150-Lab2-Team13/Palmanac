@@ -136,6 +136,7 @@ android {
 
 
 dependencies {
+    implementation project(':react-native-firebase')
     //compile project(':react-native-google-places')
     implementation 'com.android.support:multidex:1.0.3'
     implementation(project(':react-native-maps')){

@@ -73,6 +73,7 @@
 		9A3A7249DA594F048438E5AC /* Skia.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5871CC2BA8B84CE39A7E0D2E /* Skia.ttf */; };
 		B818CD73A48C4653AB3E40AC /* Times New Roman.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5B959DDF4A1745889820D560 /* Times New Roman.ttf */; };
 		1871A9104E054981A7CC3225 /* libRNGooglePlaces.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C560D3F8352450AA7E24590 /* libRNGooglePlaces.a */; };
+		116B1455AC6C4BC88AA60E88 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A3826BD489F446DD8785C5D4 /* libRNFirebase.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -420,6 +421,8 @@
 		5B959DDF4A1745889820D560 /* Times New Roman.ttf */ = {isa = PBXFileReference; name = "Times New Roman.ttf"; path = "../node_modules/react-native-base/Fonts/Times New Roman.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		27FAA7BA9F0F48FAA8FA21EA /* RNGooglePlaces.xcodeproj */ = {isa = PBXFileReference; name = "RNGooglePlaces.xcodeproj"; path = "../node_modules/react-native-google-places/ios/RNGooglePlaces.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		6C560D3F8352450AA7E24590 /* libRNGooglePlaces.a */ = {isa = PBXFileReference; name = "libRNGooglePlaces.a"; path = "libRNGooglePlaces.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		88FFEC0B5D9244A59B4EB00F /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A3826BD489F446DD8785C5D4 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,6 +457,7 @@
 				42F7E9C218D745788620A22E /* libRNTwitterSignIn.a in Frameworks */,
 				D17220563C374ACF8B0D320D /* libAirMaps.a in Frameworks */,
 				1871A9104E054981A7CC3225 /* libRNGooglePlaces.a in Frameworks */,
+				116B1455AC6C4BC88AA60E88 /* libRNFirebase.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -649,6 +653,7 @@
 				46D24CF4C84241B3B39AC029 /* RNTwitterSignIn.xcodeproj */,
 				A493974713794E2B87DD3E1C /* AirMaps.xcodeproj */,
 				27FAA7BA9F0F48FAA8FA21EA /* RNGooglePlaces.xcodeproj */,
+				88FFEC0B5D9244A59B4EB00F /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1341,7 +1346,6 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ScheduleApp.app/ScheduleApp";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1349,7 +1353,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1359,6 +1363,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1387,7 +1392,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1397,6 +1402,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1425,6 +1431,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1452,6 +1459,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1481,7 +1489,7 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1498,6 +1506,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1527,7 +1536,6 @@
 				TVOS_DEPLOYMENT_TARGET = 9.2;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1535,7 +1543,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1545,6 +1553,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;
@@ -1573,7 +1582,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1581,7 +1589,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1591,6 +1599,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Debug;
@@ -1619,7 +1628,6 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1627,7 +1635,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1637,6 +1645,7 @@
 					"$(SRCROOT)\..\node_modules\react-native-twitter-signin\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-maps\lib\ios/**",
 					"$(SRCROOT)\..\node_modules\react-native-google-places\ios",
+					"$(SRCROOT)\..\node_modules\react-native-firebase\ios\RNFirebase/**",
 				);
 			};
 			name = Release;

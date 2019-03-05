@@ -5,6 +5,7 @@ import android.app.Application;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.RNFirebasePackage;
 
 
 import io.invertase.firebase.RNFirebasePackage;
@@ -50,6 +51,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFirebasePackage(),
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),
