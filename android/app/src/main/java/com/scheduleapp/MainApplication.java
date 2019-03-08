@@ -8,8 +8,10 @@ import com.facebook.react.ReactApplication;
 import io.invertase.firebase.RNFirebasePackage;
 
 
+
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Added for auth() calls
+import io.invertase.firebase.firestore.RNFirebaseFirestorePackage; // added for firestore stuff
 
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -55,6 +57,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),
+            new RNFirebaseFirestorePackage(),
           // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
             new FBSDKPackage(mCallbackManager),
             new MapsPackage()

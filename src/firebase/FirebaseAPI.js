@@ -1,6 +1,7 @@
-import firebase from '@firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from 'react-native-firebase'
+
+// creating a const to establish collection to firebase
+const userRef = firebase.firestore().collection('users')
 
 export const createUser = (email, password) => {
 	console.log('CreateUser has been called.')
