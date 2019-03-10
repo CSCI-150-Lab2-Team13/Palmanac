@@ -3,44 +3,75 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
 
-import { logoutUser, createUser , signInUser} from '../firebase/FirebaseAPI';
+import { logoutUser, createUser , signInUser} from '../firebase/firebaseAPI';
+
+import firestore from '../firebase/firestoreAPI'
+import { threadId } from 'worker_threads';
 
 
-import firebase from 'react-native-firebase';
 
-export default class LoginScreen extends React.Component {
+let password;
+
+const usernameRegex = /^[a-zA-Z0-9]+$/;
+class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
-    this.ref = firebase.firestore().collection('users');
     this.state = {
+      firstName: "",
+      lastName: "",
       email: "",
-      password: ""
+      password: "",
+      confirmPassword: "",
+      disabled: true,
+      formErrors: {
+        userName: "",
+        email: "",
+        password: "",
+        confPassword: "",
+        loginError: ""
+      }
+
+    };
+
+  }
+
+
+  handleChange = e => {
+    e.preventDefault();
+
+    let formErrors = this.state.formErrors;
+    const { name, value } = e.target;
+
+    switch (name) {
+        case "userName":
+            formErrors.userName =
+                usernameRegex.test(value) && value.length >= 3
+                    ? ""
+                    : "Minimum 3 characters required. Allowed only letters and numbers";
+            break;
+        case "email":
+            formErrors.email = isEmail(value)
+                ? ""
+                : "Invalid email address";
+            break;
+        case "password":
+            formErrors.password =
+                value.length < 6 ? "Minimum 6 characters required" : "";
+            password = value;
+
+            break;
+        case "confPassword":
+            formErrors.confPassword =
+                password !== value
+                    ? "Your password and confirmation password do not match"
+                    : "";
+            break;
+        default:
+            break;
     }
 
-  }
-  addUser() {
-    this.ref.add({
-      email: this.state.email,
-      complete: false,
-    });
-    this.setState({
-      email: '',
-    });
-    this.catch(function(error) {
-      console.log('There has been a problem with adding a user: ' + error.message);
-       // ADD THIS THROW error
-        throw error;
-      });
-  }
 
-
-  async logIn() {
-    let email = this.state.email;
-    let password = this.state.password;
-
-    signInUser (email, password)
-  }
 
   async register() {
     let email = this.state.email;
@@ -49,6 +80,7 @@ export default class LoginScreen extends React.Component {
 
     createUser (email , password);
   }
+
 
 
 
@@ -64,15 +96,33 @@ export default class LoginScreen extends React.Component {
       <Container style={styles.container}>
         <Header>
           <Body>
-            <Title>Log in screen</Title>
+            <Title>Sign Up Screen</Title>
           </Body>
         </Header>
         <Content>
           <Form>
-            <Item floatingLabel>
+         <Item floatingLabel>
+              <Label>First Name</Label>
+              <Input onChangeText={ (text) => this.setState({ firstName: text })} 
+                     value={this.state.firstName}
+              />
+            </Item>
+            <Item floatingLabel >
+              <Label>Last Name</Label>
+              <Input onChangeText={(text)  => this.setState({ lastName: text })} 
+                    value = {this.state.lastName}
+              />
+            </Item>
+            <Item floatingLabel >
+              <Label>User Name</Label>
+              <Input onChangeText={(text)  => this.setState({ userName: text })} 
+                    value = {this.state.userName}
+              />
+            </Item>
+            <Item floatingLabel >
               <Label>Email</Label>
-              <Input onChangeText={ (text) => this.setState({ email: text })} 
-                     value={this.state.email}
+              <Input onChangeText={(text)  => this.setState({ email: text })} 
+                    value = {this.state.email}
               />
             </Item>
             <Item floatingLabel >
@@ -81,10 +131,7 @@ export default class LoginScreen extends React.Component {
                     value = {this.state.password}
               />
             </Item>
-            <Button block style={styles.buttons} onPress={() => this.logIn()}>
-              <Text>Log in</Text>
-            </Button>
-            <Button block style={styles.buttons} onPress={() => this.register() ||  this.addUser() }>
+            <Button block style={styles.buttons} onPress={() => this.register() }>
               <Text>Register</Text>
             </Button>
           </Form>
