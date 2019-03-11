@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
 
-
+import isEmail from "validator/lib/isEmail";
 
 import firebase from '@firebase/app';
 import { auth } from "firebase";

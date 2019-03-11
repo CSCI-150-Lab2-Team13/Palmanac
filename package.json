@@ -21,7 +21,8 @@
     "react-native-google-signin": "^1.2.1",
     "react-native-maps": "^0.23.0",
     "react-native-twitter-signin": "^1.1.1",
-    "react-navigation": "^3.3.2"
+    "react-navigation": "^3.3.2",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
