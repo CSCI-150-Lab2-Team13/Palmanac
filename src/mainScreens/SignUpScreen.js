@@ -7,11 +7,10 @@ import isEmail from "validator/lib/isEmail";
 
 import firebase from '@firebase/app';
 import { auth } from "firebase";
-import '@firebase/auth'
+
 import 'firebase/firebase-firestore'
 
 
-import { createUser} from '../firebase/firebaseAPI'
 import firestoreAPI from '../firebase/firestoreAPI'
 
 
@@ -94,7 +93,7 @@ export default class SignUp extends React.Component {
   signUp = e => {
     e.preventDefault();
     const { email, password, userName } = this.state;
-    auth().createUserWithEmailAndPassword(email, password)
+     auth().createUserWithEmailAndPassword(email, password)
         .then(userCredential => {
             return userCredential.user
         })

@@ -1,12 +1,12 @@
 import fireConfig from './fireConfig'
 
-import firebase from '@firebase/app'
+import { auth } from "firebase";
 
 
 export const createUser = (email, password) => {
 	console.log('CreateUser has been called.')
 
-  firebase.auth().createUserWithEmailAndPassword(
+  auth().createUserWithEmailAndPassword(
 		email, password).catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code;
@@ -22,7 +22,7 @@ export const createUser = (email, password) => {
 }
 export const signInUser = (email , password) => {
 	console.log('signInUser has been called')
-	firebase.auth().signInWithEmailAndPassword(email, password)
+	auth().signInWithEmailAndPassword(email, password)
     .catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
@@ -40,7 +40,7 @@ export const signInUser = (email , password) => {
 
 export const logoutUser = () => {
 
-	firebase.auth().signOut().then(function () {
+	auth().signOut().then(function () {
 		console.log('Sign-out successful.');
 	}).catch(function (error) {
 		console.log(error);
