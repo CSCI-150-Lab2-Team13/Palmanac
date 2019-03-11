@@ -4,11 +4,15 @@ import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
 import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
+import { RRule, RRuleSet, rrulestr } from 'rrule'
 
 // TODO: Add check if predictions != [] to prevent incorrect locations
 //       Add Selection of Calendar
 //       Add Selection of Invitees
 //       Add Selection of Group
+
+// Refactoring potential by using predictions as a hidden form field that shows
+//   only when the result is being searched for, use picker/dialog?
 const h = 400;
 const w = 400;
 const ASPECT_RATIO = w / h;
@@ -16,6 +20,8 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
+
 
 
 export default class HardEventFormView extends Component {
@@ -27,6 +33,7 @@ export default class HardEventFormView extends Component {
         predictions: [],
         placeId: "",
         placeDetails: "",
+        rec: "",
         region: {
           latitude: LATITUDE,
           longitude: LONGITUDE,
@@ -38,27 +45,230 @@ export default class HardEventFormView extends Component {
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
     }
 
+      // RECCURENCE RULE KEY VALUES
+      // If year or month then use freq, byyearday/bymonthday/byweekday, and dtstart
+      // rule: {
+      //   freq: "",
+      //   dtstart: "",
+      //   bymonthday: "",
+      //   byweekday: "",
+      //   byyearday: "",
+      //   until: ""
+      // },
+
     onValueChange(){
      // if (name == 'location'){
       const formValues = this.formGenerator.getValues();
       if (formValues.location != '' || (this.state.placeId == '' && this.state.destination != '') ){
-        this.onChangeDestinationDebounced(formValues.location)
+        this.onChangeDestinationDebounced(formValues.location);
       }
       else if(this.state.placeId != '' && formValues.location == ''){
         this.setState({
           placeId: '',
           placeDetails: '',
-          predictions: []
+          predictions: [],
+          
         });
       }
 
+      var rec_index;
+      var freq_index;
+      var interval_index;
+      var fields = this.formGenerator.props['fields'];
+      // _.set(this.formGenerator)
+      for(let i = 0, l = fields.length; i < l; i++) {
+        if( fields[i]['name'] == 'reccurrance'){
+          rec_index = i;
+          break;
+        }
+      }
 
-      //}
+      var data = fields[rec_index]['fields'];
+
+      for(let i = 0, l = data.length; i < l; i++) {
+        if( data[i]['name'] == 'freq')
+          freq_index = i;
+        if(data[i]['name'] == 'interval')
+          interval_index = i;
+      }
+
+      var freq = data[freq_index]
+      var interval = data[interval_index]
+
+      var days = [
+        {
+          id: RRule.MO,
+          name: 'Monday'
+        }, 
+        {
+          id: RRule.TU,
+          name: 'Tuesday'
+        },
+        {
+          id: RRule.WE,
+          name: 'Wednesday'
+        },
+        {
+          id: RRule.TH,
+          name: 'Thursday'
+        },
+        {
+          id: RRule.FR,
+          name: 'Friday'
+        },
+        {
+          id:RRule.SA,
+          name: 'Saturday'
+        },
+        {
+          id: RRule.SU,
+          name: 'Sunday'
+        }
+      ]
+      var months = [
+        {
+          id: 1,
+          name: 'January'
+        }, 
+        {
+          id: 2,
+          name: 'February'
+        },
+        {
+          id: 3,
+          name: 'March'
+        },
+        {
+          id: 4,
+          name: 'April'
+        },
+        {
+          id: 5,
+          name: 'May'
+        },
+        {
+          id: 6,
+          name: 'June'
+        },
+        {
+          id: 7,
+          name: 'July'
+        },
+        {
+          id: 8,
+          name: 'August'
+        },
+        {
+          id: 9,
+          name: 'September'
+        },
+        {
+          id: 10,
+          name: 'October'
+        },
+        {
+          id: 11,
+          name: 'November'
+        },
+        {
+          id: 12,
+          name: 'December'
+        }
+      ]
+      // NOTE: VERY IMPORTANT
+      // Originally only used for debugging, but this function call is
+      // actually necessary for onValueChange to display properly
+      // this seems to allow onValueChange to update before exiting
+      // which does not happen otherwise
+      this.setState({
+        error: JSON.stringify(interval.value)
+     })
+
+      //Show fields based on which value is filled in
+      if(freq.value != "Select"){
+        // Unhide selected value corresponding form
+
+
+        var found_days = false;
+        var found_months = false;
+        if(interval.type != "date" && interval.value){
+         for(let i = 0, l = days.length; i < l; i++) {
+            if(days[i].id == interval.value.id){
+              found_days = true;
+            }
+         } 
+         for(let i = 0, l = months.length; i < l; i++) {
+           if(months[i].id == interval.value.id){
+             found_months = true;
+           }
+        }
+      }
+
+
+        freq.required = true;
+        if(freq.value == "Weekly"){
+          if( found_months ||  interval.type == "date"){
+            interval.value = "";
+          }
+          interval.type = 'select';
+          interval.objectType = true;
+          interval.labelKey = 'name';
+          interval.primaryKey = 'id';
+          interval.options = days;
+          
+
+          //interval.multiple = true;
+          interval.hidden = false;
+        }
+        else if (freq.value == "Monthly"){
+          //Used to reset value if switched weekly
+          if ( found_days || interval.type == "date" ){
+            interval.value = "";
+          }
+          //
+          
+          interval.type = 'select';       
+          interval.objectType = true;
+          interval.labelKey = 'name';
+          interval.primaryKey = 'id';
+          interval.options = months;
+
+          interval.hidden = false;
+
+          //interval.multiple = true;
+        }
+        
+        else if(freq.value == "Yearly"){
+
+          if(found_days || found_months ){
+            interval.value = new Date();
+          }
+          
+
+          
+          interval.type = "date";
+          interval.mode = 'date';
+          interval.hidden = false;
+          
+        }
+      }
+      else{
+        freq.required = false;
+        // Set all value to hidden
+        interval.hidden = true;
+      }
+      
+
     }
 
 
     create() {
       const formValues = this.formGenerator.getValues();
+      
+      if (formValues.freq != ""){
+
+      }
+
       console.log('FORM VALUES', formValues);
     }
 
@@ -173,6 +383,7 @@ export default class HardEventFormView extends Component {
               style={styles.destinationInput}
             >
             </TextInput> */}
+            
             {predictions}
            
           </View>
@@ -269,7 +480,7 @@ export default class HardEventFormView extends Component {
         type: 'text',
         name: 'desc',
         required: true,
-        label: 'Desc.',
+        label: 'Desc. (optional)',
         props: {
             multiline: true,
         }
@@ -279,6 +490,7 @@ export default class HardEventFormView extends Component {
       type: 'date',
       name:'startTime',
       mode: 'datetime',
+      //defaultValue: new Date(),
       required: true, 
       label: 'Start',
     },
@@ -290,12 +502,38 @@ export default class HardEventFormView extends Component {
         label: 'End',
     },
     {
+      type: 'group',
+      name: 'reccurrance',
+      label: 'Repeat',
+      fields: [
+        {
+          type: 'picker',
+          name: 'freq',
+          mode: 'dialog',
+          defaultValue: 'Select',
+          options: ['Select','Weekly', 'Monthly', 'Yearly'],
+          required: false,
+          //editable: false,
+          label: 'Frequency (optional)'
+        },
+        {
+          type: 'picker',
+          name: 'interval',
+          label: 'By',
+          defaultValue: 'SELECT',
+          options: [],
+        },
+      ],
+    },
+    
+    {
       type: 'text',
       name: 'location',
       required: false,
       //editable: false,
-      label: 'Location'
+      label: 'Location (optional)'
     },
+
     // {
     //   type: 'picker',
     //   name: 'country',
