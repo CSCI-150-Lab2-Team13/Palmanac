@@ -3,17 +3,24 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
 
-import { logoutUser, createUser , signInUser} from '../firebase/firebaseAPI';
 
-import firestore from '../firebase/firestoreAPI'
-import { threadId } from 'worker_threads';
+
+import firebase from '@firebase/app';
+import { auth } from "firebase";
+import '@firebase/auth'
+import 'firebase/firebase-firestore'
+
+
+import { createUser} from '../firebase/firebaseAPI'
+import firestoreAPI from '../firebase/firestoreAPI'
+
 
 
 
 let password;
 
 const usernameRegex = /^[a-zA-Z0-9]+$/;
-class SignUp extends React.Component {
+export default class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
@@ -70,27 +77,56 @@ class SignUp extends React.Component {
         default:
             break;
     }
+    this.setState({
+      formErrors,
+      [name]: value,
+      disabled:
+          formErrors.email ||
+          !this.state.email ||
+          (formErrors.password || !this.state.password) ||
+          (formErrors.userName || !this.state.userName) ||
+          (formErrors.confPassword || !this.state.confPassword)
+  });
+};
 
 
 
-  async register() {
-    let email = this.state.email;
-    let password = this.state.password;
-
-
-    createUser (email , password);
-  }
-
-
-
-
-  
+  signUp = e => {
+    e.preventDefault();
+    const { email, password, userName } = this.state;
+    auth().createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+            return userCredential.user
+        })
+        .then(user => {
+            const newUser = {
+                id: user.uid,
+                userName: userName,
+                email: user.email,
+                gender: "",
+                age: 0,
+                photoUrl: "",
+                isNewUser: true
+            };
+            //adding user to DB
+            firestoreAPI.addUser(newUser);
+        })
+        .catch(error => {
+            this.setState(prevState => ({
+                formErrors: {
+                    ...prevState.formErrors,
+                    loginError: error.message
+                }
+            }));
+            console.error(this.state.formErrors.loginError);
+        });
+};
 
 
 
   render() {
-
-
+    const { formErrors, disabled } = this.state;
+    const { classes } = this.props;
 
     return (
       <Container style={styles.container}>
@@ -103,35 +139,47 @@ class SignUp extends React.Component {
           <Form>
          <Item floatingLabel>
               <Label>First Name</Label>
-              <Input onChangeText={ (text) => this.setState({ firstName: text })} 
-                     value={this.state.firstName}
+              <Input  onChangeText={(text)  => this.setState({ firstName: text })} 
+                      value = {this.state.firstName}
+                      onChange = {this.handleChange} 
               />
             </Item>
             <Item floatingLabel >
               <Label>Last Name</Label>
-              <Input onChangeText={(text)  => this.setState({ lastName: text })} 
-                    value = {this.state.lastName}
+              <Input  onChangeText={(text)  => this.setState({ lastName: text })} 
+                      value = {this.state.lastName}
+                      onChange = {this.handleChange} 
               />
             </Item>
             <Item floatingLabel >
               <Label>User Name</Label>
-              <Input onChangeText={(text)  => this.setState({ userName: text })} 
-                    value = {this.state.userName}
+              <Input  onChangeText={(text)  => this.setState({ userName: text })} 
+                      value = {this.state.userName}
+                      onChange = {this.handleChange} 
               />
             </Item>
             <Item floatingLabel >
               <Label>Email</Label>
-              <Input onChangeText={(text)  => this.setState({ email: text })} 
-                    value = {this.state.email}
+              <Input  onChangeText={(text)  => this.setState({ email: text })} 
+                      value = {this.state.email}
+                      onChange = {this.handleChange} 
               />
             </Item>
             <Item floatingLabel >
               <Label>Password</Label>
-              <Input onChangeText={(text)  => this.setState({ password: text })} 
-                    value = {this.state.password}
+              <Input  onChangeText={(text)  => this.setState({ password: text })} 
+                      value = {this.state.password}
+                      onChange = {this.handleChange} 
               />
             </Item>
-            <Button block style={styles.buttons} onPress={() => this.register() }>
+            <Item floatingLabel >
+              <Label>Confirm Password</Label>
+              <Input  onChangeText={(text)  => this.setState({ confirmPassword: text })} 
+                      value = {this.state.confirmPassword}
+                      onChange = {this.handleChange} 
+              />
+            </Item>
+            <Button block style={styles.buttons} onPress = {this.signUp}>
               <Text>Register</Text>
             </Button>
           </Form>

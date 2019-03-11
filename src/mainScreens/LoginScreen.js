@@ -3,10 +3,14 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
 
-import { signInUser} from '../firebase/FirebaseAPI';
+
+import firebase from '@firebase/app';
+import '@firebase/auth'
+import 'firebase/firebase-firestore'
+import { signInUser} from '../firebase/firebaseAPI';
 
 
-import firebase from 'react-native-firebase';
+
 
 export default class LoginScreen extends React.Component {
 

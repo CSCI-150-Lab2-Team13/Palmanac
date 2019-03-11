@@ -1,14 +1,12 @@
-import firebase from 'react-native-firebase'
-
-
-export default class FireManager {
+import {firestore} from "firebase";
+export default class firestoreAPI {
     /**
      * Adding user to database,
      * user must be an object with valid id property
      */
     static addUser(user) {
         if (user.id) {
-            return firebase.firestore().collection('users').doc(user.id).set(user)
+            return firestore().collection('users').doc(user.id).set(user)
                 .then(() => {
                     console.log("Document successfully written!");
                 })
@@ -26,7 +24,7 @@ export default class FireManager {
      * */
     static getUser(userId) {
         if (userId) {
-            const ref = firebase.firestore().collection('users').doc(userId);
+            const ref = firestore().collection('users').doc(userId);
 
             return ref.get().then(doc => {
                 if (doc.exists) {

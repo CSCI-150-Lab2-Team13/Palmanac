@@ -18,7 +18,7 @@ import Profile from '../bottomScreens/Profile'
 //import different screens for swipeleftscreens
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
-import { logoutUser } from '../firebase/FirebaseAPI';
+import { logoutUser } from '../firebase/firebaseAPI';
 
 
 
@@ -95,12 +95,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
    // },
   
   });
-  
-  
 
-  
-  
-const AuthStack = createStackNavigator ({
+
+  const AuthStack = createStackNavigator ({
     SignIn: {
       screen: LoginScreen,
     },
@@ -111,6 +108,11 @@ const AuthStack = createStackNavigator ({
   },
 
   {initialRouteName: 'SignIn'});
+
+  
+  
+
+  
 
 
 export default createSwitchNavigator(

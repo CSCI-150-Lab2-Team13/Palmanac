@@ -54,6 +54,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNFirebasePackage(),
+            new RNFirebaseAuthPackage(),
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),

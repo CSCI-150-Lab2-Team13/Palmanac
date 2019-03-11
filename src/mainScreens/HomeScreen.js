@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, Platform, Image, Text, View, Button } from 'react-native'
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label} from 'native-base';
 import firebase from '@firebase/app'
+
 import '@firebase/auth'
 
 
 
-import * as FirebaseAPI from '../firebase/FirebaseAPI'
+import * as firebaseAPI from '../firebase/firebaseAPI'
 
 
 let isMounted; 

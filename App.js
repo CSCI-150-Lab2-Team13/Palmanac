@@ -10,10 +10,15 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator , createAppContainer} from 'react-navigation';
 
-import firebase from '@firebase/app'
+
+import config from '../Palmanac/src/firebase/fireConfig'
+import firebase from '@firebase/app';
 import '@firebase/auth'
+import 'firebase/firebase-firestore'
+
 
 //importing router 
+
 
 import createSwitchNavigator from './src/routing/router';
 
@@ -42,19 +47,13 @@ import Settings from './src/swipeLeftScreens/SettingsScreen'
  */
 
 
-//import firebase and initializing 
-var config = {
-  apiKey: "AIzaSyCbC-n--mjbOUSWOoTbjyxQcthtV7m5xhQ",
-  authDomain: "scheduleapp-boof.firebaseapp.com",
-  databaseURL: "https://scheduleapp-boof.firebaseio.com",
-  projectId: "scheduleapp-boof",
-  storageBucket: "scheduleapp-boof.appspot.com",
-  messagingSenderId: "481998559301"
-};
-firebase.initializeApp(config);
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
 
+    firebase.initializeApp(config);
+}
   render() {
     return (
       
