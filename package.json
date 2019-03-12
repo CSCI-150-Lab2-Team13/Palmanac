@@ -22,6 +22,7 @@
     "react-native-maps": "^0.23.0",
     "react-native-twitter-signin": "^1.1.1",
     "react-navigation": "^3.3.2",
+    "validator": "^10.11.0",
     "rrule": "^2.6.0"
   },
   "devDependencies": {
