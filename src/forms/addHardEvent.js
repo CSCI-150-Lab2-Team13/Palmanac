@@ -365,7 +365,12 @@ export default class HardEventFormView extends Component {
             min_range_list = _.range(60);
           }
           else{
-            min_range_list = _.range(startMin, endMin);
+            if(startHour == endHour){
+              min_range_list = _.range(startMin, endMin);
+            }
+            else{
+              min_range_list = _.range(0,endMin)
+            }
           }
 
         }
