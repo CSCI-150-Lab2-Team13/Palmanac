@@ -378,15 +378,15 @@ export default class HardEventFormView extends Component {
         if(freq.value == "Weekly" && interval.value){
           var weekDays = [];
 
-          for(weekObj in interval.value){
-            weekDays.push(weekObj.id);
+          for(let i = 0, l = interval.value.length; i < l; i++) {
+            weekDays.push(interval.value[i]['id']['weekday']);
           }
           // Lodash range function
           // _.range(startHour, endHour)
 
 
 
-
+        
         rule = new RRule({
             freq: RRule.WEEKLY,
             byweekday: weekDays,
@@ -513,8 +513,8 @@ export default class HardEventFormView extends Component {
             </TextInput> */}
             
             {predictions}
-          {// <Text>{this.state.error}</Text>
-          }
+           <Text>{this.state.error}</Text>
+           
           </View>
 
           <View style={styles.submitButton}>
@@ -622,6 +622,7 @@ export default class HardEventFormView extends Component {
       //defaultValue: new Date(),
       required: false, 
       label: 'Start',
+      minDate: new Date(),
     },
     {
         type: 'date',
@@ -629,6 +630,7 @@ export default class HardEventFormView extends Component {
         mode: 'datetime',
         required: false, 
         label: 'End',
+        minDate: new Date(),
     },
     {
       type: 'group',
