@@ -6,8 +6,8 @@ import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
 import { RRule, RRuleSet, rrulestr } from 'rrule'
 
-// TODO: Add check if predictions != [] to prevent incorrect locations
-//       Add Selection of Calendar
+// TODO: 
+//       (REMOVED FOR NOW) Add Selection
 //       Add Selection of Invitees
 //       Add Selection of Group
 
@@ -20,10 +20,97 @@ const LATITUDE = 0;
 const LONGITUDE = 0;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+const days = [
+  {
+    id: RRule.MO,
+    name: 'Monday'
+  }, 
+  {
+    id: RRule.TU,
+    name: 'Tuesday'
+  },
+  {
+    id: RRule.WE,
+    name: 'Wednesday'
+  },
+  {
+    id: RRule.TH,
+    name: 'Thursday'
+  },
+  {
+    id: RRule.FR,
+    name: 'Friday'
+  },
+  {
+    id:RRule.SA,
+    name: 'Saturday'
+  },
+  {
+    id: RRule.SU,
+    name: 'Sunday'
+  }
+]
+const months = [
+  {
+    id: 1,
+    name: 'January'
+  }, 
+  {
+    id: 2,
+    name: 'February'
+  },
+  {
+    id: 3,
+    name: 'March'
+  },
+  {
+    id: 4,
+    name: 'April'
+  },
+  {
+    id: 5,
+    name: 'May'
+  },
+  {
+    id: 6,
+    name: 'June'
+  },
+  {
+    id: 7,
+    name: 'July'
+  },
+  {
+    id: 8,
+    name: 'August'
+  },
+  {
+    id: 9,
+    name: 'September'
+  },
+  {
+    id: 10,
+    name: 'October'
+  },
+  {
+    id: 11,
+    name: 'November'
+  },
+  {
+    id: 12,
+    name: 'December'
+  }
+]
 
-
-
-
+var rec_index;
+var start_index;
+var end_index;
+var freq_index;
+var interval_index;
+var fields;
+// _.set(this.formGenerator)
+var data;
+var freq;
+var interval;
 export default class HardEventFormView extends Component {
     constructor() {
       super();
@@ -56,6 +143,65 @@ export default class HardEventFormView extends Component {
       //   until: ""
       // },
 
+        // declare this outside of render
+        componentDidMount() {
+          navigator.geolocation.getCurrentPosition(
+            position => {
+              this.setState({
+                region: {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  latitudeDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA,
+                }
+              });
+            },
+          (error) => console.log(error.message),
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+          );
+          this.watchID = navigator.geolocation.watchPosition(
+            position => {
+              this.setState({
+                region: {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  latitudeDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA,
+                }
+              });
+            }
+          );
+    
+          fields = this.formGenerator.props['fields'];
+          // _.set(this.formGenerator)
+          //Replace with filter/better implementation later
+          for(let i = 0, l = fields.length; i < l; i++) {
+            if( fields[i]['name'] == 'reccurrance'){
+              rec_index = i;
+            }
+            if(fields[i]['name'] == 'startTime')
+              start_index = i;
+            if(fields[i]['name'] == 'endTime')
+              end_index = i;
+          }
+    
+          data = fields[rec_index]['fields'];
+    
+          for(let i = 0, l = data.length; i < l; i++) {
+            if( data[i]['name'] == 'freq')
+              freq_index = i;
+            if(data[i]['name'] == 'interval')
+              interval_index = i;
+          }
+    
+          freq = data[freq_index];
+          interval = data[interval_index];
+        }
+        componentWillUnmount() {
+          navigator.geolocation.clearWatch(this.watchID);
+        }
+    
+
     onValueChange(){
      // if (name == 'location'){
       const formValues = this.formGenerator.getValues();
@@ -71,110 +217,9 @@ export default class HardEventFormView extends Component {
         });
       }
 
-      var rec_index;
-      var freq_index;
-      var interval_index;
-      var fields = this.formGenerator.props['fields'];
-      // _.set(this.formGenerator)
-      for(let i = 0, l = fields.length; i < l; i++) {
-        if( fields[i]['name'] == 'reccurrance'){
-          rec_index = i;
-          break;
-        }
-      }
 
-      var data = fields[rec_index]['fields'];
 
-      for(let i = 0, l = data.length; i < l; i++) {
-        if( data[i]['name'] == 'freq')
-          freq_index = i;
-        if(data[i]['name'] == 'interval')
-          interval_index = i;
-      }
 
-      var freq = data[freq_index]
-      var interval = data[interval_index]
-
-      var days = [
-        {
-          id: RRule.MO,
-          name: 'Monday'
-        }, 
-        {
-          id: RRule.TU,
-          name: 'Tuesday'
-        },
-        {
-          id: RRule.WE,
-          name: 'Wednesday'
-        },
-        {
-          id: RRule.TH,
-          name: 'Thursday'
-        },
-        {
-          id: RRule.FR,
-          name: 'Friday'
-        },
-        {
-          id:RRule.SA,
-          name: 'Saturday'
-        },
-        {
-          id: RRule.SU,
-          name: 'Sunday'
-        }
-      ]
-      var months = [
-        {
-          id: 1,
-          name: 'January'
-        }, 
-        {
-          id: 2,
-          name: 'February'
-        },
-        {
-          id: 3,
-          name: 'March'
-        },
-        {
-          id: 4,
-          name: 'April'
-        },
-        {
-          id: 5,
-          name: 'May'
-        },
-        {
-          id: 6,
-          name: 'June'
-        },
-        {
-          id: 7,
-          name: 'July'
-        },
-        {
-          id: 8,
-          name: 'August'
-        },
-        {
-          id: 9,
-          name: 'September'
-        },
-        {
-          id: 10,
-          name: 'October'
-        },
-        {
-          id: 11,
-          name: 'November'
-        },
-        {
-          id: 12,
-          name: 'December'
-        }
-      ]
       // NOTE: VERY IMPORTANT
       // Originally only used for debugging, but this function call is
       // actually necessary for onValueChange to display properly
@@ -184,31 +229,45 @@ export default class HardEventFormView extends Component {
         error: JSON.stringify(interval.value)
      })
 
+      fields[end_index].hidden = false;
+      fields[start_index].mode = 'datetime';
       //Show fields based on which value is filled in
       if(freq.value != "Select"){
         // Unhide selected value corresponding form
-
+        
 
         var found_days = false;
         var found_months = false;
         if(interval.type != "date" && interval.value){
          for(let i = 0, l = days.length; i < l; i++) {
-            if(days[i].id == interval.value.id){
-              found_days = true;
-            }
+           //for(let j = 0, k = interval.value.length; j < k; j++){
+              if(days[i] == interval.value[0]){
+                found_days = true;
+                break;
+              }
+          //  }
+          //  if(found_days) break;
          } 
          for(let i = 0, l = months.length; i < l; i++) {
-           if(months[i].id == interval.value.id){
-             found_months = true;
-           }
+           // for(let j = 0, k = interval.value.length; j < k; j++){
+              if(months[i] == interval.value[0]){
+                found_months = true;
+                break;
+              }
+          //  }
+          //  if(found_months) break;
         }
       }
 
-
+        fields[start_index].required = true;
+        fields[end_index].required = true;
         freq.required = true;
+
+
+
         if(freq.value == "Weekly"){
           if( found_months ||  interval.type == "date"){
-            interval.value = "";
+            interval.value = [];
           }
           interval.type = 'select';
           interval.objectType = true;
@@ -223,7 +282,7 @@ export default class HardEventFormView extends Component {
         else if (freq.value == "Monthly"){
           //Used to reset value if switched weekly
           if ( found_days || interval.type == "date" ){
-            interval.value = "";
+            interval.value = []
           }
           //
           
@@ -235,24 +294,29 @@ export default class HardEventFormView extends Component {
 
           interval.hidden = false;
 
-          //interval.multiple = true;
+          
         }
         
         else if(freq.value == "Yearly"){
+          fields[end_index].required = false;
+          // Replace interval value with
+          // implementation that uses start date
+          // and has no end date
 
-          if(found_days || found_months ){
-            interval.value = new Date();
-          }
-          
 
-          
-          interval.type = "date";
-          interval.mode = 'date';
-          interval.hidden = false;
-          
+          // if(found_days || found_months ){
+          //   interval.value = new Date();
+          // }        
+          // interval.type = "date";
+          // interval.mode = 'date';
+          interval.hidden = true;
+          fields[end_index].hidden = true;
+          fields[start_index].mode = 'date';
         }
       }
       else{
+        fields[start_index].required = false;
+        fields[end_index].required = false;
         freq.required = false;
         // Set all value to hidden
         interval.hidden = true;
@@ -264,46 +328,105 @@ export default class HardEventFormView extends Component {
 
     create() {
       const formValues = this.formGenerator.getValues();
-      
-      if (formValues.freq != ""){
+      // rule: {
+      //   freq: "",
+      //   dtstart: "",
+      //   bymonthday: "",
+      //   byweekday: "",
+      //   byyearday: "",
+      //   until: ""
+      // },
+      var rule;
+      var rule_text = "";
+      var min_range_list;
+      var hr_range_list;
 
-      }
 
-      console.log('FORM VALUES', formValues);
-    }
+      if(freq.value != "Select"){
+        if(freq.value == "Weekly" || freq.value == "Monthly"){
+          
+          const startHour = formValues.startTime.getHours();
+          const endHour = formValues.endTime.getHours();
+          const startMin = formValues.startTime.getMinutes();
+          const endMin = formValues.endTime.getMinutes();
 
-    // declare this outside of render
-    componentDidMount() {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          this.setState({
-            region: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }
-          });
-        },
-      (error) => console.log(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-      );
-      this.watchID = navigator.geolocation.watchPosition(
-        position => {
-          this.setState({
-            region: {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }
-          });
+          var hr_range = endHour - startHour;
+          
+          var min_range = endMin - startMin;
+
+          if (hr_range > 24 || hr_range < 0){
+            hr_range_list =  _.range(24);
+          }
+          else{
+            hr_range_list = _.range(startHour, endHour);
+          }
+
+          if(min_range > 60 || min_range < 0){
+            min_range_list = _.range(60);
+          }
+          else{
+            min_range_list = _.range(startMin, endMin);
+          }
+
         }
-      );
+
+        if(freq.value == "Weekly" && interval.value){
+          var weekDays = [];
+
+          for(weekObj in interval.value){
+            weekDays.push(weekObj.id);
+          }
+          // Lodash range function
+          // _.range(startHour, endHour)
+
+
+
+
+        rule = new RRule({
+            freq: RRule.WEEKLY,
+            byweekday: weekDays,
+            byhour: hr_range_list,
+            byminute: min_range_list,
+            dtstart: formValues.startTime,
+            //until: formValues.endTime,
+          })
+        }
+        else if(freq.value == "Monthly" && interval.value){
+          var monthVals = [];
+
+          for(monthObj in interval.value){
+            monthVals.push(monthObj.id);
+          }
+
+        rule = new RRule({
+            freq: RRule.MONTHLY,
+            bymonthday: monthVals,
+            byhour: hr_range_list,
+            byminute: min_range_list,
+            dtstart: formValues.startTime,
+            //until: formValues.endTime,
+          })
+        }
+        else if (freq.value == "Yearly" && interval.value){
+          //var now = new Date();
+          var start = new Date(formValues.startTime.getFullYear(), 0, 0);
+          var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+          var oneDay = 1000 * 60 * 60 * 24;
+          var day = Math.floor(diff / oneDay);
+          rule = new RRule({
+            freq: RRule.YEARLY,
+            byyearday: monthVals,
+            dtstart: day,
+          })
+        }
+    
+        rule_text = rule.toString();
+      }
+      //
+      //INSERT CODE FOR WRITING TO DB
+      //
     }
-    componentWillUnmount() {
-      navigator.geolocation.clearWatch(this.watchID);
-    }
+
 
     async onChangeDestination(destination){
       // call Places
@@ -385,7 +508,8 @@ export default class HardEventFormView extends Component {
             </TextInput> */}
             
             {predictions}
-           
+          {// <Text>{this.state.error}</Text>
+          }
           </View>
 
           <View style={styles.submitButton}>
@@ -491,14 +615,14 @@ export default class HardEventFormView extends Component {
       name:'startTime',
       mode: 'datetime',
       //defaultValue: new Date(),
-      required: true, 
+      required: false, 
       label: 'Start',
     },
     {
         type: 'date',
         name:'endTime',
         mode: 'datetime',
-        required: true, 
+        required: false, 
         label: 'End',
     },
     {
@@ -517,10 +641,11 @@ export default class HardEventFormView extends Component {
           label: 'Frequency (optional)'
         },
         {
-          type: 'picker',
+          type: 'select',
           name: 'interval',
           label: 'By',
           defaultValue: 'SELECT',
+          multiple: true,
           options: [],
         },
       ],
