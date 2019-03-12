@@ -513,7 +513,8 @@ export default class HardEventFormView extends Component {
             </TextInput> */}
             
             {predictions}
-           <Text>{this.state.error}</Text>
+          { //<Text>{this.state.error}</Text>
+           }
            
           </View>
 
