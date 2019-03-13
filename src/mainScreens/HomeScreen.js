@@ -7,7 +7,7 @@ import '@firebase/auth'
 
 
 
-import * as firebaseAPI from '../firebase/firebaseAPI'
+import * as firebaseAPI from '../firebase/FirebaseAPI'
 
 
 let isMounted; 

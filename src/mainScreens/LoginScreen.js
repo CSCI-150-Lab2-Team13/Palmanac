@@ -7,7 +7,7 @@ import isEmail from "validator/lib/isEmail";
 
 
 import firebase from '@firebase/app';
-import { signInUser} from '../firebase/firebaseAPI';
+import { signInUser} from '../firebase/FirebaseAPI';
 
 import firestoreAPI from '../firebase/firestoreAPI'
 
