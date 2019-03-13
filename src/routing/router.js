@@ -18,7 +18,7 @@ import Profile from '../bottomScreens/Profile'
 //import different screens for swipeleftscreens
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
-import { logoutUser } from '../firebase/firebaseAPI';
+import { logoutUser } from '../firebase/FirebaseAPI';
 
 
 

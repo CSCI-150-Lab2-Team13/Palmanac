@@ -107,7 +107,7 @@ var end_index;
 var freq_index;
 var interval_index;
 var fields;
-// _.set(this.formGenerator)
+// 
 var data;
 var freq;
 var interval;
@@ -130,7 +130,9 @@ export default class HardEventFormView extends Component {
       };
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
+      this.create = this.create.bind(this);
     }
+
 
       // RECCURENCE RULE KEY VALUES
       // If year or month then use freq, byyearday/bymonthday/byweekday, and dtstart
@@ -327,7 +329,7 @@ export default class HardEventFormView extends Component {
 
 
     create() {
-      const formValues = this.formGenerator.getValues();
+      var formValues = this.formGenerator.getValues();
       // rule: {
       //   freq: "",
       //   dtstart: "",
@@ -340,6 +342,12 @@ export default class HardEventFormView extends Component {
       var rule_text = "";
       var min_range_list;
       var hr_range_list;
+
+      var now = formValues.startTime
+      var start = new Date(now.getFullYear(), 0, 0);
+      var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+      var oneDay = 1000 * 60 * 60 * 24;
+      var day = Math.floor(diff / oneDay);
 
 
       if(freq.value != "Select"){
@@ -383,11 +391,7 @@ export default class HardEventFormView extends Component {
           }
           // Lodash range function
           // _.range(startHour, endHour)
-
-
-
-        
-        rule = new RRule({
+          rule = new RRule({
             freq: RRule.WEEKLY,
             byweekday: weekDays,
             byhour: hr_range_list,
@@ -395,6 +399,7 @@ export default class HardEventFormView extends Component {
             dtstart: formValues.startTime,
             //until: formValues.endTime,
           })
+
         }
         else if(freq.value == "Monthly" && interval.value){
           var monthVals = [];
@@ -421,12 +426,20 @@ export default class HardEventFormView extends Component {
           rule = new RRule({
             freq: RRule.YEARLY,
             byyearday: monthVals,
-            dtstart: day,
+            dtstart: formValues.startTime,
           })
+         
         }
+      rule_text = rule.toString();
     
-        rule_text = rule.toString();
+        
+       _.set(formValues, 'rruleString', rule_text);
+
       }
+
+      this.setState({
+        error: JSON.stringify(formValues)
+      });
       //
       //INSERT CODE FOR WRITING TO DB
       //
@@ -513,8 +526,10 @@ export default class HardEventFormView extends Component {
             </TextInput> */}
             
             {predictions}
-          { //<Text>{this.state.error}</Text>
-           }
+            {
+         // <Text>{this.state.error}</Text>
+        }
+           
            
           </View>
 

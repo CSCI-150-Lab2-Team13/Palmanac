@@ -11,7 +11,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator , createAppContainer} from 'react-navigation';
 
 
-import config from '../Palmanac/src/firebase/fireConfig'
+import config from './src/firebase/fireConfig'
 import firebase from '@firebase/app';
 import '@firebase/auth'
 import 'firebase/firebase-firestore'
