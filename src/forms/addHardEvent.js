@@ -403,10 +403,12 @@ export default class HardEventFormView extends Component {
         }
         else if(freq.value == "Monthly" && interval.value){
           var monthVals = [];
-
-          for(monthObj in interval.value){
-            monthVals.push(monthObj.id);
+          
+          for(let i = 0, l = interval.value.length; i < l; i++) {
+            monthVals.push(interval.value[i]['id']);
           }
+
+          
 
         rule = new RRule({
             freq: RRule.MONTHLY,
