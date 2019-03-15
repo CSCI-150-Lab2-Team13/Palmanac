@@ -7,28 +7,45 @@ import {
   View,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
+import firestoreAPI from '../firebase/firestoreAPI'
+import firebase from '@firebase/app'
 
 export default class Feed extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+     // events: [],
+      selected: "",
+    };
     this.onDayPress = this.onDayPress.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      events: firestoreAPI.getEvents(firebase.auth().currentUser.uid)
+    });
+  }
+
   render() {
+    
+
     return (
       <ScrollView style={styles.container}>
         <Button title= "Create Hard Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
+        {//<Text style={styles.text}>{JSON.stringify(this.state.events )}</Text>
+        }
         <Calendar
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
-          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'orange'}}}
+          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'blue'}}}
         />
+        
       </ScrollView>
+
     );
   }
 
