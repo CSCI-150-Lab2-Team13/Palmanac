@@ -53,9 +53,9 @@ export default class firestoreAPI {
         }
     }
 
-    static addEvent(user_id, event) {
-        if (user_id) {
-            return firestore().collection('users').doc(user_id).collection('events').add(event)
+    static addEvent(userId, event) {
+        if (userId) {
+            return firestore().collection('users').doc(userId).collection('events').add(event)
                 .then(() => {
                     console.log("Document successfully written!");
                 })
@@ -64,6 +64,22 @@ export default class firestoreAPI {
                 });
         } else {
             console.error("event error");
+        }
+    }
+
+    static getEvents(userId) {
+        if (userId) {
+            var doc_list = []
+            firestore().collection('users').doc(userId).collection('events').get().then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                     doc_list.push( doc.data() );
+                });
+            });
+            return doc_list
+        }
+        else{
+            console.log("No user found!");
         }
     }
 
