@@ -39,6 +39,34 @@ export default class firestoreAPI {
         }
     }
 
+    static addUser(user) {
+        if (user.id) {
+            return firestore().collection('users').doc(user.id).set(user)
+                .then(() => {
+                    console.log("Document successfully written!");
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                });
+        } else {
+            console.error("need to pass an object with existing id property");
+        }
+    }
+
+    static addEvent(user_id, event) {
+        if (user_id) {
+            return firestore().collection('users').doc(user_id).collection('events').add(event)
+                .then(() => {
+                    console.log("Document successfully written!");
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                });
+        } else {
+            console.error("event error");
+        }
+    }
+
 
 }
 

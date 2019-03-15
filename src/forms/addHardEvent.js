@@ -4,7 +4,14 @@ import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
 import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
+import firebase from '@firebase/app'
+//import { auth } from "firebase";
+//import 'firebase/firebase-firestore'
+
+
+import firestoreAPI from '../firebase/firestoreAPI'
 import { RRule, RRuleSet, rrulestr } from 'rrule'
+
 
 // TODO: 
 //       (REMOVED FOR NOW) Add Selection
@@ -121,6 +128,7 @@ export default class HardEventFormView extends Component {
         placeId: "",
         placeDetails: "",
         rec: "",
+        user_id: firebase.auth().currentUser.uid,
         region: {
           latitude: LATITUDE,
           longitude: LONGITUDE,
@@ -131,6 +139,7 @@ export default class HardEventFormView extends Component {
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
       this.create = this.create.bind(this);
+
     }
 
 
@@ -433,14 +442,16 @@ export default class HardEventFormView extends Component {
     
         
        _.set(formValues, 'rruleString', rule_text);
-
+   
       }
-
+      _.set(formValues, 'user_id', this.state.user_id);
       this.setState({
         error: JSON.stringify(formValues)
       });
       //
       //INSERT CODE FOR WRITING TO DB
+      delete formValues.reccurrance;
+      firestoreAPI.addEvent(this.state.user_id, formValues)
       //
     }
 

@@ -51,7 +51,7 @@ import Settings from './src/swipeLeftScreens/SettingsScreen'
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-
+    
     firebase.initializeApp(config);
 }
   render() {
