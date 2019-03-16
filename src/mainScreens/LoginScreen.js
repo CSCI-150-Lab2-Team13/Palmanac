@@ -5,7 +5,7 @@ import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Butt
 import isEmail from "validator/lib/isEmail";
 
 
-import { signInUser} from '../firebase/firebaseAPI';
+import { signInUser} from '../firebase/FirebaseAPI';
 
 import firestoreAPI from '../firebase/firestoreAPI'
 

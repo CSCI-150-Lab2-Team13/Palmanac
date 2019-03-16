@@ -1,4 +1,4 @@
-import {firestore} from "firebase";
+ import {firestore} from "firebase";
 export default class firestoreAPI {
     /**
      * Adding user to database,
@@ -41,5 +41,3 @@ export default class firestoreAPI {
 
 
 }
-
-
