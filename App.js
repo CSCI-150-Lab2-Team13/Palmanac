@@ -8,10 +8,8 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator , createAppContainer} from 'react-navigation';
-
-
-import config from './src/firebase/fireConfig'
+import {createAppContainer} from "react-navigation";
+import config from '../Palmanac/src/firebase/fireConfig'
 import firebase from '@firebase/app';
 import '@firebase/auth'
 import 'firebase/firebase-firestore'
@@ -47,7 +45,6 @@ import Settings from './src/swipeLeftScreens/SettingsScreen'
  */
 
 
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
@@ -73,5 +70,3 @@ console.log(createSwitchNavigator);
 const AppSwitchNavigator = createSwitchNavigator;
 
 const AppContainer = createAppContainer(AppSwitchNavigator);
-
-
