@@ -9,7 +9,6 @@ import LoginScreen from '../mainScreens/LoginScreen';
 import HardEventFormScreen from '../forms/addHardEvent'
 
 
-
 //import the different screens for different scenario's for tabNav
 import Feed from '../bottomScreens/Feed'
 import Messages from '../bottomScreens/Messages'
@@ -47,8 +46,38 @@ const DashboardTabNavigator = createBottomTabNavigator({
       return {
         headerTitle: routeName
       };
+    },
+     tabBarOptions: {
+     //activeTintColor: '#e91e63',
+     activeTintColor: "#f5f6fa",      
+     inactiveTintColor: "#3c6382",
+     //fontFamily: "CircularStd-Bold",
+
+
+      labelStyle: {
+        //fontSize: 13,
+        fontWeight: "bold",
+        fontSize: 18,
+        //lineHeight: 20,
+       // color: '#fff',
+      fontFamily: "Product Sans",  
+
+      },
+      style: {
+        //backgroundColor: '#2f3640',
+        backgroundColor: '#0a3d62',
+        paddingVertical: 10,
+        paddingRight: 15,
+        borderColor: 'yellow',
+        height: 55,
+
+
+      },
     }
-  });
+},
+
+); 
+  //});
   
   const DashboardStackNavigator = createStackNavigator ({
     DashboardTabNavigator : DashboardTabNavigator
@@ -104,10 +133,17 @@ const DashboardTabNavigator = createBottomTabNavigator({
 
     SignUp: {
       screen:SignUpScreen,
+
     },  
   },
 
-  {initialRouteName: 'SignIn'});
+  {
+    initialRouteName: 'SignIn',
+    defaultNavigationOptions : {
+      header: null,
+    }
+  }
+  );
 
   
   
@@ -125,8 +161,6 @@ export default createSwitchNavigator(
       initialRouteName: 'AuthLoading',
     }
   );
-
-
 
   const styles = StyleSheet.create({
     item: {
