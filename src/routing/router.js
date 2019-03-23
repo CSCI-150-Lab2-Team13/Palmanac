@@ -19,6 +19,7 @@ import Profile from '../bottomScreens/Profile'
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
 import { logoutUser } from '../firebase/FirebaseAPI'
+import { Header } from 'native-base';
 
 
 
@@ -40,16 +41,14 @@ const DashboardTabNavigator = createBottomTabNavigator({
     Feed,
     Profile,
     Messages,
-  }, 
-  {
-    navigationOptions:({navigation})=>{
-      const {routeName} = navigation.state.routes[navigation.state.index]
-      return {
-        headerTitle: routeName
-      };
+  },
+   {
+   navigationOptions:({navigation})=>{
+     Header:null
+      
     }
   });
-  
+
   const DashboardStackNavigator = createStackNavigator ({
     DashboardTabNavigator : DashboardTabNavigator
   
