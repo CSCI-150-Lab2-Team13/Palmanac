@@ -2,13 +2,13 @@
 //https://github.com/facebook/react-native/issues/21242
 
 
-
 const blacklist = require('metro-config/src/defaults/blacklist');
 
+// blacklist is a function that takes an array of regexes and combines
+// them with the default blacklist to return a single regex.
+
 module.exports = {
-    resolver: {
-        blacklistRE: blacklist([
-            /node_modules\\.*\\node_modules\\react-native\\.*/,
-        ])
-    },
+  resolver: {
+    blacklistRE: blacklist([/dist\/.*/])
+  }
 };

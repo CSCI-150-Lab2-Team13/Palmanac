@@ -95,7 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         multiDexEnabled true
@@ -162,7 +162,7 @@ dependencies {
     //gesture
     
     implementation project(':react-native-gesture-handler')
-    compile project(':react-native-gesture-handler')
+    //compile project(':react-native-gesture-handler')
 
     //facebook
     implementation 'com.facebook.android:facebook-android-sdk:4.34.0'
@@ -172,7 +172,7 @@ dependencies {
     //default
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
-    implementation ("com.facebook.react:react-native:0.59.0-rc.3") {
+    implementation ("com.facebook.react:react-native:0.58.6") {
         force = true;
     }  // From node_modules
    
