@@ -18,6 +18,7 @@ import Profile from '../bottomScreens/Profile'
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
 import { logoutUser } from '../firebase/FirebaseAPI';
+import { Header } from 'native-base';
 
 
 
@@ -42,10 +43,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
   }, 
   {
     navigationOptions:({navigation})=>{
-      const {routeName} = navigation.state.routes[navigation.state.index]
-      return {
-        headerTitle: routeName
-      };
+      Header:null
     },
      tabBarOptions: {
      //activeTintColor: '#e91e63',
