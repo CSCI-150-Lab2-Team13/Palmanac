@@ -5,8 +5,12 @@ import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Text, Butto
 import { firestore,storage } from 'firebase';
 import firebase from '@firebase/app'
 
+import {getUser} from "../firebase/firestoreAPI"
+
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+
+let userID = '';
 
   class Profile extends Component {
 
@@ -17,51 +21,48 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
             
         )
     };
+    
 
-    static propTypes = {
-        currentUser: PropTypes.object,
-        match: PropTypes.object,
-    };
+  
 
     constructor(props) {
         super(props);
-
         this.state = {
-            ref: firestore().collection("users"),
-            first:"",
-            last:"",
-            image:"",
-            location:"",
-            userName:""
+          currentUser: null,
+          userName: '',
+          firstName: '',
+          lastName: '',
+          photoURL: '',
 
         };
-
+  
      this.handleUploadImage = this.handleUploadImage.bind(this);
     }
+    
 
 
-    getUser(userId) {
-        const { currentUser } = this.props;
-        const { ref } = this.state;
+     async componentDidMount() {
 
-        if (!currentUser ) return;
-        ref 
-            .doc(userId?userId: currentUser.id)
-            .get()
-            .then(info => {
-                const firstName = info.data().firstName;
-                const lastName = info.data().lastName;
-                const image = info.data().photoURL;
-                const location = info.data().location;
-                const userName = info.data().userName;
-                this.setState ({ first:firstName , last : lastName, image:image, location:location, userName:userName}) 
-                 });
-    }
+      const {currentUser} = await firebase.auth();
+      userID = currentUser.uid;
+      this.setState({currentUser});
+      const userId = this.state.currentUser.uid;  
+      const ref = firestore().collection('users').doc(userId);
 
-    componentDidMount() {
-        this.getUser(firebase.auth().currentUser.uid);
+      return ref.get().then(doc => {
+        if (doc.exists) {
+          let data = doc.data()
+          this.setState({firstName : data.firstName, lastName : data.lastName, userName:data.userName, photoURL:data.photoURL})
+        } 
+        else {
+            console.error("No such user!");
+        }
+    })
+        .catch(function (error) {
+            console.error("Error getting user:", error);
+        });
+}
 
-    }
 
     handleUploadImage(event) {
         event.preventDefault();
@@ -80,10 +81,10 @@ import EntypoIcon from 'react-native-vector-icons/Entypo';
 }
 render() {
 
-  const { first, last, image , location, userName} = this.state
+  const { first, last, image , userName} = this.state
   return (
     <Container>
-              <Header style={{ paddingLeft: 10, paddingLeft: 10 }}>
+              <Header  style={{ paddingLeft: 10, paddingLeft: 10 }}>
                     <Left>
                         <Icon name="md-person-add" />
                     </Left>
@@ -97,7 +98,7 @@ render() {
             <Left>
               <Thumbnail source={{uri: 'Image URL'}} />
               <Body>
-                <Text>NativeBase</Text>
+                <Text>NativeBase   {this.state.userName}</Text>
                 <Text note>GeekyAnts</Text>
               </Body>
             </Left>

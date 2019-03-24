@@ -92,7 +92,7 @@ export default class SignUp extends React.Component {
 
   signUp = e => {
     e.preventDefault();
-    const { email, password, userName } = this.state;
+    const { email, password, userName, firstName, lastName} = this.state;
      auth().createUserWithEmailAndPassword(email, password)
         .then(userCredential => {
             return userCredential.user
@@ -100,10 +100,11 @@ export default class SignUp extends React.Component {
         .then(user => {
             const newUser = {
                 id: user.uid,
+                firstName: firstName,
+                lastName: lastName,
                 userName: userName,
-                email: user.email,
+                email: email,
                 gender: "",
-                age: 0,
                 photoUrl: "",
                 isNewUser: true
             };
