@@ -6,8 +6,6 @@ import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
 import firebase from 'react-native-firebase'
 import generatePushID from '../util/generatePushID';
-//import { auth } from "firebase";
-//import 'firebase/firebase-firestore'
 
 
 import firestoreAPI from '../firebase/firestoreAPI'

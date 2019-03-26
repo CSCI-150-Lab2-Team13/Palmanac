@@ -71,7 +71,7 @@ export default class firestoreAPI {
         
         if (userId) {
             let doc_list = [];
-            return firestore().collection('users').doc(userId).collection('events').get()
+            return firebase.firestore().collection('users').doc(userId).collection('events').get()
             .then((querySnapshot) => {
                 doc_list = querySnapshot.docs.map(doc => doc.data());
                 return doc_list
