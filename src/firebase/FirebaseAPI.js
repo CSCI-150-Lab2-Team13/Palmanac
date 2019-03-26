@@ -1,12 +1,12 @@
 import fireConfig from './fireConfig'
 
-import { auth } from "firebase";
+import firebase from 'react-native-firebase'
 
 
 export const createUser = (email, password) => {
 	console.log('CreateUser has been called.')
 
-  auth().createUserWithEmailAndPassword(
+  firebase.auth().createUserWithEmailAndPassword(
 		email, password).catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code;
@@ -22,7 +22,7 @@ export const createUser = (email, password) => {
 }
 export const signInUser = (email , password) => {
 	console.log('signInUser has been called')
-	auth().signInWithEmailAndPassword(email, password)
+	firebase.auth().signInWithEmailAndPassword(email, password)
     .catch(function(error) {
   // Handle Errors here.
   var errorCode = error.code;
@@ -40,7 +40,7 @@ export const signInUser = (email , password) => {
 
 export const logoutUser = () => {
 
-	auth().signOut().then(function () {
+	firebase.auth().signOut().then(function () {
 		console.log('Sign-out successful.');
 	}).catch(function (error) {
 		console.log(error);

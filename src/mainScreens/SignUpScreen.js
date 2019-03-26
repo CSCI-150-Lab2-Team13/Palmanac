@@ -5,10 +5,7 @@ import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Butt
 
 import isEmail from "validator/lib/isEmail";
 
-import firebase from '@firebase/app';
-import { auth } from "firebase";
-
-import 'firebase/firebase-firestore'
+import firebase from 'react-native-firebase'
 
 
 import firestoreAPI from '../firebase/firestoreAPI'
@@ -92,18 +89,19 @@ export default class SignUp extends React.Component {
 
   signUp = e => {
     e.preventDefault();
-    const { email, password, userName } = this.state;
-     auth().createUserWithEmailAndPassword(email, password)
+    const { email, password, userName, firstName, lastName} = this.state;
+     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(userCredential => {
             return userCredential.user
         })
         .then(user => {
             const newUser = {
                 id: user.uid,
+                firstName: firstName,
+                lastName: lastName,
                 userName: userName,
-                email: user.email,
+                email: email,
                 gender: "",
-                age: 0,
                 photoUrl: "",
                 isNewUser: true
             };

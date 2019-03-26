@@ -6,12 +6,12 @@ import isEmail from "validator/lib/isEmail";
 
 
 
-import firebase from '@firebase/app';
+import firebase from 'react-native-firebase'
 import { signInUser} from '../firebase/FirebaseAPI';
 
 import firestoreAPI from '../firebase/firestoreAPI'
 
-import { auth } from "firebase";
+
 
 export default class LoginScreen extends React.Component {
 
@@ -65,7 +65,7 @@ login = e => {
     e.preventDefault();
     const { history } = this.props;
     const { email, password } = this.state;
-    auth()
+    firebase.auth()
         .signInWithEmailAndPassword(email, password)
         .then(userCredential => {
             

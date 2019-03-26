@@ -6,9 +6,7 @@ import {
     StyleSheet,
     View, Text
 } from 'react-native';
-import firebase from '@firebase/app'
-import '@firebase/auth'
-
+import firebase from 'react-native-firebase'
 
 export default class AuthLoadingScreen extends React.Component {
     constructor(props) {
