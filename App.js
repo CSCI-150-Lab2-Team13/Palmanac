@@ -10,9 +10,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {createAppContainer} from "react-navigation";
 import config from '../Palmanac/src/firebase/fireConfig'
-import firebase from '@firebase/app';
-import '@firebase/auth'
-import 'firebase/firebase-firestore'
+import firebase from 'react-native-firebase'
 
 
 //importing router 
@@ -49,7 +47,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     
-    firebase.initializeApp(config);
+   
 }
   render() {
     return (

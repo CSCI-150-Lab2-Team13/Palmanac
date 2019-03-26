@@ -4,7 +4,7 @@ import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
 import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 import generatePushID from '../util/generatePushID';
 //import { auth } from "firebase";
 //import 'firebase/firebase-firestore'

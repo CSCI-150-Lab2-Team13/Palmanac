@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {  View, StyleSheet, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base'
-import { firestore,storage } from 'firebase';
+import { firestore} from 'react-native-firebase'
 import firebase from '@firebase/app'
 
 import {getUser} from "../firebase/firestoreAPI"
@@ -98,12 +98,13 @@ render() {
             <Left>
               <Thumbnail source={{uri: 'Image URL'}} />
               <Body>
-                <Text>NativeBase   {this.state.userName}</Text>
+                <Text>{this.state.userName}</Text>
                 <Text note>GeekyAnts</Text>
               </Body>
             </Left>
           </CardItem>
           <CardItem cardBody>
+          
             <Image source={{uri: 'Image URL'}} style={{height: 200, width: null, flex: 1}}/>
           </CardItem>
           <CardItem>
