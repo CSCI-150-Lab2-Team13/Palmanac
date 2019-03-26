@@ -8,6 +8,7 @@ import {getUser} from "../firebase/firestoreAPI"
 
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
 let userID = '';
 
@@ -95,7 +96,6 @@ render() {
         <Card>
           <CardItem>
             <Left>
-              <Thumbnail source={{uri: 'Image URL'}} />
               <Body>
                 <Text>{this.state.userName}</Text>
               </Body>
@@ -105,6 +105,13 @@ render() {
           
             <Image source={{uri: 'Image URL'}} style={{height: 200, width: null, flex: 1}}/>
           </CardItem>
+          <CardItem>
+          <Left>
+          <FeatherIcon name="upload" style={{ fontSize: 32 }} />
+          </Left>
+
+          </CardItem>
+
 
         </Card>
       </Content>
