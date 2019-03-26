@@ -14,29 +14,44 @@ export default class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
-     // events: [],
+     events: [],
       selected: "",
     };
     this.onDayPress = this.onDayPress.bind(this);
+    
+    firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (event) =>
+    
+    this.setState(
+      {
+        events: this.state.events.concat(event)
+      }
+    )
+  )
+  .catch(error => {
+    console.error("Error getting document: ", error);
+  })
   }
 
   componentDidMount() {
+    
     this.setState({
-      events: firestoreAPI.getEvents(firebase.auth().currentUser.uid)
+      
     });
   }
 
   render() {
-    
 
+    
     return (
       <ScrollView style={styles.container}>
         <Button title= "Create Hard Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
-        {//<Text style={styles.text}>{JSON.stringify(this.state.events )}</Text>
-        }
+       {
+        <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
+       }
+       
         <Calendar
           onDayPress={this.onDayPress}
           style={styles.calendar}
@@ -59,7 +74,6 @@ export default class Feed extends Component {
 const styles = StyleSheet.create({
   calendar: {
     borderTopWidth: 1,
-    paddingTop: 5,
     borderBottomWidth: 1,
     borderColor: '#eee',
     height: 350
