@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 
 export default class Feed extends Component {
   constructor(props) {

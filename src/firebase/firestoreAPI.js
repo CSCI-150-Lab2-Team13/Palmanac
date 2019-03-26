@@ -1,4 +1,4 @@
-import {firestore} from "firebase";
+import firebase from 'react-native-firebase'
 export default class firestoreAPI {
     /**
      * Adding user to database,
@@ -6,7 +6,7 @@ export default class firestoreAPI {
      */
     static addUser(user) {
         if (user.id) {
-            return firestore().collection('users').doc(user.id).set(user)
+            return firebase.firestore().collection('users').doc(user.id).set(user)
                 .then(() => {
                     console.log("Document successfully written!");
                 })
@@ -24,7 +24,7 @@ export default class firestoreAPI {
      * */
     static getUser(userId) {
         if (userId) {
-            const ref = firestore().collection('users').doc(userId);
+            const ref = firebase.firestore().collection('users').doc(userId);
 
             return ref.get().then(doc => {
                 if (doc.exists) {
@@ -41,7 +41,7 @@ export default class firestoreAPI {
 
     static addUser(user) {
         if (user.id) {
-            return firestore().collection('users').doc(user.id).set(user)
+            return firebase.firestore().collection('users').doc(user.id).set(user)
                 .then(() => {
                     console.log("Document successfully written!");
                 })
@@ -55,7 +55,7 @@ export default class firestoreAPI {
 
     static addEvent(userId, event) {
         if (userId) {
-            return firestore().collection('users').doc(userId).collection('events').add(event)
+            return firebase.firestore().collection('users').doc(userId).collection('events').add(event)
                 .then(() => {
                     console.log("Document successfully written!");
                 })
@@ -79,12 +79,6 @@ export default class firestoreAPI {
             .catch(error => {
                 console.error("Error getting document: ", error);
             })
-
-
-            
-            
-          
-            //doc_list
         }
         else{
             console.log("No user found!");

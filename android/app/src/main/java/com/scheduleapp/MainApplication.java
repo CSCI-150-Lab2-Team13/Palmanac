@@ -5,6 +5,7 @@ import android.app.Application;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import com.oblador.vectoricons.VectorIconsPackage;
 import io.invertase.firebase.RNFirebasePackage;
 
 
@@ -53,6 +54,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new VectorIconsPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
             new TwitterSigninPackage(),

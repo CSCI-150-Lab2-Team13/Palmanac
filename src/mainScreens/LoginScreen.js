@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
+import { StyleSheet, Text, View, AsyncStorage,Image,KeyboardAvoidingView } from 'react-native';
+import { Container, Header, Content, Left, Body, Right, Title, Form, Item, Input, Icon, Label, Button, StyleProvider, getTheme } from 'native-base';
 import isEmail from "validator/lib/isEmail";
 
 
 
-import firebase from '@firebase/app';
+import firebase from 'react-native-firebase'
 import { signInUser} from '../firebase/FirebaseAPI';
 
 import firestoreAPI from '../firebase/firestoreAPI'
 
-import { auth } from "firebase";
+
 
 export default class LoginScreen extends React.Component {
 
@@ -65,7 +65,7 @@ login = e => {
     e.preventDefault();
     const { history } = this.props;
     const { email, password } = this.state;
-    auth()
+    firebase.auth()
         .signInWithEmailAndPassword(email, password)
         .then(userCredential => {
             
@@ -86,47 +86,57 @@ login = e => {
 
 
   render() {
-
-
-
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Body>
-            <Title>Log in screen</Title>
-          </Body>
-        </Header>
-        <Content>
+      <Container style={{backgroundColor: "#002366", flex: 1}}>
+      <Header transparent >
+          <Title style = {styles.textColor}>PALMANAC</Title>
+      </Header>
+      <Content padder>
           <Form>
-          <Item floatingLabel >
-              <Label>Email</Label>
-              <Input  onChangeText={(text)  => this.setState({ email: text })} 
+          <Item floatingLabel>
+              <Label style = {{color:'#c7ecee', marginTop: -13, paddingHorizontal: 5}}>Email</Label>
+              <Input 
+              keyboardType = "email-address" 
+              autoCorrect = {false} 
+              autoCapitalize = "none" 
+              //returnKeyType = "Next" 
+              style = {styles.input}  
+              onChangeText={(text)  => this.setState({ email: text })} 
                       value = {this.state.email}
                       onChange = {this.handleChange} 
               />
             </Item>
-            <Item floatingLabel >
-              <Label>Password</Label>
-              <Input  onChangeText={(text)  => this.setState({ password: text })} 
+            <Item floatingLabel>
+              <Label style = {{color:'#c7ecee', marginTop: -13, paddingHorizontal: 5}}>Password</Label>
+              <Input 
+              secureTextEntry 
+              //returnKeyType = "GO" 
+              style = {styles.input} 
+              onChangeText={(text)  => this.setState({ password: text })} 
                       value = {this.state.password}
                       onChange = {this.handleChange} 
               />
             </Item>
-            <Button block style={styles.buttons} onPress={this.login}>
-              <Text>Log in</Text>
+
+            <Content padder>
+            </Content>
+            
+            <Button block style={styles.buttonContainer} onPress={this.login}>
+              <Icon active name="wifi" />
+              <Text style = {styles.buttonText}>Log in</Text>
             </Button>
-            <Button block style={styles.buttons} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
-              <Text>Register</Text>
+            <Button block style={styles.buttonContainer} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
+              <Text style = {styles.buttonText}>Register</Text>
             </Button>
 
-            <Button block style={styles.buttons} onPress={this.loginWithGoogle}>
-              <Text>Google</Text>
+            <Button block style={styles.buttonContainer} onPress={this.loginWithGoogle}>
+              <Text style = {styles.buttonText}>Google</Text>
             </Button>
-            <Button block style={styles.buttons} onPress={this.loginWithFb}>
-              <Text>Facebook</Text>
+            <Button block style={styles.buttonContainer} onPress={this.loginWithFb}>
+              <Text style = {styles.buttonText}>Facebook</Text>
             </Button>
-            <Button block style={styles.buttons} onPress={this.loginWithTwitter}>
-              <Text>Twitter </Text>
+            <Button block style={styles.buttonContainer} onPress={this.loginWithTwitter}>
+              <Text style = {styles.buttonText}>Twitter </Text>
             </Button>
           </Form>
         </Content>
@@ -137,7 +147,42 @@ login = e => {
 
 const styles = StyleSheet.create({
 
-  buttons: {
-    margin: 10
+  buttonContainer: {
+    //backgroundColor: '#9966cc',
+    borderRadius: 25,
+    //flexDirection: 'column',
+    overflow: 'hidden',
+    paddingVertical: 15,
+    marginBottom: 10
+    //height: 60
+  },
+  buttonText: {
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontWeight: '700'
+  },
+
+  textColor: {
+    color: '#32CD32',
+    fontFamily: "Octicons",
+    fontSize: 15,
+    fontWeight: 'bold'
+  },
+
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    //marginBottom: 36,
+    position: 'absolute'
+  },
+
+  input: {
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginBottom: 10,
+    color: '#FFF',
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    borderRadius: 5
   }
 });
