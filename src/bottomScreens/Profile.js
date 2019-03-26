@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import {  View, StyleSheet, Image } from 'react-native'
 import PropTypes from 'prop-types'
 import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base'
-import { firestore} from 'react-native-firebase'
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 
 import {getUser} from "../firebase/firestoreAPI"
 
@@ -36,7 +35,7 @@ let userID = '';
 
         };
   
-     this.handleUploadImage = this.handleUploadImage.bind(this);
+    // this.handleUploadImage = this.handleUploadImage.bind(this);
     }
     
 
@@ -47,7 +46,7 @@ let userID = '';
       userID = currentUser.uid;
       this.setState({currentUser});
       const userId = this.state.currentUser.uid;  
-      const ref = firestore().collection('users').doc(userId);
+      const ref = firebase.firestore().collection('users').doc(userId);
 
       return ref.get().then(doc => {
         if (doc.exists) {
@@ -63,7 +62,7 @@ let userID = '';
         });
 }
 
-
+/*
     handleUploadImage(event) {
         event.preventDefault();
         const data = new FormData();
@@ -77,8 +76,8 @@ let userID = '';
                 {photoURL: snapshot.downloadURL}
             );
             });   
-        
-}
+    
+} */
 render() {
 
   const { first, last, image , userName} = this.state
