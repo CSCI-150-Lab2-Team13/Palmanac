@@ -6,18 +6,26 @@ import {
   Button,
   View,
 } from 'react-native';
-import {Calendar} from 'react-native-calendars';
+import {Calendar, Agenda} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
 import firebase from '@firebase/app'
+import moment from "moment"
+import _ from 'lodash';
 
 export default class Feed extends Component {
   constructor(props) {
     super(props);
     this.state = {
      events: [],
-      selected: "",
+     selected: {},
     };
     this.onDayPress = this.onDayPress.bind(this);
+  
+
+
+  }
+
+  componentDidMount() {
     
     firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (event) =>
     
@@ -26,17 +34,38 @@ export default class Feed extends Component {
         events: this.state.events.concat(event)
       }
     )
-  )
-  .catch(error => {
-    console.error("Error getting document: ", error);
-  })
-  }
-
-  componentDidMount() {
+)
+.finally( () => {
+  if(this.state.events){
+      var selected = {}
+      for(let i = 0, l = this.state.events.length; i < l; i++) {
+        var dateVal = new Date(this.state.events[i]["startTime"]["seconds"] * 1000);
+        var eventStr = moment(dateVal).format("YYYY-MM-DD")
+        selected[eventStr] = 
+          {
+              //selected: true, 
+              //disableTouchEvent: true, 
+              marked: true,
+              //selectedColor: 'blue',
+              // text: {
+              //   color: 'black',
+              //   fontWeight: 'bold'
+              // }
     
-    this.setState({
-      
-    });
+          }
+        
+        this.setState(
+          {
+            selected: selected
+          }
+        )
+      }
+    }
+  }
+)
+.catch(error => {
+  console.error("Error parsing document: ", error);
+})
   }
 
   render() {
@@ -50,14 +79,18 @@ export default class Feed extends Component {
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
        {
         <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
+
        }
+       <Text style={styles.text}>{JSON.stringify(this.state.selected)}</Text>
        
         <Calendar
           onDayPress={this.onDayPress}
           style={styles.calendar}
           hideExtraDays
-          markedDates={{[this.state.selected]: {selected: true, disableTouchEvent: true, selectedDotColor: 'blue'}}}
+          markedDates={this.state.selected}
         />
+
+
         
       </ScrollView>
 
@@ -65,9 +98,36 @@ export default class Feed extends Component {
   }
 
   onDayPress(day) {
-    this.setState({
-      selected: day.dateString
-    });
+    // var selected = {...this.state.selected}
+
+    // if(selected[this.state.selectedDate]){
+
+    //     selected[this.state.selectedDate]['selected'] = false;
+    // }
+    // else{
+    //   selected[this.state.selectedDate] = { selected: false };
+    // }
+
+    // if(selected[day.dateString] ){
+    //     selected[day.dateString]['selected'] = true;
+    // }
+    // else{
+    //   selected[day.dateString] = { selected: true };
+    // }
+
+
+
+    // this.setState({
+    //   selected: selected,
+    //   selectedDate: day.dateString
+    // });
+    
+    // this.forceUpdate()
+
+  //   
+  //   this.setState({
+  //     selected: day.dateString
+  //   });
   }
 }
 
