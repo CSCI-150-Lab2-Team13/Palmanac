@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-
 import { StyleSheet, Text, View, AsyncStorage,Image,KeyboardAvoidingView } from 'react-native';
-import { Container, Header, Content, Left, Body, Right, Title, Form, Item, Input, Icon, Label, Button, StyleProvider, getTheme } from 'native-base';
+import { Container, Header, Content, Left, Body, Right, Title, Form, Item, Input, Label, Button, StyleProvider, getTheme } from 'native-base';
 import isEmail from "validator/lib/isEmail";
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 
@@ -87,12 +88,17 @@ login = e => {
 
   render() {
     return (
-      <Container style={{backgroundColor: "#002366", flex: 1}}>
+      <Container style={{backgroundColor: "#140A25", flex: 1}}>
       <Header transparent >
           <Title style = {styles.textColor}>PALMANAC</Title>
       </Header>
       <Content padder>
           <Form>
+          <View style={{
+        marginTop: 115,
+        alignItems: 'stretch'
+        }}>
+
           <Item floatingLabel>
               <Label style = {{color:'#c7ecee', marginTop: -13, paddingHorizontal: 5}}>Email</Label>
               <Input 
@@ -117,29 +123,51 @@ login = e => {
                       onChange = {this.handleChange} 
               />
             </Item>
+          </View>
 
-            <Content padder>
-            </Content>
-            
-            <Button block style={styles.buttonContainer} onPress={this.login}>
-              <Icon active name="wifi" />
+
+
+
+            <Button iconLeft block style = {styles.buttonLogin} onPress={this.login}>
               <Text style = {styles.buttonText}>Log in</Text>
-            </Button>
-            <Button block style={styles.buttonContainer} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
-              <Text style = {styles.buttonText}>Register</Text>
+              <Icon name="sign-in" size={30} color="white" />
             </Button>
 
-            <Button block style={styles.buttonContainer} onPress={this.loginWithGoogle}>
-              <Text style = {styles.buttonText}>Google</Text>
+            <Button iconLeft block style={styles.buttonRegister} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
+              <Text style = {styles.buttonText}>Register</Text>
+              <Icon name="angle-double-right" size={30} color="white"  /> 
+              
             </Button>
-            <Button block style={styles.buttonContainer} onPress={this.loginWithFb}>
-              <Text style = {styles.buttonText}>Facebook</Text>
+
+
+            
+        <Title style = {{marginBottom: 5, marginTop: 5, fontSize: 15, fontFamily: 'sans-serif', color: "#6CF0E5"}}>- Sign In Options -</Title>
+
+            <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        justifyContent: "space-evenly",
+        alignItems: 'stretch',
+        alignItems: "center"
+        }}>
+
+            <Button block style={styles.buttonGoogle} onPress={this.loginWithGoogle}>
+            <Icon name="google" size={30} color="white" />
             </Button>
-            <Button block style={styles.buttonContainer} onPress={this.loginWithTwitter}>
-              <Text style = {styles.buttonText}>Twitter </Text>
+
+            <Button block style={styles.buttonFacebook} onPress={this.loginWithFb}>
+            <Icon name="facebook" size={30} color="white" />
             </Button>
+            
+            <Button block style={styles.buttonTwitter} onPress={this.loginWithTwitter}>
+            <Icon name="twitter" size={30} color="white" />
+            </Button>
+
+          </View>
           </Form>
         </Content>
+        
       </Container>
     );
   }
@@ -147,21 +175,80 @@ login = e => {
 
 const styles = StyleSheet.create({
 
+  buttonLogin: {
+    //alignItems: "stretch",
+    backgroundColor: '#31447D',
+    borderRadius: 40,
+    flexDirection: "column",
+    height: 75,
+    marginTop: 30,
+    alignItems : "center",
+    //justifyContent: "center"
+    //flex: 1, 
+    //backgroundColor: 'yellow'
+  },
+  buttonRegister: {
+    borderRadius: 40,
+    backgroundColor: '#2B3763',
+    flexDirection: "column",
+    height: 75,
+    marginTop: 5,
+    alignItems: "center"
+  },
+
+
+  buttonGoogle: {
+    backgroundColor: '#260A67',
+    borderRadius: 360,
+    flexDirection: "row",
+    height: 70,
+    width: 100,
+    marginTop: 4
+   // alignItems: "stretch"
+  },
+
+  buttonFacebook: {
+    backgroundColor: '#260A67',
+    borderRadius: 360,
+    flexDirection: "row",
+    height: 70,
+    width: 100,
+    marginTop: 4,
+    //alignItems: "baseline"
+  },
+
+  buttonTwitter: {
+    backgroundColor: '#260A67',
+    borderRadius: 360,
+    flexDirection: "row",
+    height: 70,
+    width: 100,
+    marginTop: 4,
+    //alignItems: "stretch"
+  },
+
   buttonContainer: {
     //backgroundColor: '#9966cc',
-    borderRadius: 25,
+    //borderRadius: 25,
     //flexDirection: 'column',
     overflow: 'hidden',
     paddingVertical: 15,
-    marginBottom: 10
-    //height: 60
+    marginBottom: 12,
+    flexDirection: "column",
+    alignItems: "stretch",
+    height: 70
   },
   buttonText: {
     textAlign: 'center',
     color: '#FFFFFF',
     fontWeight: '700'
   },
-
+  /*
+  buttonAlignment: {
+    flexDirection: 'column',
+    
+  },
+*/
   textColor: {
     color: '#32CD32',
     fontFamily: "Octicons",
@@ -181,7 +268,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.2)',
     marginBottom: 10,
     color: '#FFF',
-    paddingHorizontal: 10,
+    //paddingHorizontal: 30,
     alignItems: 'center',
     borderRadius: 5
   }
