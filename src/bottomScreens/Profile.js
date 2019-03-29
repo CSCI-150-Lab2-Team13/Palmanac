@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import {  View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import PropTypes from 'prop-types'
-import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base'
+import {  View, StyleSheet, Image, TouchableOpacity, Text, Icon } from 'react-native'
+import { Right } from 'react-native-base'
+
+import ImagePicker from 'react-native-image-picker'
 import firebase from 'react-native-firebase'
 
-import {getUser} from "../firebase/firestoreAPI"
 
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -33,15 +33,15 @@ export default class Profile extends Component {
           firstName: '',
           lastName: '',
           photoURL: '',
+          errorMessage: null,
+          isLoading: false,
 
         };
-  
-    // this.handleUploadImage = this.handleUploadImage.bind(this);
     }
     
 
 
-     async componentDidMount() {
+async componentDidMount() {
 
       const {currentUser} = await firebase.auth();
       userID = currentUser.uid;
@@ -63,22 +63,46 @@ export default class Profile extends Component {
         });
 }
 
-/*
-    handleUploadImage(event) {
-        event.preventDefault();
-        const data = new FormData();
-        data.append('file', event.target.files[0]);
-        data.append('filename', event.target.files[0]);
-        const filename = event.target.files[0].name;
-        storage().ref('/images/').child(filename).put(event.target.files[0]).then((snapshot) =>{
-       
-            this.setState({ image: snapshot.downloadURL});
-            this.state.ref.doc(firebase.auth().currentUser.uid).update(
-                {photoURL: snapshot.downloadURL}
-            );
-            });   
-    
-} */
+
+_renderImage = () => {
+  const uri = this.state.photoURL
+  if (this.state.isLoading === true) {
+      return (
+          <ActivityIndicator
+              size='large'
+              style={styles.avatar_image}
+          />
+      )
+  } else if (this.state.photoURL == null || this.state.photoURL == undefined) {
+      return (
+          <TouchableOpacity
+              onPress={() => this._openImagePicker()}
+          >
+              <Image
+                  //style={styles.avatar_image}
+                  //source={this.state.defaultPicture}
+              />
+          </TouchableOpacity>
+
+      )
+  } else {
+      return (
+          <TouchableOpacity
+              onPress={() => this._openImagePicker()}
+          >
+              <ImageCacheProvider
+                  ImageCacheManagerOptions={{ ttl: 100 }}>
+                  <CachedImage
+                      //style={styles.avatar_image}
+                      source={{ uri: uri }}
+                  />
+              </ImageCacheProvider>
+          </TouchableOpacity>
+
+      )
+  }
+}
+
 render() {
   return (
     <View style={styles.container}>
@@ -86,6 +110,7 @@ render() {
         <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
         <View style={styles.body}>
           <View style={styles.bodyContent}>
+            <Right> <EntypoIcon name="Edit" /></Right>
             <Text style={styles.name}> {this.state.userName}</Text>
             <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
           </View>
