@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
-import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
+import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button, FooterTab, Footer } from 'native-base';
 
 import isEmail from "validator/lib/isEmail";
 
@@ -176,9 +176,18 @@ export default class SignUp extends React.Component {
                       onChange = {this.handleChange} 
               />
             </Item>
-            <Button block style={styles.buttons} onPress = {this.signUp}>
-              <Text>Register</Text>
+
+          <View style = {styles.bottom}>
+          <Footer>
+          <FooterTab>
+          <Button block style={styles.buttons} onPress = {this.signUp}>
+          <Text style = {{color: 'white'}}>Register</Text>
             </Button>
+          </FooterTab>
+          </Footer>
+          </View>
+
+
           </Form>
         </Content>
       </Container>
@@ -188,7 +197,20 @@ export default class SignUp extends React.Component {
 
 const styles = StyleSheet.create({
 
-  buttons: {
-    margin: 10
+  container: {
+    backgroundColor: "#140A25",
+    flex: 1
+  },
+
+  bottomButton: {
+    position: 'absolute',
+    bottom: 0
+    //margin: 10
+  },
+  bottom: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    marginTop: 20
+    //paddingBottom: 0
   }
 });

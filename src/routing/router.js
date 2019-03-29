@@ -136,7 +136,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
   },
 
   {
-    initialRouteName: 'SignIn',
+    initialRouteName: 'SignUp',
     defaultNavigationOptions : {
       header: null,
     }
