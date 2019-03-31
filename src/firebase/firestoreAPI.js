@@ -77,18 +77,6 @@ export default class firestoreAPI {
 
 
 }
-/*
-export const uploadImagetoFirestore = (uri, userName) => {
-
-    return new Promise((resolve, reject) => {
-        let imgUri = uri.uri;
-        const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
-        const sessionID = new Date().getTime
-        const imageName = 'Profile Picture'
-    })
-
-}
-*/
 // User Functions 
 
 
@@ -202,4 +190,96 @@ export const createFireStoreDoc = async (username) => {
 export const fetchDataforLogin = async () => {
     const {userUID, userEmail, userName} = await getUserData();
     return ({userEmail, userName})
+}
+
+
+//-------------------
+// Functions for uploading an image
+//--------------------
+//:-)
+
+//upload image to firebase's firestore
+export const uploadImagetoFirestore (uri, userName) =>{
+    return new Promise ((resolve, reject) =>{
+        let imgUri = uri.uri;
+        const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
+        const sessinID = new Date().getTime()
+        const imageName = 'Profile Pictures/ ${userName}_${sessionID}.jpg'
+         // grab photo name from CloudFirebase user profile
+         firebase
+            .firestore()
+            .collection('users')
+            .doc(userName)
+            .get()
+            .then((doc) => {
+                previousPhotoName = doc.get('photoName')
+                // if there is a photo name already set
+                // delete the previous photo in firebase storage
+                if (previousPhotoName != null) 
+                {
+                    firebase
+                        .storage()
+                        .ref(previousPhotoName)
+                        .delete()
+                        .then()
+                        .catch(error => console.log('An error occurred while deleting the photo', error))
+                }
+            })
+        firebase
+            .storage()
+            .ref(imageName)
+            .putFile(uploadUri)
+            .then( (results) => {
+                const downloadURL = result.downloadURL
+                const toResolve = { downloadURL , imageName}
+                resolve (toResolve)
+            })
+            .catch(error => reject (error))
+    })
+}
+
+
+// set download link to firebase profile 
+
+export const setDownloadLinktoFirebase = (link) => 
+    new Promise((resolve,reject) => {
+        const user = firebase.auth().currentUser
+        if (user)
+        {
+            user.updateProfile({
+                photoURL: link
+            })
+                .then(resolve())
+                .catch((error) => {
+                    reject(error)
+                })
+        }
+        else
+        {
+            reject('No user is signed in')
+        }
+})
+
+// add profile picture download link to cloud firestore
+export const setDownloadLinktoFirestore = (downloadURL, username, imageName) =>
+    new Promise ((resolve,reject) => {
+        const ref = firebase.firestore()
+            .collection('users')
+            .doc(username)
+            .set({
+                photoURL:downloadURL,
+                photoName:imageName
+            }, { merge: true})
+            .then(resolve())
+            .catch((error)=> {
+                reject(error)
+            })
+})
+
+export const uploadImage = async () => {
+    const { userUID, userEmail, userName } = await getUserData();
+    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName)
+    const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
+    const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
+    return downloadURL
 }

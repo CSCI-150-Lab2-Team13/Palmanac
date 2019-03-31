@@ -17,7 +17,7 @@ export default class UserName extends React.Component {
             secureTextEntry: false
         }
     }
-}
+
 
 
 
@@ -77,4 +77,5 @@ render() {
             </View>
         </View>
     )
+ }
 }
