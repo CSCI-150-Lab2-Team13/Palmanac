@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {  View, StyleSheet, Image, TouchableOpacity, Text, Icon } from 'react-native'
-import { Right } from 'react-native-base'
+import {  View, StyleSheet, Image, TouchableOpacity,Text } from 'react-native'
+import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
 
 import ImagePicker from 'react-native-image-picker'
 import firebase from 'react-native-firebase'
@@ -64,44 +64,7 @@ async componentDidMount() {
 }
 
 
-_renderImage = () => {
-  const uri = this.state.photoURL
-  if (this.state.isLoading === true) {
-      return (
-          <ActivityIndicator
-              size='large'
-              style={styles.avatar_image}
-          />
-      )
-  } else if (this.state.photoURL == null || this.state.photoURL == undefined) {
-      return (
-          <TouchableOpacity
-              onPress={() => this._openImagePicker()}
-          >
-              <Image
-                  //style={styles.avatar_image}
-                  //source={this.state.defaultPicture}
-              />
-          </TouchableOpacity>
 
-      )
-  } else {
-      return (
-          <TouchableOpacity
-              onPress={() => this._openImagePicker()}
-          >
-              <ImageCacheProvider
-                  ImageCacheManagerOptions={{ ttl: 100 }}>
-                  <CachedImage
-                      //style={styles.avatar_image}
-                      source={{ uri: uri }}
-                  />
-              </ImageCacheProvider>
-          </TouchableOpacity>
-
-      )
-  }
-}
 
 render() {
   return (
@@ -110,15 +73,16 @@ render() {
         <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <Right> <EntypoIcon name="Edit" /></Right>
-            <Text style={styles.name}> {this.state.userName}</Text>
-            <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
+          <Text style={styles.name}> {this.state.userName}</Text>
+          <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
           </View>
       </View>
     </View>
   );
 }
+
 }
+
 
 const styles = StyleSheet.create({
 header:{

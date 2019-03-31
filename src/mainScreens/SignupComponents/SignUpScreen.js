@@ -8,21 +8,18 @@ import isEmail from "validator/lib/isEmail";
 import firebase from 'react-native-firebase'
 
 
-import firestoreAPI from '../firebase/firestoreAPI'
+import {signUpToFirebase} from '../../firebase/firestoreAPI'
 
 
 
 
 let password;
 
-const usernameRegex = /^[a-zA-Z0-9]+$/;
 export default class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -47,12 +44,6 @@ export default class SignUp extends React.Component {
     const { name, value } = e.target;
 
     switch (name) {
-        case "userName":
-            formErrors.userName =
-                usernameRegex.test(value) && value.length >= 3
-                    ? ""
-                    : "Minimum 3 characters required. Allowed only letters and numbers";
-            break;
         case "email":
             formErrors.email = isEmail(value)
                 ? ""
@@ -80,7 +71,6 @@ export default class SignUp extends React.Component {
           formErrors.email ||
           !this.state.email ||
           (formErrors.password || !this.state.password) ||
-          (formErrors.userName || !this.state.userName) ||
           (formErrors.confPassword || !this.state.confPassword)
   });
 };
@@ -89,24 +79,13 @@ export default class SignUp extends React.Component {
 
   signUp = e => {
     e.preventDefault();
-    const { email, password, userName, firstName, lastName} = this.state;
-     firebase.auth().createUserWithEmailAndPassword(email, password)
+    const { email, password} = this.state;
+    signUpToFirebase (email, password)
         .then(userCredential => {
             return userCredential.user
         })
-        .then(user => {
-            const newUser = {
-                id: user.uid,
-                firstName: firstName,
-                lastName: lastName,
-                userName: userName,
-                email: email,
-                gender: "",
-                photoUrl: "",
-                isNewUser: true
-            };
-            //adding user to DB
-            firestoreAPI.addUser(newUser);
+        .then(async () => {
+          this.props.navigation.navigate('GetUserInfo')
         })
         .catch(error => {
             this.setState(prevState => ({
@@ -134,27 +113,6 @@ export default class SignUp extends React.Component {
         </Header>
         <Content>
           <Form>
-         <Item floatingLabel>
-              <Label>First Name</Label>
-              <Input  onChangeText={(text)  => this.setState({ firstName: text })} 
-                      value = {this.state.firstName}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
-            <Item floatingLabel >
-              <Label>Last Name</Label>
-              <Input  onChangeText={(text)  => this.setState({ lastName: text })} 
-                      value = {this.state.lastName}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
-            <Item floatingLabel >
-              <Label>User Name</Label>
-              <Input  onChangeText={(text)  => this.setState({ userName: text })} 
-                      value = {this.state.userName}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
             <Item floatingLabel >
               <Label>Email</Label>
               <Input  onChangeText={(text)  => this.setState({ email: text })} 

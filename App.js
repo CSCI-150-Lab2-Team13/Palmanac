@@ -18,9 +18,6 @@ import firebase from 'react-native-firebase'
 
 import createSwitchNavigator from './src/routing/router';
 
-// import the different screens for different scenario's for StackNav
-import SignUpScreen from './src/mainScreens/SignUpScreen'
-import HomeScreen from './src/mainScreens/HomeScreen'
 
 
 

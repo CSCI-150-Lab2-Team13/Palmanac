@@ -4,8 +4,10 @@ import { createStackNavigator, createAppContainer, createBottomTabNavigator, cre
 
 import AuthLoadingScreen from './AuthLoading';
 import HomeScreen from '../mainScreens/HomeScreen';
-import SignUpScreen from '../mainScreens/SignUpScreen'
+import SignUpScreen from '../mainScreens/SignupComponents/SignUpScreen'
 import LoginScreen from '../mainScreens/LoginScreen';
+import getUserInfo from '../mainScreens/SignupComponents/getUserInfo/getUserInfo'
+
 import HardEventFormScreen from '../forms/addHardEvent'
 
 
@@ -123,26 +125,6 @@ const DashboardTabNavigator = createBottomTabNavigator({
   
   });
 
-
-  const AuthStack = createStackNavigator ({
-    SignIn: {
-      screen: LoginScreen,
-    },
-
-    SignUp: {
-      screen:SignUpScreen,
-
-    },  
-  },
-
-  {
-    initialRouteName: 'SignIn',
-    defaultNavigationOptions : {
-      header: null,
-    }
-  }
-  );
-
   
   
 
@@ -153,7 +135,9 @@ export default createSwitchNavigator(
     {
       AuthLoading: AuthLoadingScreen,
       App: AppStack,
-      Auth: AuthStack,
+      Signup:SignUpScreen, 
+      Login:LoginScreen, 
+      GetUserInfo: getUserInfo
     },
     {
       initialRouteName: 'AuthLoading',
