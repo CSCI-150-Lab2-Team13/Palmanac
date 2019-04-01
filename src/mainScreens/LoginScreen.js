@@ -124,8 +124,8 @@ login = e => {
             <Button block style={styles.buttonContainer} onPress={this.login}>
               <Icon active name="wifi" />
               <Text style = {styles.buttonText}>Log in</Text>
-            </Button>
-            <Button block style={styles.buttonContainer} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
+            </Button> 
+            <Button block style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Signup')}>
               <Text style = {styles.buttonText}>Register</Text>
             </Button>
 

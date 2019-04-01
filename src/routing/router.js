@@ -119,12 +119,6 @@ const DashboardTabNavigator = createBottomTabNavigator({
     },
     {
       contentComponent: DrawerWithLogoutButton,
-      drawerOpenRoute: "DrawerOpen",
-      drawerCloseRoute: "DrawerClose",
-      drawerToggleRoute: "DrawerToggle",
-      drawerWidth: 250,
-      drawerLockMode: 'locked-closed'
-
   
     }
   );

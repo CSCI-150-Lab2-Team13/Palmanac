@@ -101,7 +101,7 @@ goToNextScreen = () => {
 render() {
     return (
         <View >
-            <Text>{strings('sign_up_screen.get_display_name.profil_photo.profil_photo')}</Text>
+            <Text>ProfilePicture</Text>
             <View>
                 <Image
                     source={this.state.avatar}

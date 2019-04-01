@@ -7,6 +7,11 @@ import ProfilePicture from '../getUserInfo/profilePicture'
 
 
 export default class GetUserInfo extends React.Component {
+   
+    
+    isMounted = false;
+    
+    
     constructor(props){
     super(props)
         this.state = {
@@ -14,6 +19,26 @@ export default class GetUserInfo extends React.Component {
             display: 'UserName'
         }
     }
+
+componentDidMount() {
+    this.isMounted = true;
+}
+componentWillUnmount() {
+    this.isMounted = false;
+}
+
+displayTopComponent () {
+    return (
+        <SafeAreaView>
+            <View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Text> {this.state.display} </Text>
+            </View>
+    
+            </View>
+        </SafeAreaView>
+    )
+}
 
 
 navigateToProfilePicture = () => {
@@ -52,10 +77,8 @@ displayUserNameAndProfilePicture = () =>  {
 
 render() {
     return (
-        <View
-            style={{ flex: 1, backgroundColor: '#63869f' }}
-        >
-            {this._displayTopComponent()}
+        <View style={{ flex: 1, backgroundColor: '#63869f' }}>
+            { this.displayTopComponent() }
                 <ScrollView
                     keyboardShouldPersistTaps='handled'
                     style={{ flex: 1, backgroundColor: 'white'}}
@@ -65,7 +88,7 @@ render() {
                         keyboardVerticalOffset={-64}
                         style={{ flex: 1}}
                     >
-                        {this.AccountNameAndProfilPhotoDisplay()}
+                       {this.displayUserNameAndProfilePicture()}  
                     </KeyboardAvoidingView>
                 </ScrollView>
         </View>
