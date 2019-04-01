@@ -16,7 +16,6 @@ export default class ProfilePicture extends React.Component {
             button: 'save'
         }
     }
-}
 
 openImageLibrary = () => {
     ImagePicker.launchImageLibrary(options, (response) => {
@@ -144,4 +143,5 @@ render() {
             </TouchableOpacity>
         </View>
     )
+ }
 }

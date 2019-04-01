@@ -199,7 +199,7 @@ export const fetchDataforLogin = async () => {
 //:-)
 
 //upload image to firebase's firestore
-export const uploadImagetoFirestore (uri, userName) =>{
+export const uploadImagetoFirestore = (uri, userName) => {
     return new Promise ((resolve, reject) =>{
         let imgUri = uri.uri;
         const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;

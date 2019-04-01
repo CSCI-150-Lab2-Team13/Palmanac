@@ -8,6 +8,7 @@ import ProfilePicture from '../getUserInfo/profilePicture'
 
 export default class GetUserInfo extends React.Component {
     constructor(props){
+    super(props)
         this.state = {
             errorMessage: null, 
             display: 'UserName'
