@@ -350,6 +350,7 @@ export default class HardEventFormView extends Component {
       var min_range_list;
       var hr_range_list;
 
+      // Get day of the year
       var now = formValues.startTime
       var start = new Date(now.getFullYear(), 0, 0);
       var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
