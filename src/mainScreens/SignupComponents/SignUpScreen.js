@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-
-import { StyleSheet, Text, View, AsyncStorage } from 'react-native';
+import { StyleSheet, Text,TextInput, View, AsyncStorage, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
 
-import isEmail from "validator/lib/isEmail";
 
-import firebase from 'react-native-firebase'
+import styles from './styles'
+import isEmail from "validator/lib/isEmail";
+import LinearGradient from 'react-native-linear-gradient'
 
 
 import {signUpToFirebase} from '../../firebase/firestoreAPI'
+
 
 
 
@@ -28,7 +29,7 @@ export default class SignUp extends React.Component {
         userName: "",
         email: "",
         password: "",
-        confPassword: "",
+        confirmPassword: "",
         loginError: ""
       }
 
@@ -55,8 +56,8 @@ export default class SignUp extends React.Component {
             password = value;
 
             break;
-        case "confPassword":
-            formErrors.confPassword =
+        case "confirmPassword":
+            formErrors.confirmPassword =
                 password !== value
                     ? "Your password and confirmation password do not match"
                     : "";
@@ -71,7 +72,7 @@ export default class SignUp extends React.Component {
           formErrors.email ||
           !this.state.email ||
           (formErrors.password || !this.state.password) ||
-          (formErrors.confPassword || !this.state.confPassword)
+          (formErrors.confirmPassword || !this.state.confirmPassword)
   });
 };
 
@@ -105,48 +106,64 @@ export default class SignUp extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Container style={styles.container}>
-        <Header>
-          <Body>
-            <Title>Sign Up Screen</Title>
-          </Body>
-        </Header>
-        <Content>
-          <Form>
-            <Item floatingLabel >
-              <Label>Email</Label>
-              <Input  onChangeText={(text)  => this.setState({ email: text })} 
-                      value = {this.state.email}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
-            <Item floatingLabel >
-              <Label>Password</Label>
-              <Input  onChangeText={(text)  => this.setState({ password: text })} 
-                      value = {this.state.password}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
-            <Item floatingLabel >
-              <Label>Confirm Password</Label>
-              <Input  onChangeText={(text)  => this.setState({ confirmPassword: text })} 
-                      value = {this.state.confirmPassword}
-                      onChange = {this.handleChange} 
-              />
-            </Item>
-            <Button block style={styles.buttons} onPress = {this.signUp}>
-              <Text>Register</Text>
-            </Button>
-          </Form>
-        </Content>
-      </Container>
+      <KeyboardAvoidingView 
+        behavior = "padding" enabled
+        style={{ flex: 1 }}>
+
+      <LinearGradient
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        style={styles.container}
+        colors={['#88b097', '#07416b']}>
+
+              
+      <Text style={styles.title}>Sign Up </Text>
+      {this.state.errorMessage &&
+                        <Text style={{ color: 'red' }}>
+                            {this.state.errorMessage}
+                        </Text>}
+
+      <TextInput 
+        placeholder = 'Email'
+        autoCapitalize = 'none'
+        style = {styles.textInput}
+        onChangeText={(text)  => this.setState({ email: text })} 
+        value = {this.state.email}
+        onChange = {this.handleChange}
+        />
+
+        <TextInput
+        secureTextEntry
+        placeholder = 'Password'
+        autoCapitalize = 'none'
+        style = {styles.textInput}
+        onChangeText={(text)  => this.setState({ password: text })} 
+        value = {this.state.password}
+        onChange = {this.handleChange}
+        />
+        
+        <TextInput
+        secureTextEntry
+        placeholder = 'Confirm Password'
+        autoCapitalize = 'none'
+        style = {styles.textInput}
+        onChangeText={(text)  => this.setState({ confirmPassword: text })} 
+        value = {this.state.confirmPassword}
+        onChange = {this.handleChange}
+        />
+        <TouchableOpacity onPress={this.signUp}>
+        <View style={styles.SignUpButton}>
+        <Text style={styles.Text1}> Sign Up </Text>
+        </View>
+        </TouchableOpacity>
+
+
+
+        
+
+      
+       </LinearGradient>
+      </KeyboardAvoidingView>
     );
   }
 }
 
-const styles = StyleSheet.create({
-
-  buttons: {
-    margin: 10
-  }
-});

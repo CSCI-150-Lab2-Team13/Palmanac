@@ -120,7 +120,7 @@ render() {
                         name='ios-images'
                         size={64}
                     />
-                    <Text style={{ paddingLeft: 5 }}>{strings('sign_up_screen.get_display_name.profil_photo.library')}</Text>
+                    <Text style={{ paddingLeft: 5 }}>Open photo library</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={() => this._openCamera()}
@@ -129,7 +129,7 @@ render() {
                         name='ios-camera'
                         size={64}
                     />
-                    <Text style={{ paddingLeft: 5 }}>{strings('sign_up_screen.get_display_name.profil_photo.photo')}</Text>
+                    <Text style={{ paddingLeft: 5 }}>open camera</Text>
                 </TouchableOpacity>
             </View>
 

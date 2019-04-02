@@ -9,8 +9,6 @@ import ProfilePicture from '../getUserInfo/profilePicture'
 export default class GetUserInfo extends React.Component {
    
     
-    isMounted = false;
-    
     
     constructor(props){
     super(props)
@@ -19,13 +17,6 @@ export default class GetUserInfo extends React.Component {
             display: 'UserName'
         }
     }
-
-componentDidMount() {
-    this.isMounted = true;
-}
-componentWillUnmount() {
-    this.isMounted = false;
-}
 
 displayTopComponent () {
     return (
@@ -57,10 +48,12 @@ displayUserNameAndProfilePicture = () =>  {
     if (this.state.display === 'Username')
     {
         return (
+            <View>
             <UserName
                 navigateToLoginScreen={ this.navigateToLoginScreen }
                 navigateToProfilePicture = { this.navigateToProfilePicture }
             />
+            </View>
         )
     }
     else if (this.state.display === "ProfilePicture")
@@ -88,7 +81,7 @@ render() {
                         keyboardVerticalOffset={-64}
                         style={{ flex: 1}}
                     >
-                       {this.displayUserNameAndProfilePicture()}  
+                    <UserName> </UserName>
                     </KeyboardAvoidingView>
                 </ScrollView>
         </View>

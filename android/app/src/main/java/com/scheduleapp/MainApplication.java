@@ -3,6 +3,10 @@ package com.scheduleapp;
 import android.app.Application;
 
 
+// linear gradient 
+import com.BV.LinearGradient.LinearGradientPackage;
+
+
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -56,6 +60,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new LinearGradientPackage(),
             new RNFetchBlobPackage(),
             new ImagePickerPackage(),
             new VectorIconsPackage(),

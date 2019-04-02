@@ -142,6 +142,7 @@ dependencies {
     implementation project(':react-native-image-picker')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-firebase')
+    implementation project(':react-native-linear-gradient')
     //compile project(':react-native-google-places')
     implementation 'com.android.support:multidex:1.0.3'
     implementation(project(':react-native-maps')){
