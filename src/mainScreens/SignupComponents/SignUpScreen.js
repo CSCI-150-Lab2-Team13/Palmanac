@@ -86,7 +86,7 @@ export default class SignUp extends React.Component {
             return userCredential.user
         })
         .then(async () => {
-          this.props.navigation.navigate('GetUserInfo')
+          this.props.navigation.navigate('App')
         })
         .catch(error => {
             this.setState(prevState => ({
@@ -150,17 +150,11 @@ export default class SignUp extends React.Component {
         value = {this.state.confirmPassword}
         onChange = {this.handleChange}
         />
-        <TouchableOpacity onPress={this.signUp}>
+        <TouchableOpacity onPress={this.signUp }>
         <View style={styles.SignUpButton}>
         <Text style={styles.Text1}> Sign Up </Text>
         </View>
-        </TouchableOpacity>
-
-
-
-        
-
-      
+        </TouchableOpacity>      
        </LinearGradient>
       </KeyboardAvoidingView>
     );
