@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import {  View, StyleSheet, Image } from 'react-native'
-import PropTypes from 'prop-types'
-import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Text, Button, Left, Body, Right } from 'native-base'
+import {  View, StyleSheet, Image, TouchableOpacity,Text } from 'react-native'
+import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
+
+import ImagePicker from 'react-native-image-picker'
 import firebase from 'react-native-firebase'
 
-import {getUser} from "../firebase/firestoreAPI"
 
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
@@ -12,7 +12,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 let userID = '';
 
-  class Profile extends Component {
+export default class Profile extends Component {
 
     static navigationOptions = {
 
@@ -33,15 +33,15 @@ let userID = '';
           firstName: '',
           lastName: '',
           photoURL: '',
+          errorMessage: null,
+          isLoading: false,
 
         };
-  
-    // this.handleUploadImage = this.handleUploadImage.bind(this);
     }
     
 
 
-     async componentDidMount() {
+async componentDidMount() {
 
       const {currentUser} = await firebase.auth();
       userID = currentUser.uid;
@@ -63,71 +63,81 @@ let userID = '';
         });
 }
 
-/*
-    handleUploadImage(event) {
-        event.preventDefault();
-        const data = new FormData();
-        data.append('file', event.target.files[0]);
-        data.append('filename', event.target.files[0]);
-        const filename = event.target.files[0].name;
-        storage().ref('/images/').child(filename).put(event.target.files[0]).then((snapshot) =>{
-       
-            this.setState({ image: snapshot.downloadURL});
-            this.state.ref.doc(firebase.auth().currentUser.uid).update(
-                {photoURL: snapshot.downloadURL}
-            );
-            });   
-    
-} */
+
+
+
 render() {
-
-  const { first, last, image , userName} = this.state
   return (
-    <Container>
-              <Header  style={{ paddingLeft: 10, paddingLeft: 10 }}>
-                    <Left>
-                        <Icon name="md-person-add" />
-                    </Left>
-                    <Right>
-                        <EntypoIcon name="back-in-time" style={{ fontSize: 32 }} />
-                    </Right>
-                </Header>
-      <Content>
-        <Card>
-          <CardItem>
-            <Left>
-              <Body>
-                <Text>{this.state.userName}</Text>
-              </Body>
-            </Left>
-          </CardItem>
-          <CardItem cardBody>
-          
-            <Image source={{uri: 'Image URL'}} style={{height: 200, width: null, flex: 1}}/>
-          </CardItem>
-          <CardItem>
-          <Left>
-          <FeatherIcon name="upload" style={{ fontSize: 32 }} />
-          </Left>
-
-          </CardItem>
-
-
-        </Card>
-      </Content>
-    </Container>
+    <View style={styles.container}>
+        <View style={styles.header}></View>
+        <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+        <View style={styles.body}>
+          <View style={styles.bodyContent}>
+          <Text style={styles.name}> {this.state.userName}</Text>
+          <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
+          </View>
+      </View>
+    </View>
   );
 }
+
 }
 
-export default Profile;
 
 const styles = StyleSheet.create({
-container: {
+header:{
+  backgroundColor: "#000FFF",
+  height:200,
+},
+avatar: {
+  width: 130,
+  height: 130,
+  borderRadius: 63,
+  borderWidth: 4,
+  borderColor: "white",
+  marginBottom:10,
+  alignSelf:'center',
+  position: 'absolute',
+  marginTop:130
+},
+name:{
+  fontSize:22,
+  color:"#FFFFFF",
+  fontWeight:'600',
+},
+body:{
+  marginTop:40,
+},
+bodyContent: {
   flex: 1,
-  backgroundColor: 'gray',
   alignItems: 'center',
-  justifyContent: 'center'
-}
+  padding:30,
+},
+name:{
+  fontSize:28,
+  color: "#696969",
+  fontWeight: "600"
+},
+info:{
+  fontSize:16,
+  color: "#00BFFF",
+  marginTop:10
+},
+description:{
+  fontSize:16,
+  color: "#696969",
+  marginTop:10,
+  textAlign: 'center'
+},
+buttonContainer: {
+  marginTop:10,
+  height:45,
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  marginBottom:20,
+  width:250,
+  borderRadius:30,
+  backgroundColor: "#00BFFF",
+},
 });
-
