@@ -12,6 +12,7 @@ import firebase from '@firebase/app'
 import moment from "moment"
 import _ from 'lodash';
 
+
 export default class Feed extends Component {
   constructor(props) {
     super(props);
