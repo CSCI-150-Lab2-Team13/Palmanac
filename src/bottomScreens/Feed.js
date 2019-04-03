@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Calendar, Agenda} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 import moment from "moment"
 import _ from 'lodash';
 
@@ -90,6 +90,11 @@ export default class Feed extends Component {
         <Button title= "Create Hard Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
+        <Button
+              title = "go to user set up "
+              onPress={() => this.props.navigation.navigate('GetUserInfo')}>
+
+            </Button>
 
 {/*
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>

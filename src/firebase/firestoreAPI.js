@@ -152,10 +152,10 @@ export const getUserData = async () =>
     new Promise((resolve, reject) => {
         const user = firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                userUid = user.uid
+                userUID = user.uid
                 userEmail = user.email
                 userName = user.displayName
-                userInformations = { userUid, userEmail, userName }
+                userInformations = { userUID, userEmail, userName }
                 resolve(userInformations)
             } else {
                 reject('No user currently signed in')
@@ -182,8 +182,8 @@ new Promise((resolve, reject) => {
 
 export const createFireStoreDoc = async (username) => {
     const { userUID, userEmail, userName } = await getUserData();
-    const setDisplayName = await setDiplayNameToFirebaseAccount(username);
-    const createUser = await createFireStoreDoc(username, userUID, userEmail);
+    const setDisplayName = await setDisplayNameToFirebaseAccount(username);
+    const createUser = await createUserDocinFirestore(username, userUID, userEmail);
 }
 
 

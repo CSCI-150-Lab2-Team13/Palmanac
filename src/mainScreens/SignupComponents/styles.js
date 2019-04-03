@@ -53,7 +53,17 @@ const styles = StyleSheet.create({
         shadowColor: "grey",
         shadowOpacity: 0.5,
         shadowRadius: 10,
-    }
+    },
+    profile_item: {
+        paddingBottom: 15,
+        marginLeft: 15,
+        marginRight: 15,
+        
+    },
+    button_text: {
+        color: 'black',
+        marginLeft: 10,
+    },
 })
 
 export default styles 

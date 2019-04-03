@@ -50,8 +50,6 @@ displayUserNameAndProfilePicture = () =>  {
         return (
             <View>
             <UserName
-                navigateToLoginScreen={ this.navigateToLoginScreen }
-                navigateToProfilePicture = { this.navigateToProfilePicture }
             />
             </View>
         )

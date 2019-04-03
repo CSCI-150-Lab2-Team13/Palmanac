@@ -128,7 +128,7 @@ login = e => {
 
 
 
-            <Button iconLeft block style = {styles.buttonLogin} onPress={this.Login}>
+            <Button iconLeft block style = {styles.buttonLogin} onPress={this.login}>
               <Text style = {styles.buttonText}>Log in</Text>
               <Icon name="sign-in" size={30} color="white" />
             </Button>
