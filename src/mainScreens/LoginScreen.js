@@ -128,12 +128,12 @@ login = e => {
 
 
 
-            <Button iconLeft block style = {styles.buttonLogin} onPress={this.login}>
+            <Button iconLeft block style = {styles.buttonLogin} onPress={this.Login}>
               <Text style = {styles.buttonText}>Log in</Text>
               <Icon name="sign-in" size={30} color="white" />
             </Button>
 
-            <Button iconLeft block style={styles.buttonRegister} onPress={() => this.props.navigation.navigate({ routeName: 'SignUp'})}>
+            <Button iconLeft block style={styles.buttonRegister} onPress={() => this.props.navigation.navigate('Signup')}>
               <Text style = {styles.buttonText}>Register</Text>
               <Icon name="angle-double-right" size={30} color="white"  /> 
               
