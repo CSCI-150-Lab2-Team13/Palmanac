@@ -5,7 +5,7 @@ import GenerateForm from 'react-native-form-builder';
 import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
 import firebase from '@firebase/app'
-import generatePushID from '../util/generatePushID';
+import { generatePushID } from '../util/generatePushID';
 
 //import { auth } from "firebase";
 //import 'firebase/firebase-firestore'
@@ -354,12 +354,15 @@ export default class HardEventFormView extends Component {
       var hr_range_list;
 
       // Get day of the year
-      var now = formValues.startTime
-      var start = new Date(now.getFullYear(), 0, 0);
-      var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
-      var oneDay = 1000 * 60 * 60 * 24;
-      var day = Math.floor(diff / oneDay);
-
+      if(formValues.startTime){
+        var now = formValues.startTime
+        var start = new Date(now.getFullYear(), 0, 0);
+        var diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+        var oneDay = 1000 * 60 * 60 * 24;
+        var day = Math.floor(diff / oneDay);
+      }
+      var id = generatePushID()
+      _.set(formValues,'id', id)
 
       if(freq.value != "Select"){
         if(freq.value == "Weekly" || freq.value == "Monthly"){
@@ -444,7 +447,7 @@ export default class HardEventFormView extends Component {
     
         
        _.set(formValues, 'rruleString', rule_text);
-       _.set(formValues,'id', generatePushID())
+ 
    
       }
       //_.set(formValues, 'user_id', this.state.user_id);
