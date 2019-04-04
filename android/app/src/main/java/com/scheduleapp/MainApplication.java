@@ -12,11 +12,11 @@ import com.facebook.react.ReactApplication;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import io.invertase.firebase.RNFirebasePackage;
-
 
 
 import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.RNFirebasePackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage; 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Added for auth() calls
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage; // added for firestore stuff
 
@@ -66,10 +66,11 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
             new VectorIconsPackage(),
             new RNFirebasePackage(),
             new RNFirebaseAuthPackage(),
+            new RNFirebaseStoragePackage(),
+            new RNFirebaseFirestorePackage(),
             new TwitterSigninPackage(),
             new RNGoogleSigninPackage(),
             new RNGestureHandlerPackage(),
-            new RNFirebaseFirestorePackage(),
           // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
             new FBSDKPackage(mCallbackManager),
             new MapsPackage()

@@ -8,11 +8,14 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { uploadImage } from '../../../firebase/firestoreAPI'
 
 
+var options = {quality: .15} 
 export default class ProfilePicture extends React.Component {
-    constructor(props) {
+    constructor(props){
+        super(props)
         this.state = {
+        
             errorMessage: null,
-            avatar: "",
+            avatar: require('../../../../images/ic_tag_faces.png'),
             button: 'save'
         }
     }
@@ -60,8 +63,7 @@ saveOrNextscreenButton() {
             <TouchableOpacity
                 style={{ alignItems: 'center' }}
                 onPress = { () => this.uploadPicturetoFirebase()}>
-                <Text> Hi </Text>
-            >
+            <Text>upload Image</Text>
             </TouchableOpacity>
         )
     }
@@ -71,7 +73,7 @@ saveOrNextscreenButton() {
             <TouchableOpacity
                 style={{ alignItems: 'center' }}
                 onPress={() => this.goToNextScreen()} >
-                <Text> HEllo </Text>
+                <Text>Next</Text>
 
             </TouchableOpacity>
 
@@ -80,7 +82,7 @@ saveOrNextscreenButton() {
 }
 
 uploadPicturetoFirebase = () => {
-    if (this.state.avatar === '')
+    if (this.state.avatar === require('../../../../images/ic_tag_faces.png'))
     {
         this.setState( { errorMessage : "You have not selected a photo, would you like to continue? "})
     }
@@ -107,14 +109,15 @@ render() {
                     source={this.state.avatar}
                 />
             </View>
-            {this.state.errorMessage &&
+
+                        {this.state.errorMessage &&
                 <Text style={{ color: 'red', fontStyle: 'italic', }}>
                     {this.state.errorMessage}
                 </Text>}
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <TouchableOpacity
-                    onPress={() => this._openImageLibrary()}
+                    onPress={() => this.openImageLibrary()}
                 >
                     <Ionicons
                         name='ios-images'
@@ -123,7 +126,7 @@ render() {
                     <Text style={{ paddingLeft: 5 }}>Open photo library</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => this._openCamera()}
+                    onPress={() => this.openCamera()}
                 >
                     <Ionicons
                         name='ios-camera'
@@ -133,13 +136,16 @@ render() {
                 </TouchableOpacity>
             </View>
 
-            {this.SaveOrNextscreenButton()}
+            
+            { this.saveOrNextscreenButton()}
+          
 
 
             <TouchableOpacity
-                onPress={() => this._goToNextScreen()}
+                onPress={() => this.goToNextScreen()}
             >
-                <Text>{strings('sign_up_screen.get_display_name.profil_photo.continue_without')}</Text>
+            <Text>next Screen</Text>
+            
             </TouchableOpacity>
         </View>
     )

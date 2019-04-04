@@ -44,14 +44,12 @@ navigateToHomeScreen = () => {
     this.props.navigation.navigate('AuthLoading')
 }
 
-displayUserNameAndProfilePicture = () =>  {
+displayUserNameAndProfilePicture ()  {
     if (this.state.display === 'Username')
     {
         return (
-            <View>
             <UserName
             />
-            </View>
         )
     }
     else if (this.state.display === "ProfilePicture")
@@ -72,14 +70,15 @@ render() {
             { this.displayTopComponent() }
                 <ScrollView
                     keyboardShouldPersistTaps='handled'
-                    style={{ flex: 1, backgroundColor: 'white'}}
+                    style={{ flex: 1, backgroundColor: 'gray'}}
                 >
                     <KeyboardAvoidingView
                         behavior='position'
                         keyboardVerticalOffset={-64}
                         style={{ flex: 1}}
                     >
-                    <UserName> </UserName>
+                    <UserName/>
+                    <ProfilePicture/>
                     </KeyboardAvoidingView>
                 </ScrollView>
         </View>

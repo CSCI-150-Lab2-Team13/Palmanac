@@ -276,7 +276,7 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) =>
             })
 })
 
-export const uploadImage = async () => {
+export const uploadImage = async (uri) => {
     const { userUID, userEmail, userName } = await getUserData();
     const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName)
     const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
