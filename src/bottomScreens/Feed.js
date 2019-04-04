@@ -138,7 +138,7 @@ export default class Feed extends Component {
         <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
         <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
    
-        */}
+       
         <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
         {/* <Calendar
           onDayPress={this.onDayPress}
