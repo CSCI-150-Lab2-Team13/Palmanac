@@ -19,84 +19,127 @@ export default class Feed extends Component {
     super(props);
     this.state = {
      events: [],
+     softEvents: [],
      items: {},
+     isLoading: true,
+
     };
     this.onDayPress = this.onDayPress.bind(this);
-  
+    this.renderSoftEvents = this.renderSoftEvents.bind(this);
+    this.assignEvent = this.assignEvent.bind(this);
 
+  }
 
+   assignEvent(event){
+    //console.error(JSON.stringify(event))
+  //  if(event.hasOwnProperty('startTime') && event.hasOwnProperty('endTime')){
+      this.setState(
+        {
+          events: this.state.events.concat(event)
+        }
+      );
+  //  }
+    // else{
+    //   this.setState({
+    //     softEvents: this.state.softEvents.concat(event)
+    //   })
+    // }
+    
   }
 
   componentDidMount() {
-    
-    firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (event) =>
-    
-    this.setState(
-      {
-        events: this.state.events.concat(event)
-      }
-    )
-)
-.finally( () => {
-  if(this.state.events){
+      firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (eventList) =>
+        {
+          this.assignEvent(eventList)
+        }
+      )
+      .then(() =>{
+        events = []
+        softEvents = []
+        this.state.events.forEach( (event) => {
+          if( !(event["startTime"] && event["endTime"])) 
+            softEvents.push(event)
+          else events.push(event)
+         })
+        this.setState({
+          events: events,
+          softEvents: softEvents
+        })
+      })
+    .finally( () => {
+    if(this.state.events){
       var items = {}
-      for(let i = 0, l = this.state.events.length; i < l; i++) {
-        var dateVal = new Date(this.state.events[i]["startTime"]["seconds"] * 1000);
-        var eventStr = moment(dateVal).format("YYYY-MM-DD")
-        var endVal = new Date(this.state.events[i]["endTime"]["seconds"] * 1000);
-        var startStr = moment(dateVal).format("HH:mm");
-        var endStr = moment(endVal).format("HH:mm");
-        items[eventStr] = 
-          [{
-            name: this.state.events[i]['title'],
-            height: Math.max(80, Math.floor(Math.random() * 150)),
-            desc: this.state.events[i]['desc'],
-            startTime: startStr,
-            endTime: endStr,
-              //selected: true, 
-              //disableTouchEvent: true, 
-              // name: 'Item: ' + eventStr,
-              // height: Math.max(50, Math.floor(Math.random() * 150))
-              
-              //selectedColor: 'blue',
-              // text: {
-              //   color: 'black',
-              //   fontWeight: 'bold'
-              // }
-          }]
-        
-        this.setState(
-          {
-            items: items
+        for(let i = 0, l = this.state.events.length; i < l; i++) {
+        //  if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
+
+          
+            var dateVal = new Date(this.state.events[i]["startTime"]["seconds"] * 1000);
+            var eventStr = moment(dateVal).format("YYYY-MM-DD")
+            var endVal = new Date(this.state.events[i]["endTime"]["seconds"] * 1000);
+            var startStr = moment(dateVal).format("HH:mm");
+            var endStr = moment(endVal).format("HH:mm");
+            items[eventStr] = 
+              [{
+                name: this.state.events[i]['title'],
+                height: Math.max(80, Math.floor(Math.random() * 150)),
+                desc: this.state.events[i]['desc'],
+                startTime: startStr,
+                endTime: endStr,
+                  //selected: true, 
+                  //disableTouchEvent: true, 
+                  // name: 'Item: ' + eventStr,
+                  // height: Math.max(50, Math.floor(Math.random() * 150))
+                  
+                  //selectedColor: 'blue',
+                  // text: {
+                  //   color: 'black',
+                  //   fontWeight: 'bold'
+                  // }
+              }]
+            }
           }
-        )
-      }
-    }
-  }
-)
-.catch(error => {
-  console.error("Error parsing document: ", error);
-})
+          /*
+            Case of soft events, where item is created but there is no 
+            startTime or endTime
+          */
+   //   }
+      this.setState({
+        items: items,
+      })
+    })
+    .catch(error => {
+      console.error("Error parsing document: ", error);
+    })
   }
 
 
 
 
   render() {
+    //TODO:
+    /*
+      Add container/rendering for soft events
+    */
+ 
+ 
 
-    
+ 
     return (
+
       <View style={styles.container}>
-        <Button title= "Create Hard Event"
+        <Button title= "Create Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
 
-{/*
+     {/*
+
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
         <Text style={styles.text}>{JSON.stringify(this.state.items)}</Text>
         <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
+        <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
+   
         */}
-        
+        <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
         {/* <Calendar
           onDayPress={this.onDayPress}
           style={styles.calendar}
@@ -127,7 +170,9 @@ export default class Feed extends Component {
                     // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
                     //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
                   />
-
+        <ScrollView horizontal={true}>
+          {this.renderSoftEvents()}
+        </ScrollView>
 
         
       </View>
@@ -136,7 +181,15 @@ export default class Feed extends Component {
   }
 
 
-
+  renderSoftEvents(){
+      return this.state.softEvents.map(function(event) {
+        return(
+          <View key={event["id"]}>
+            <Text>{event.title}</Text>
+          </View>
+        )
+      });
+  }
   renderEmptyDate() {
     // TODO: Provide styling for dates with deleted/removed events
     return (
@@ -263,5 +316,8 @@ const styles = StyleSheet.create({
     height: 15,
     flex:1,
     paddingTop: 30
+  },
+  softEvents:{
+    
   }
 });
