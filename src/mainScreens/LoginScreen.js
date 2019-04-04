@@ -4,6 +4,7 @@ import { Container, Header, Content, Left, Body, Right, Title, Form, Item, Input
 import isEmail from "validator/lib/isEmail";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import LinearGradient from 'react-native-linear-gradient'
 
 
 
@@ -88,7 +89,11 @@ login = e => {
 
   render() {
     return (
-      <Container style={{backgroundColor: "#140A25", flex: 1}}>
+      <Container>
+            <LinearGradient
+        start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+        style={styles.container}
+        colors={['#88b097', '#07416b']}>
       <Header transparent >
           <Title style = {styles.textColor}>PALMANAC</Title>
       </Header>
@@ -167,8 +172,9 @@ login = e => {
           </View>
           </Form>
         </Content>
-        
+      </LinearGradient> 
       </Container>
+    
     );
   }
 }
@@ -183,6 +189,9 @@ const styles = StyleSheet.create({
     height: 75,
     marginTop: 30,
     alignItems : "center",
+    shadowColor: "gray",
+    shadowOpacity: 10,
+    shadowRadius: 100
     //justifyContent: "center"
     //flex: 1, 
     //backgroundColor: 'yellow'
@@ -271,5 +280,8 @@ const styles = StyleSheet.create({
     //paddingHorizontal: 30,
     alignItems: 'center',
     borderRadius: 5
+  },
+  container: {
+    flex: 1
   }
 });
