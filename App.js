@@ -8,13 +8,9 @@
  */
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator , createAppContainer} from 'react-navigation';
-
-
-import config from './src/firebase/fireConfig'
-import firebase from '@firebase/app';
-import '@firebase/auth'
-import 'firebase/firebase-firestore'
+import {createAppContainer} from "react-navigation";
+import config from '../Palmanac/src/firebase/fireConfig'
+import firebase from 'react-native-firebase'
 
 
 //importing router 
@@ -22,9 +18,6 @@ import 'firebase/firebase-firestore'
 
 import createSwitchNavigator from './src/routing/router';
 
-// import the different screens for different scenario's for StackNav
-import SignUpScreen from './src/mainScreens/SignUpScreen'
-import HomeScreen from './src/mainScreens/HomeScreen'
 
 
 
@@ -47,12 +40,11 @@ import Settings from './src/swipeLeftScreens/SettingsScreen'
  */
 
 
-
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     
-    firebase.initializeApp(config);
+   
 }
   render() {
     return (
@@ -73,5 +65,3 @@ console.log(createSwitchNavigator);
 const AppSwitchNavigator = createSwitchNavigator;
 
 const AppContainer = createAppContainer(AppSwitchNavigator);
-
-

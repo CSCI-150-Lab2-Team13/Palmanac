@@ -7,8 +7,6 @@ import _ from 'lodash';
 import firebase from '@firebase/app'
 import { generatePushID } from '../util/generatePushID';
 
-//import { auth } from "firebase";
-//import 'firebase/firebase-firestore'
 
 
 import firestoreAPI from '../firebase/firestoreAPI'

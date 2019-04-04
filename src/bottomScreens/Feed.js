@@ -5,12 +5,14 @@ import {
   ScrollView,
   Button,
   View,
+  TouchableOpacity
 } from 'react-native';
 import {Calendar, Agenda} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
 import firebase from '@firebase/app'
 import moment from "moment"
 import _ from 'lodash';
+
 
 export default class Feed extends Component {
   constructor(props) {
@@ -128,8 +130,9 @@ export default class Feed extends Component {
         <Button title= "Create Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
-      
+
      {/*
+
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>
         <Text style={styles.text}>{JSON.stringify(this.state.items)}</Text>
         <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
@@ -187,6 +190,36 @@ export default class Feed extends Component {
         )
       });
   }
+  renderEmptyDate() {
+    // TODO: Provide styling for dates with deleted/removed events
+    return (
+     <View style={styles.emptyDate}><Text> No Events Yet!</Text></View>
+    );
+  }
+  renderEmptyData(){
+        // TODO: Provide styling for empty events
+    return (
+      <View style={styles.emptyDate}><Text> No Events Yet!</Text></View>
+    );
+  }
+
+
+  renderItem(item) {
+    return (
+      <View style={[styles.item, {height: item.height}]}>
+        <Text>{item.name} </Text>
+        <Text>{item.startTime} to {item.endTime}</Text>
+        {
+          //TODO: Add padding below/other styling
+        }
+        <Text style={styles.text}>{item.desc}</Text>
+     
+      </View>
+    );
+  }
+
+
+
   renderEmptyDate() {
     // TODO: Provide styling for dates with deleted/removed events
     return (
