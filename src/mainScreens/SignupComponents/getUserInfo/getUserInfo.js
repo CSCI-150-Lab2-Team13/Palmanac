@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, SafeAreaView, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, KeyboardAvoidingView, ScrollView , TouchableOpacity} from 'react-native'
 
 import UserName from '../getUserInfo/UserName'
 import ProfilePicture from '../getUserInfo/profilePicture'
@@ -36,6 +36,11 @@ navigateToProfilePicture = () => {
     this.setState ( { display: 'ProfilePicture'} )
 }
 
+goToProfilePicture = () => {
+    this.props.navigation.navigate('profilePicture')
+}
+
+
 navigateToLoginScreen = () => {
     this.props.navigation.navigate('Login')
 }
@@ -44,24 +49,6 @@ navigateToHomeScreen = () => {
     this.props.navigation.navigate('AuthLoading')
 }
 
-displayUserNameAndProfilePicture ()  {
-    if (this.state.display === 'Username')
-    {
-        return (
-            <UserName
-            />
-        )
-    }
-    else if (this.state.display === "ProfilePicture")
-    {
-        return (
-            <ProfilePicture
-        
-            />
-
-            )
-    }
-}
 
 
 render() {
@@ -78,7 +65,13 @@ render() {
                         style={{ flex: 1}}
                     >
                     <UserName/>
-                    <ProfilePicture/>
+
+                        <TouchableOpacity
+                            onPress={() => this.goToProfilePicture()}
+                        >
+                            <Text>next Screen</Text>
+                        </TouchableOpacity>
+                    
                     </KeyboardAvoidingView>
                 </ScrollView>
         </View>

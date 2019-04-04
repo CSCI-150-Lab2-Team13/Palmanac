@@ -33,9 +33,9 @@ setUsername = () => {
     }
     else{
         createFireStoreDoc(this.state.userName)
-        .then(async () =>{
+        .then(async () => {
             this.props.navigation.navigate('profilePicture')
-        })
+          })
         .catch((error) =>{
             if(error === 'No user is currently logged in') {
                 this.setState({

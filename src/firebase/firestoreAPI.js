@@ -147,6 +147,7 @@ export const createUserDocinFirestore = (username, userUID, userEmail) =>
               // check if user name is available
 })
 
+
 // get User informations from currently signed in user
 export const getUserData = async () =>
     new Promise((resolve, reject) => {
@@ -203,8 +204,8 @@ export const uploadImagetoFirestore = (uri, userName) => {
     return new Promise ((resolve, reject) =>{
         let imgUri = uri.uri;
         const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
-        const sessinID = new Date().getTime()
-        const imageName = 'Profile Pictures/ ${userName}_${sessionID}.jpg'
+        const sessionID = new Date().getTime()
+        const imageName = `Profile Pictures/${userName}_${sessionID}.jpg`
          // grab photo name from CloudFirebase user profile
          firebase
             .firestore()
@@ -278,7 +279,7 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) =>
 
 export const uploadImage = async (uri) => {
     const { userUID, userEmail, userName } = await getUserData();
-    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName)
+    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName);
     const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
     const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
     return downloadURL

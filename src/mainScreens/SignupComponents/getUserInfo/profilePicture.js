@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { uploadImage } from '../../../firebase/firestoreAPI'
 
+import styles from '../styles'
 
 var options = {quality: .15} 
 export default class ProfilePicture extends React.Component {
@@ -88,32 +89,39 @@ uploadPicturetoFirebase = () => {
     }
     else 
     {
-        this.setState( { errorMessage: null })
-        uploadImage(this.state.avatar).catch(error => this.setState ({ errorMessage: error }))
+        this.setState({errorMessage: null})
+        uploadImage(this.state.avatar)
+            .catch(error =>{
+            this.setState ({ errorMessage: error })
+        })
     }
     this.setState ({ button: 'nextscreen'})
 }
 
 
 goToNextScreen = () => {
-        //
+    this.props.navigation.navigate('App')
 }
 
 
 render() {
     return (
-        <View >
-            <Text>ProfilePicture</Text>
-            <View>
-                <Image
-                    source={this.state.avatar}
-                />
-            </View>
+        <View style={styles.profile_item}>
+        <Text style={styles.title}>Profile Picture</Text>
+        <View style={styles.avatar_container}>
+            <Image
+                style={styles.avatar_image}
+                source={this.state.avatar}
+            />
+        </View>
 
-                        {this.state.errorMessage &&
-                <Text style={{ color: 'red', fontStyle: 'italic', }}>
-                    {this.state.errorMessage}
-                </Text>}
+        {(this.state.errorMessage) &&
+        <Text style={{ color: 'red', fontStyle: 'italic', }}>{(this.state.errorMessage)} </Text>}
+
+
+
+
+
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
                 <TouchableOpacity

@@ -64,6 +64,16 @@ const styles = StyleSheet.create({
         color: 'black',
         marginLeft: 10,
     },
+    avatar_container: {
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    avatar_image: {
+        width: 200,
+        height: 200,
+        borderRadius: 30,
+    },
+
 })
 
 export default styles 
