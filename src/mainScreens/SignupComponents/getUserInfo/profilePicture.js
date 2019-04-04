@@ -115,8 +115,8 @@ render() {
             />
         </View>
 
-        {(this.state.errorMessage) &&
-        <Text style={{ color: 'red', fontStyle: 'italic', }}>{(this.state.errorMessage)} </Text>}
+        {( JSON.stringify(this.state.errorMessage)) &&
+        <Text style={{ color: 'red', fontStyle: 'italic', }}>  {JSON.stringify(this.state.errorMessage)} </Text> }
 
 
 

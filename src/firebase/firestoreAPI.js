@@ -200,7 +200,7 @@ export const fetchDataforLogin = async () => {
 //:-)
 
 //upload image to firebase's firestore
-export const uploadImagetoFirestore = (uri, userName) => {
+export const uploadImagetoFirebase = (uri, userName) => {
     return new Promise ((resolve, reject) =>{
         let imgUri = uri.uri;
         const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
@@ -262,24 +262,25 @@ export const setDownloadLinktoFirebase = (link) =>
 })
 
 // add profile picture download link to cloud firestore
-export const setDownloadLinktoFirestore = (downloadURL, username, imageName) =>
-    new Promise ((resolve,reject) => {
-        const ref = firebase.firestore()
-            .collection('users')
-            .doc(username)
+export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => {
+    return firebase.firestore().collection('users').doc(username)
             .set({
                 photoURL:downloadURL,
                 photoName:imageName
-            }, { merge: true})
-            .then(resolve())
-            .catch((error)=> {
-                reject(error)
             })
-})
+            .then(() => {
+                console.log("Document successfully written!");
+            })
+            .catch((error)=> {
+                console.error("Error writing document: ", error);
+            })
+}
+
+
 
 export const uploadImage = async (uri) => {
     const { userUID, userEmail, userName } = await getUserData();
-    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName);
+    const { downloadURL, imageName } = await uploadImagetoFirebase(uri, userName);
     const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
     const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
     return downloadURL
