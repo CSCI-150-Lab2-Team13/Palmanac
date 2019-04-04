@@ -9,14 +9,20 @@ import { uploadImage } from '../../../firebase/firestoreAPI'
 
 import styles from '../styles'
 
-var options = {quality: .15} 
+let options = {
+    title: 'Select Avatar',
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
+
 export default class ProfilePicture extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-        
-            errorMessage: null,
             avatar: require('../../../../images/ic_tag_faces.png'),
+            firebaseImageUrl:require('../../../../images/ic_tag_faces.png'),
             button: 'save'
         }
     }
@@ -24,17 +30,18 @@ export default class ProfilePicture extends React.Component {
 openImageLibrary = () => {
     ImagePicker.launchImageLibrary(options, (response) => {
         if (response.didCancel) {
-            return
+            console.log('User cancelled image picker');
         }
         else if (response.error) {
-            this.setState({ errorMessage: response.error })
+           // this.setState({ errorMessage: response.error })
         }
         else {
-            let requireSource = { uri: response.uri }
+            let source = {uri: 'data:image/jpeg;base64,' + response.data, image: "file.png"};
             this.setState({
-                avatar: requireSource,
+                avatar: response.uri,
                 button: 'save'
-            })
+            });
+            this.uploadPicturetoFirebase(this.state.avatar)
         }
     });
 }
@@ -85,14 +92,13 @@ saveOrNextscreenButton() {
 uploadPicturetoFirebase = () => {
     if (this.state.avatar === require('../../../../images/ic_tag_faces.png'))
     {
-        this.setState( { errorMessage : "You have not selected a photo, would you like to continue? "})
+       console.log("You have not selected a photo, would you like to continue? ")
     }
     else 
     {
-        this.setState({errorMessage: null})
         uploadImage(this.state.avatar)
             .catch(error =>{
-            this.setState ({ errorMessage: error })
+            console.log(error)
         })
     }
     this.setState ({ button: 'nextscreen'})

@@ -1,6 +1,13 @@
 import firebase from 'react-native-firebase'
 
 import { Platform, AppState, Alert } from 'react-native'
+import RNFetchBlob from 'react-native-fetch-blob';
+
+const Blob = RNFetchBlob.polyfill.Blob;
+const fs = RNFetchBlob.fs;
+window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+window.Blob = Blob;
+
 
 export default class firestoreAPI {
     /**
@@ -200,9 +207,9 @@ export const fetchDataforLogin = async () => {
 //:-)
 
 //upload image to firebase's firestore
-export const uploadImagetoFirebase = (uri, userName) => {
-    return new Promise ((resolve, reject) =>{
-        let imgUri = uri.uri;
+export const uploadImagetoFirebase = (uri, userName, mime = 'application/octet-stream') => {
+        let imgUri = uri;
+        let uploadBlob = null;
         const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
         const sessionID = new Date().getTime()
         const imageName = `Profile Pictures/${userName}_${sessionID}.jpg`
@@ -226,17 +233,23 @@ export const uploadImagetoFirebase = (uri, userName) => {
                         .catch(error => console.log('An error occurred while deleting the photo', error))
                 }
             })
-        firebase
-            .storage()
-            .ref(imageName)
-            .putFile(uploadUri)
-            .then( (results) => {
-                const downloadURL = result.downloadURL
-                const toResolve = { downloadURL , imageName}
-                resolve (toResolve)
+        const imageRef = firebase.storage().ref(imageName);
+        fs.readFile(uploadUri,'base64')
+            .then((data) => {
+                    return Blob.build(data, {type: `${mime};Base64`})
             })
-            .catch(error => reject (error))
-    })
+            .then((blob) => {
+                    uploadBlob = blob;
+                    return imageRef.putFile(blob, {contentType: mime})
+            })
+            .then((url) => {
+                uploadBlob.close();
+                return imageRef.getDownloadURL();
+
+            })
+            .catch((err) => {
+                console.error(err);
+            })    
 }
 
 
