@@ -9,6 +9,7 @@ import com.BV.LinearGradient.LinearGradientPackage;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
@@ -61,21 +62,21 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFetchBlobPackage(),
+            new PickerPackage(),
+          new RNFetchBlobPackage(),
           new LinearGradientPackage(),
-            new RNFetchBlobPackage(),
-            new ImagePickerPackage(),
-            new VectorIconsPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseAuthPackage(),
-            new RNFirebaseStoragePackage(),
-            new RNFirebaseFirestorePackage(),
-            new TwitterSigninPackage(),
-            new RNGoogleSigninPackage(),
-            new RNGestureHandlerPackage(),
+          new ImagePickerPackage(),
+          new VectorIconsPackage(),
+          new RNFirebasePackage(),
+          new RNFirebaseAuthPackage(),
+          new RNFirebaseStoragePackage(),
+          new RNFirebaseFirestorePackage(),
+          new TwitterSigninPackage(),
+          new RNGoogleSigninPackage(),
+          new RNGestureHandlerPackage(),
           // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
-            new FBSDKPackage(mCallbackManager),
-            new MapsPackage()
+          new FBSDKPackage(mCallbackManager),
+          new MapsPackage()
       );
     }
 

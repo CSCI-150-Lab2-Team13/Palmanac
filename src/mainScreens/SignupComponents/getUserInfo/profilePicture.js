@@ -1,157 +1,142 @@
 import React from 'react'
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import ImagePicker from 'react-native-image-picker'
-
+import ImagePicker from 'react-native-image-picker';
+import firebase from 'react-native-firebase'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 
-import { uploadImage } from '../../../firebase/firestoreAPI'
-
 import styles from '../styles'
 
-let options = {
-    title: 'Select Avatar',
+
+
+const options = {
+    title: 'Select Image',
     storageOptions: {
-        skipBackup: true,
-        path: 'images'
+      skipBackup: true,
+      path: 'images'
     }
-};
+  };
+
 
 export default class ProfilePicture extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            avatar: require('../../../../images/ic_tag_faces.png'),
-            firebaseImageUrl:require('../../../../images/ic_tag_faces.png'),
-            button: 'save'
+            UserName:'',
+            imageData: null,
+            avatarSource: null,
+            uploading: false, 
+            progress: 0,
+            button: 'save',
+            images: []
         }
     }
 
-openImageLibrary = () => {
-    ImagePicker.launchImageLibrary(options, (response) => {
-        if (response.didCancel) {
-            console.log('User cancelled image picker');
-        }
-        else if (response.error) {
-           // this.setState({ errorMessage: response.error })
-        }
-        else {
-            let source = {uri: 'data:image/jpeg;base64,' + response.data, image: "file.png"};
-            this.setState({
-                avatar: response.uri,
-                button: 'save'
-            });
-            this.uploadPicturetoFirebase(this.state.avatar)
-        }
+componentDidMount() {
+    const  currentUser = firebase.auth().currentUser.displayName
+    this.setState({ UserName: currentUser})
+}
+
+
+getImage() {
+    ImagePicker.showImagePicker(options, response => {
+      this.setState({
+        imageData: response
+      });
+      console.log(this.setState.imageData)
+      if (response.didCancel) {
+        console.log("User cancelled picker");
+      } else if (response.error) {
+        console.log("ImagePicker Error: ", response.error);
+      } else if (response.customButton) {
+        console.log("User tapped custom button: ", response.customButton);
+      } else {
+        const source = { uri: response.uri };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
     });
-}
+  }
 
-openCamera = () => {
-    ImagePicker.launchCamera(options, (response) => {
-        if (response.didCancel) {
-            return
-        }
-        else if (response.error) {
-            this.setState({ errorMessage: response.error })
-        }
-        else {
-            let requireSource = { uri: response.uri }
-            this.setState({
-                avatar: requireSource,
-                button: 'save'
-            })
-        }
+uploadImage() {
+    this.setState({
+      loader: true,
     });
-}
-
-saveOrNextscreenButton() {
-    if (this.state.button === 'save')
-    {
-        return (
-            <TouchableOpacity
-                style={{ alignItems: 'center' }}
-                onPress = { () => this.uploadPicturetoFirebase()}>
-            <Text>upload Image</Text>
-            </TouchableOpacity>
-        )
-    }
-    else if (this.state.button === 'nextscreen')
-    {
-        return (
-            <TouchableOpacity
-                style={{ alignItems: 'center' }}
-                onPress={() => this.goToNextScreen()} >
-                <Text>Next</Text>
-
-            </TouchableOpacity>
-
-        )
-    }
-}
-
-uploadPicturetoFirebase = () => {
-    if (this.state.avatar === require('../../../../images/ic_tag_faces.png'))
-    {
-       console.log("You have not selected a photo, would you like to continue? ")
-    }
-    else 
-    {
-        uploadImage(this.state.avatar)
-            .catch(error =>{
-            console.log(error)
-        })
-    }
-    this.setState ({ button: 'nextscreen'})
-}
-
-
-goToNextScreen = () => {
-    this.props.navigation.navigate('App')
-}
+    const fileType = this.state.imageData.fileName;
+    const type = fileType.substr(fileType.indexOf(".") + 1);
+    const sessionID = new Date().getTime()
+    const imageName = `Profile Pictures/${this.state.UserName}_${sessionID}.jpg`
+    const storageRef = firebase.storage().ref(this.state.UserName).child(imageName);
+             // grab photo name from CloudFirebase user profile
+             firebase
+             .firestore()
+             .collection('users')
+             .doc(this.state.UserName)
+             .get()
+             .then((doc) => {
+                 previousPhotoName = doc.get('photoName')
+                 // if there is a photo name already set
+                 // delete the previous photo in firebase storage
+                 if (previousPhotoName != null) 
+                 {
+                     firebase
+                         .storage()
+                         .ref(previousPhotoName)
+                         .delete()
+                         .then()
+                         .catch(error => console.log('An error occurred while deleting the photo', error))
+                 }
+             })
+    storageRef
+      .putFile(this.state.imageData.uri, {
+        contentType: `image/${type}`
+      })
+      .then(() => {
+        this.setState({
+          loader: false,
+        });
+        console.warn("Posted Successfully");
+        this.props.navigation.navigate('App')
+      })
+      .catch(error => {
+        console.warn(error);
+      });
+  }
 
 
 render() {
+    const { uploading, avatarSource, progress, images } = this.state;
     return (
         <View style={styles.profile_item}>
-        <Text style={styles.title}>Profile Picture</Text>
+        <Text style={styles.title}>  Profile Picture</Text>
         <View style={styles.avatar_container}>
             <Image
                 style={styles.avatar_image}
-                source={this.state.avatar}
-            />
+                source={this.state.avatarSource}/>
         </View>
 
-        {( JSON.stringify(this.state.errorMessage)) &&
-        <Text style={{ color: 'red', fontStyle: 'italic', }}>  {JSON.stringify(this.state.errorMessage)} </Text> }
 
-
-
-
-
-
-            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-                <TouchableOpacity
-                    onPress={() => this.openImageLibrary()}
-                >
-                    <Ionicons
-                        name='ios-images'
-                        size={64}
-                    />
-                    <Text style={{ paddingLeft: 5 }}>Open photo library</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => this.openCamera()}
-                >
-                    <Ionicons
-                        name='ios-camera'
-                        size={64}
-                    />
-                    <Text style={{ paddingLeft: 5 }}>open camera</Text>
-                </TouchableOpacity>
-            </View>
-
+        <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+            <TouchableOpacity
+                    onPress={() => this.getImage()}
+            >
+            <Ionicons
+                name='ios-images'
+                size={64}
+            />
+            <Text style={{ paddingLeft: 5 }}>Open photo library</Text>
+            </TouchableOpacity>
+        </View>
+        <View>
+        <TouchableOpacity
+                style={{ alignItems: 'center' }}
+                onPress = {() => this.uploadImage()}>
+            <Text>upload Image</Text>
+         </TouchableOpacity>
+         </View>
             
-            { this.saveOrNextscreenButton()}
           
 
 
@@ -163,5 +148,5 @@ render() {
             </TouchableOpacity>
         </View>
     )
- }
+    }        
 }

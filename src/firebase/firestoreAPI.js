@@ -1,12 +1,19 @@
+
 import firebase from 'react-native-firebase'
-
 import { Platform, AppState, Alert } from 'react-native'
-import RNFetchBlob from 'react-native-fetch-blob';
+var ImagePicker = require('react-native-image-picker');
 
-const Blob = RNFetchBlob.polyfill.Blob;
-const fs = RNFetchBlob.fs;
-window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-window.Blob = Blob;
+const config = {
+    apiKey: "AIzaSyCbC-n--mjbOUSWOoTbjyxQcthtV7m5xhQ",
+    authDomain: "scheduleapp-boof.firebaseapp.com",
+    databaseURL: "https://scheduleapp-boof.firebaseio.com",
+    projectId: "scheduleapp-boof",
+    storageBucket: "scheduleapp-boof.appspot.com",
+    messagingSenderId: "481998559301"
+  };
+
+  const firebaseService = firebase.initializeApp(config);
+
 
 
 export default class firestoreAPI {
@@ -206,11 +213,13 @@ export const fetchDataforLogin = async () => {
 //--------------------
 //:-)
 
+
+
 //upload image to firebase's firestore
-export const uploadImagetoFirebase = (uri, userName, mime = 'application/octet-stream') => {
-        let imgUri = uri;
-        let uploadBlob = null;
-        const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
+export const uploadBlobtoFirebase = (blob, userName, mime = 'application/octet-stream') => {
+        return new Promise ((resolve, reject) => { 
+        const currentUserID = firebase.auth().currentUser.uid
+        const path = `/${currentUserID}/`
         const sessionID = new Date().getTime()
         const imageName = `Profile Pictures/${userName}_${sessionID}.jpg`
          // grab photo name from CloudFirebase user profile
@@ -233,23 +242,17 @@ export const uploadImagetoFirebase = (uri, userName, mime = 'application/octet-s
                         .catch(error => console.log('An error occurred while deleting the photo', error))
                 }
             })
-        const imageRef = firebase.storage().ref(imageName);
-        fs.readFile(uploadUri,'base64')
-            .then((data) => {
-                    return Blob.build(data, {type: `${mime};Base64`})
+        firebase
+            .storage(imageName)
+            .putFile()
+            .then((results) => {
+            const downloadURL = results.downloadURL
+            const toResolve = { downloadURL , imageName}
+            resolve (toResolve)
             })
-            .then((blob) => {
-                    uploadBlob = blob;
-                    return imageRef.putFile(blob, {contentType: mime})
-            })
-            .then((url) => {
-                uploadBlob.close();
-                return imageRef.getDownloadURL();
-
-            })
-            .catch((err) => {
-                console.error(err);
+            .catch( error => reject(error))
             })    
+
 }
 
 
@@ -291,10 +294,9 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
 
 
 
-export const uploadImage = async (uri) => {
+export const olduploadImage = async (uri) => {
     const { userUID, userEmail, userName } = await getUserData();
-    const { downloadURL, imageName } = await uploadImagetoFirebase(uri, userName);
-    const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
-    const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
+    const outputBlob = await handleUploadBlob(uri)
+    const { downloadURL, imageName } = await uploadBlobtoFirebase(outputBlob, userName);
     return downloadURL
 }
