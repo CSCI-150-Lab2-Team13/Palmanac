@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text,TextInput, View, AsyncStorage, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
-import { Container, Header, Content, Body, Title, Form, Item, Input, Label, Button } from 'native-base';
-
+import { Container, Header, Content, Body, Left, Right, Title, Form, Item, Input, Label, Button } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles'
 import isEmail from "validator/lib/isEmail";
@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 
 import {signUpToFirebase} from '../../firebase/firestoreAPI'
+import LoginScreen from '../LoginScreen';
 
 
 
@@ -106,16 +107,25 @@ export default class SignUp extends React.Component {
     const { classes } = this.props;
 
     return (
-      <KeyboardAvoidingView 
-        behavior = "padding" enabled
-        style={{ flex: 1 }}>
+      
 
       <LinearGradient
         start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-        style={styles.container}
+        style = {styles.container}
         colors={['#88b097', '#07416b']}>
 
-              
+
+<View style = {styles.backButton}>
+<Button transparent>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+          
+          <Icon name="angle-double-left" size={40} color="white"/>
+          
+        </TouchableOpacity>
+       </Button>
+</View>
+
+<View style = {styles.centerStuff}> 
       <Text style={styles.title}>Sign Up </Text>
       {this.state.errorMessage &&
                         <Text style={{ color: 'red' }}>
@@ -154,10 +164,12 @@ export default class SignUp extends React.Component {
         <View style={styles.SignUpButton}>
         <Text style={styles.Text1}> Sign Up </Text>
         </View>
-        </TouchableOpacity>      
+        </TouchableOpacity>
+        </View>
        </LinearGradient>
-      </KeyboardAvoidingView>
+
     );
   }
 }
+
 

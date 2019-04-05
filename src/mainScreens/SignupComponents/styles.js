@@ -3,9 +3,13 @@ const { height, width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
-        flex: 2,
+        flex: 2
+    },
+
+    centerStuff: {
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: 110
     },
     title: {
         color: 'black',
@@ -53,6 +57,10 @@ const styles = StyleSheet.create({
         shadowColor: "grey",
         shadowOpacity: 0.5,
         shadowRadius: 10,
+    },
+    backButton: {
+        flexDirection: 'column',
+        paddingLeft: 10
     }
 })
 
