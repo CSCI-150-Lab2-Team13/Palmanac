@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     backButton: {
         flexDirection: 'column',
-        paddingLeft: 5
+        paddingLeft: 10
     }
 })
 

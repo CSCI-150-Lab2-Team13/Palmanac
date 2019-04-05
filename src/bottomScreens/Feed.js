@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Calendar, Agenda} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 import moment from "moment"
 import _ from 'lodash';
 

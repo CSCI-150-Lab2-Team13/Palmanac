@@ -69,9 +69,6 @@ login = e => {
     const { email, password } = this.state;
     firebase.auth()
         .signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-            
-        })
         .catch(error => {
             this.setState(prevState => ({
                 formErrors: {
@@ -84,19 +81,22 @@ login = e => {
 };
 
 
- 
 
 
   render() {
     return (
+
+
+
       <Container>
             <LinearGradient
         start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
         style={styles.container}
         colors={['#88b097', '#07416b']}>
       <Header transparent >
-          <Title style = {styles.textColor}>PALMANAC</Title>
+          <Text style = {[styles.textColor, {fontFamily: 'verdana'}]}>PALMANAC</Text>
       </Header>
+
       <Content padder>
           <Form>
           <View style={{
@@ -252,23 +252,22 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: '700'
   },
-  /*
-  buttonAlignment: {
-    flexDirection: 'column',
-    
-  },
-*/
+
   textColor: {
-    color: '#32CD32',
-    fontFamily: "Octicons",
-    fontSize: 15,
+    color: '#192a56',
+    fontFamily: 'Cochin',
+    textShadowColor: '#dcdde1',
+    textDecorationStyle: 'dashed',
+    //textDecorationLine: "underline",
+    textShadowRadius: 15,
+    letterSpacing: 17,
+    fontSize: 20,
     fontWeight: 'bold'
   },
 
   bottom: {
     flex: 1,
     justifyContent: 'flex-end',
-    //marginBottom: 36,
     position: 'absolute'
   },
 
