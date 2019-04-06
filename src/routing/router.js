@@ -22,8 +22,10 @@ import HardEventFormScreen from '../forms/addHardEvent'
 
 //import the different screens for different scenario's for tabNav
 import Feed from '../bottomScreens/Feed'
+import Pals from '../bottomScreens/Pals/Pals'
 import Messages from '../bottomScreens/Messages'
 import Profile from '../bottomScreens/Profile'
+import MainCalendar from '../bottomScreens/MainCalendar'
 
 //import different screens for swipeleftscreens
 
@@ -63,8 +65,10 @@ const DrawerWithLogoutButton = props => {
 
 const DashboardTabNavigator = createBottomTabNavigator({
     Feed,
+    Pals,
     Profile,
     Messages,
+    MainCalendar,
   }, 
   {
     navigationOptions:({navigation})=>{

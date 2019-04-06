@@ -37,7 +37,7 @@ export default class firestoreAPI {
 
        /**
      * Returns a promise with resolved user object
-     * calling example... getUserSkills(userId).then(user => {do your staff with user object});
+     * calling example... getuserskills(userId).then(user => {do your staff with user object});
      * */
     static getUser(userId) {
         if (userId) {
@@ -171,7 +171,6 @@ export const sendFirstandLastName = async (currentUser, firstName, lastName) =>{
         .update({
             firstName:firstName,
             lastName:lastName,
-            friends: []
         })
         .then( () => {
             console.log("Document successfully written!");
@@ -275,12 +274,130 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
             })
 }
 
+//-------------------
+// Functions for adding and removing friends 
+//--------------------
+//:-)
+
+//function to add pals 
+export const addPalToFirestore = async (currentUser, paltoAdd) => {
+
+    // add friend to current user contact list in database
+    new Promise((resolve, reject) => {
+        firebase.firestore()
+            .collection('users')
+            .doc(currentUser)
+            .collection('pals')
+            .add({
+                username: paltoAdd
+            })
+            .then(resolve())
+            .catch(error => reject(error))
+    })
+
+    // add current user to in the new contact contactList
+    new Promise((resolve, reject) => {
+        firebase.firestore()
+            .collection('users')
+            .doc(paltoAdd)
+            .collection('pals')
+            .add({
+                username: currentUser
+            })
+            .then(resolve())
+            .catch(error => reject(error))
+    })
+}
+
+//function to delete friends 
+export const deleteFriend = async (currentUser, palName) => {
+    new Promise(async (resolve, reject) => {
+        await firebase
+            .firestore()
+            .collection('users')
+            .doc(currentUser)
+            .collection('pals')
+            .where('username', '==', palName)
+            .get()
+            .then(docs => {
+                firebase.firestore().doc(docs.docs[0].ref._documentPath._parts.join('/').toString()).set({
+                    delete: true
+                }, { merge: true })
+            })
+            .catch(err => reject(err))
+        if (currentUser !== palName) {
+            await firebase
+                .firestore()
+                .collection('users')
+                .doc(contactName)
+                .collection('pals')
+                .where('username', '==', currentUser)
+                .get()
+                .then(docs => {
+                    firebase.firestore().doc(docs.docs[0].ref._documentPath._parts.join('/').toString()).set({
+                        delete: true
+                    }, { merge: true })
+
+                })
+                .catch(err => reject(err))
+        }
+        resolve()
+    })
+}
 
 
-export const uploadImage = async () => {
-    const { userUID, userEmail, userName } = await getUserData();
-    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName)
-    const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
-    const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
-    return downloadURL
+/**
+ * Search pals in the people screen 
+ * If search == a username in the firebase firestore database return search
+ * else return the next contacts name starting with the string(search)
+ * 
+ * 
+ */
+export const searchPals = async (search) => {
+    const ref = firebase.firestore().collection('users')
+    let results = []
+    // Query for exact match bewteen 'search' and a username
+    await ref
+        .where('UserName', '==', search)
+        .get()
+        .then(querySnapshot => {
+            if (!querySnapshot.empty) {
+                // if successful, return search
+                results = [{ id: 0, name: search }]
+                return
+            } else {
+                return
+            }
+        })
+        .catch(err => {
+            return 'an error has occurred while searching for pals: ', err
+        })
+
+    // If previous query successful, return results, end the function
+    if (results.length != 0) {
+        return results
+    } else if (search.length > 2) {
+        // if search length > 2 chars (avoid query for one, two or three letters), 
+        // Query for contact's names starting with the search
+        await ref
+            .orderBy('UserName')
+            .startAfter(search)
+            .limit(10)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    const name = doc.get('UserName')
+                    if (name.charAt(0) === search.charAt(0)) {
+                        const newId = results.length + 1
+                        const newPotentialContact = { id: newId, name: name }
+                        results = [...results, newPotentialContact]
+                    }
+                    return
+                })
+            })
+            .catch(err => {
+                return 'an error has occurred while searching for pals: ', err
+            })
+        return results
+    }
 }
