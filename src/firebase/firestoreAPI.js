@@ -194,6 +194,7 @@ export const getUserData = async () =>
                 userUID = user.uid
                 userEmail = user.email
                 userName = user.displayName
+
                 userInformations = { userUID, userEmail, userName }
                 resolve(userInformations)
             } else {
