@@ -155,7 +155,6 @@ export default createSwitchNavigator(
       App: AppStack,
       Signup:SignUpScreen, 
       Login:LoginScreen, 
-      GetUserInfo: getUserInfo,
       UserName: UserName,
       profilePicture: profilePicture
     },

@@ -137,6 +137,8 @@ export const createUserDocinFirestore = (username, userUID, userEmail) =>
                         if (!doc.exists) {
                             ref.doc(username).set({
                                 Username: username,
+                                firstName: null,
+                                lastName: null,
                                 Email: userEmail,
                                 UID: userUID,
                                 photoURL: null,
@@ -161,6 +163,28 @@ export const createUserDocinFirestore = (username, userUID, userEmail) =>
               // check if user name is available
 })
 
+
+
+export const sendFirstandLastName = async (currentUser, firstName, lastName) =>{
+    if (currentUser){
+        return firebase.firestore().collection('users').doc(currentUser)
+        .update({
+            firstName:firstName,
+            lastName:lastName,
+            friends: []
+        })
+        .then( () => {
+            console.log("Document successfully written!");
+        })
+        .catch((error)=> {
+            console.error("Error writing document: ", error);
+        })
+
+    }
+    else {
+        console.error("event error");
+    }
+}
 
 // get User informations from currently signed in user
 export const getUserData = async () =>
@@ -212,48 +236,6 @@ export const fetchDataforLogin = async () => {
 // Functions for uploading an image
 //--------------------
 //:-)
-
-
-
-//upload image to firebase's firestore
-export const uploadBlobtoFirebase = (blob, userName, mime = 'application/octet-stream') => {
-        return new Promise ((resolve, reject) => { 
-        const currentUserID = firebase.auth().currentUser.uid
-        const path = `/${currentUserID}/`
-        const sessionID = new Date().getTime()
-        const imageName = `Profile Pictures/${userName}_${sessionID}.jpg`
-         // grab photo name from CloudFirebase user profile
-         firebase
-            .firestore()
-            .collection('users')
-            .doc(userName)
-            .get()
-            .then((doc) => {
-                previousPhotoName = doc.get('photoName')
-                // if there is a photo name already set
-                // delete the previous photo in firebase storage
-                if (previousPhotoName != null) 
-                {
-                    firebase
-                        .storage()
-                        .ref(previousPhotoName)
-                        .delete()
-                        .then()
-                        .catch(error => console.log('An error occurred while deleting the photo', error))
-                }
-            })
-        firebase
-            .storage(imageName)
-            .putFile()
-            .then((results) => {
-            const downloadURL = results.downloadURL
-            const toResolve = { downloadURL , imageName}
-            resolve (toResolve)
-            })
-            .catch( error => reject(error))
-            })    
-
-}
 
 
 // set download link to firebase profile 

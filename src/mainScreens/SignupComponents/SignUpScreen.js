@@ -86,7 +86,7 @@ export default class SignUp extends React.Component {
             return userCredential.user
         })
         .then(async () => {
-          this.props.navigation.navigate('GetUserInfo')
+          this.props.navigation.navigate('UserName')
         })
         .catch(error => {
             this.setState(prevState => ({

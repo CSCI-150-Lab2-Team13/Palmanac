@@ -92,7 +92,7 @@ export default class Feed extends Component {
         </Button>
         <Button
               title = "go to user set up "
-              onPress={() => this.props.navigation.navigate('GetUserInfo')}>
+              onPress={() => this.props.navigation.navigate('UserName')}>
 
             </Button>
 
