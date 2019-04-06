@@ -9,6 +9,7 @@ import firebase from 'react-native-firebase'
 
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import UserName from '../mainScreens/SignupComponents/getUserInfo/UserName';
 
 let userID = '';
 
@@ -45,9 +46,12 @@ async componentDidMount() {
 
       const {currentUser} = await firebase.auth();
       userID = currentUser.uid;
-      this.setState({currentUser});
-      const userId = this.state.currentUser.uid;  
-      const ref = firebase.firestore().collection('users').doc(userId);
+      const {docName} = firebase.auth().currentUser.displayName
+      this.setState({
+        currentUser,
+        userName: docName,
+      }); 
+      const ref = firebase.firestore().collection('users').doc(this.state.userName);
 
       return ref.get().then(doc => {
         if (doc.exists) {

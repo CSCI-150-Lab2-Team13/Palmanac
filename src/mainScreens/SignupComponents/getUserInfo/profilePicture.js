@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 import firebase from 'react-native-firebase'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-
+import { setDownloadLinktoFirebase,setDownloadLinktoFirestore} from "../../../firebase/firestoreAPI"
 import styles from '../styles'
 
 
@@ -23,11 +23,13 @@ export default class ProfilePicture extends React.Component {
         super(props)
         this.state = {
             UserName:'',
+            imageName:"",
             imageData: null,
             avatarSource: null,
             uploading: false, 
             progress: 0,
             button: 'save',
+            downloadURL: "",
             images: []
         }
     }
@@ -59,6 +61,25 @@ getImage() {
       }
     });
   }
+
+
+  goToNextScreen = () => {
+
+    setDownloadLinktoFirebase(this.state.downloadURL)
+    .then(async () => {
+      setDownloadLinktoFirestore(this.state.downloadURL,this.state.UserName,this.state.imageName)
+      .catch(error => {
+        console.warn(error);
+      })
+      .then(async () => {
+      this.props.navigation.navigate('App')
+      })
+    })
+    .catch(error => {
+      console.warn(error);
+    });
+    //
+}
 
 uploadImage() {
     this.setState({
@@ -93,22 +114,23 @@ uploadImage() {
       .putFile(this.state.imageData.uri, {
         contentType: `image/${type}`
       })
-      .then(() => {
+      .then((result) => {
         this.setState({
           loader: false,
+          downloadURL: result.downloadURL,
+          button: "finish",
+          imageName: imageName,
         });
         console.warn("Posted Successfully");
-        this.props.navigation.navigate('App')
       })
       .catch(error => {
         console.warn(error);
       });
   }
 
-
-render() {
-    const { uploading, avatarSource, progress, images } = this.state;
-    return (
+  submitButton() {
+    if (this.state.button === 'save') {
+      return (
         <View style={styles.profile_item}>
         <Text style={styles.title}>  Profile Picture</Text>
         <View style={styles.avatar_container}>
@@ -137,8 +159,15 @@ render() {
          </TouchableOpacity>
          </View>
             
-          
+      </View>
+    )
+    }
+    else if ( this.state.button === 'finish'){
+        return (
+   
+          <View style={styles.profile_item}>
 
+        <View>
 
             <TouchableOpacity
                 onPress={() => this.goToNextScreen()}
@@ -147,6 +176,19 @@ render() {
             
             </TouchableOpacity>
         </View>
+    </View>
+    
+
+        )
+    }
+}
+
+
+render() {
+    return (
+      <View>
+          {this.submitButton()}
+      </View>
     )
-    }        
+  }        
 }

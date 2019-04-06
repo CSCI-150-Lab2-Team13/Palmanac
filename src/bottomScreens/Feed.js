@@ -90,11 +90,6 @@ export default class Feed extends Component {
         <Button title= "Create Hard Event"
           onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
         </Button>
-        <Button
-              title = "go to user set up "
-              onPress={() => this.props.navigation.navigate('UserName')}>
-
-            </Button>
 
 {/*
         <Text style={styles.text}>Calendar with selectable date and arrows</Text>

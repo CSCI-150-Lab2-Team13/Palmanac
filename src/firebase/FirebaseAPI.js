@@ -1,4 +1,3 @@
-import fireConfig from './fireConfig'
 
 import firebase from 'react-native-firebase'
 

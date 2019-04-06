@@ -262,7 +262,7 @@ export const setDownloadLinktoFirebase = (link) =>
 // add profile picture download link to cloud firestore
 export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => {
     return firebase.firestore().collection('users').doc(username)
-            .set({
+            .update({
                 photoURL:downloadURL,
                 photoName:imageName
             })
@@ -276,9 +276,10 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
 
 
 
-export const olduploadImage = async (uri) => {
+export const uploadImage = async () => {
     const { userUID, userEmail, userName } = await getUserData();
-    const outputBlob = await handleUploadBlob(uri)
-    const { downloadURL, imageName } = await uploadBlobtoFirebase(outputBlob, userName);
+    const { downloadURL, imageName } = await uploadImagetoFirestore (uri, userName)
+    const setDLtoProfile = await setDownloadLinktoFirebase(downloadURL);
+    const setDLtoCloud = await setDownloadLinktoFirestore(downloadURL,userName,imageName)
     return downloadURL
 }

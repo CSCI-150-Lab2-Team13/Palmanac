@@ -13,7 +13,6 @@ import LoginScreen from '../mainScreens/LoginScreen';
 
 
 
-import getUserInfo from '../mainScreens/SignupComponents/getUserInfo/getUserInfo'
 import UserName from '../mainScreens/SignupComponents/getUserInfo/UserName'
 import profilePicture from '../mainScreens/SignupComponents/getUserInfo/profilePicture'
 

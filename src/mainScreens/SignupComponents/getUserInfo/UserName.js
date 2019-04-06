@@ -59,7 +59,7 @@ setFirstandLastName = () =>{
     else {
         sendFirstandLastName( this.state.userName, this.state.firstName,this.state.lastName)
         .then (async () =>{
-            this.props.navigation.navigate('App')
+            this.props.navigation.navigate('profilePicture')
         })
         .catch((error) =>{
             if(error === 'No user is currently logged in') {
