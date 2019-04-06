@@ -10,7 +10,12 @@ import AuthLoadingScreen from './AuthLoading';
 import HomeScreen from '../mainScreens/HomeScreen';
 import SignUpScreen from '../mainScreens/SignupComponents/SignUpScreen'
 import LoginScreen from '../mainScreens/LoginScreen';
-import getUserInfo from '../mainScreens/SignupComponents/getUserInfo/getUserInfo'
+
+
+
+import UserName from '../mainScreens/SignupComponents/getUserInfo/UserName'
+import profilePicture from '../mainScreens/SignupComponents/getUserInfo/profilePicture'
+
 
 import HardEventFormScreen from '../forms/addHardEvent'
 
@@ -149,7 +154,8 @@ export default createSwitchNavigator(
       App: AppStack,
       Signup:SignUpScreen, 
       Login:LoginScreen, 
-      GetUserInfo: getUserInfo
+      UserName: UserName,
+      profilePicture: profilePicture
     },
     {
       initialRouteName: 'AuthLoading',

@@ -9,7 +9,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {createAppContainer} from "react-navigation";
-import config from '../Palmanac/src/firebase/fireConfig'
 import firebase from 'react-native-firebase'
 
 

@@ -1,6 +1,20 @@
-import firebase from 'react-native-firebase'
 
+import firebase from 'react-native-firebase'
 import { Platform, AppState, Alert } from 'react-native'
+var ImagePicker = require('react-native-image-picker');
+
+const config = {
+    apiKey: "AIzaSyCbC-n--mjbOUSWOoTbjyxQcthtV7m5xhQ",
+    authDomain: "scheduleapp-boof.firebaseapp.com",
+    databaseURL: "https://scheduleapp-boof.firebaseio.com",
+    projectId: "scheduleapp-boof",
+    storageBucket: "scheduleapp-boof.appspot.com",
+    messagingSenderId: "481998559301"
+  };
+
+  const firebaseService = firebase.initializeApp(config);
+
+
 
 export default class firestoreAPI {
     /**
@@ -123,6 +137,8 @@ export const createUserDocinFirestore = (username, userUID, userEmail) =>
                         if (!doc.exists) {
                             ref.doc(username).set({
                                 Username: username,
+                                firstName: null,
+                                lastName: null,
                                 Email: userEmail,
                                 UID: userUID,
                                 photoURL: null,
@@ -147,15 +163,39 @@ export const createUserDocinFirestore = (username, userUID, userEmail) =>
               // check if user name is available
 })
 
+
+
+export const sendFirstandLastName = async (currentUser, firstName, lastName) =>{
+    if (currentUser){
+        return firebase.firestore().collection('users').doc(currentUser)
+        .update({
+            firstName:firstName,
+            lastName:lastName,
+            friends: []
+        })
+        .then( () => {
+            console.log("Document successfully written!");
+        })
+        .catch((error)=> {
+            console.error("Error writing document: ", error);
+        })
+
+    }
+    else {
+        console.error("event error");
+    }
+}
+
 // get User informations from currently signed in user
 export const getUserData = async () =>
     new Promise((resolve, reject) => {
         const user = firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                userUid = user.uid
+                userUID = user.uid
                 userEmail = user.email
                 userName = user.displayName
-                userInformations = { userUid, userEmail, userName }
+
+                userInformations = { userUID, userEmail, userName }
                 resolve(userInformations)
             } else {
                 reject('No user currently signed in')
@@ -182,8 +222,8 @@ new Promise((resolve, reject) => {
 
 export const createFireStoreDoc = async (username) => {
     const { userUID, userEmail, userName } = await getUserData();
-    const setDisplayName = await setDiplayNameToFirebaseAccount(username);
-    const createUser = await createFireStoreDoc(username, userUID, userEmail);
+    const setDisplayName = await setDisplayNameToFirebaseAccount(username);
+    const createUser = await createUserDocinFirestore(username, userUID, userEmail);
 }
 
 
@@ -197,46 +237,6 @@ export const fetchDataforLogin = async () => {
 // Functions for uploading an image
 //--------------------
 //:-)
-
-//upload image to firebase's firestore
-export const uploadImagetoFirestore = (uri, userName) => {
-    return new Promise ((resolve, reject) =>{
-        let imgUri = uri.uri;
-        const uploadUri = Platform.OS === 'ios' ? imgUri.replace('file://', '') : imgUri;
-        const sessinID = new Date().getTime()
-        const imageName = 'Profile Pictures/ ${userName}_${sessionID}.jpg'
-         // grab photo name from CloudFirebase user profile
-         firebase
-            .firestore()
-            .collection('users')
-            .doc(userName)
-            .get()
-            .then((doc) => {
-                previousPhotoName = doc.get('photoName')
-                // if there is a photo name already set
-                // delete the previous photo in firebase storage
-                if (previousPhotoName != null) 
-                {
-                    firebase
-                        .storage()
-                        .ref(previousPhotoName)
-                        .delete()
-                        .then()
-                        .catch(error => console.log('An error occurred while deleting the photo', error))
-                }
-            })
-        firebase
-            .storage()
-            .ref(imageName)
-            .putFile(uploadUri)
-            .then( (results) => {
-                const downloadURL = result.downloadURL
-                const toResolve = { downloadURL , imageName}
-                resolve (toResolve)
-            })
-            .catch(error => reject (error))
-    })
-}
 
 
 // set download link to firebase profile 
@@ -261,20 +261,21 @@ export const setDownloadLinktoFirebase = (link) =>
 })
 
 // add profile picture download link to cloud firestore
-export const setDownloadLinktoFirestore = (downloadURL, username, imageName) =>
-    new Promise ((resolve,reject) => {
-        const ref = firebase.firestore()
-            .collection('users')
-            .doc(username)
-            .set({
+export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => {
+    return firebase.firestore().collection('users').doc(username)
+            .update({
                 photoURL:downloadURL,
                 photoName:imageName
-            }, { merge: true})
-            .then(resolve())
-            .catch((error)=> {
-                reject(error)
             })
-})
+            .then(() => {
+                console.log("Document successfully written!");
+            })
+            .catch((error)=> {
+                console.error("Error writing document: ", error);
+            })
+}
+
+
 
 export const uploadImage = async () => {
     const { userUID, userEmail, userName } = await getUserData();

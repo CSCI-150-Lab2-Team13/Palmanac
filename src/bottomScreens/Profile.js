@@ -10,7 +10,7 @@ import firebase from 'react-native-firebase'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-let userID = '';
+import { getUserData }  from '../firebase/firestoreAPI'
 
 export default class Profile extends Component {
 
@@ -28,7 +28,7 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          currentUser: null,
+          user: firebase.auth().currentUser,
           userName: '',
           firstName: '',
           lastName: '',
@@ -40,19 +40,17 @@ export default class Profile extends Component {
     }
     
 
-
-async componentDidMount() {
+    async componentDidMount() {
 
       const {currentUser} = await firebase.auth();
-      userID = currentUser.uid;
-      this.setState({currentUser});
-      const userId = this.state.currentUser.uid;  
-      const ref = firebase.firestore().collection('users').doc(userId);
+      const displayName = currentUser.displayName;
+      this.setState({userName: displayName});
+      const ref = firebase.firestore().collection('users').doc(this.state.userName);
 
       return ref.get().then(doc => {
         if (doc.exists) {
           let data = doc.data()
-          this.setState({firstName : data.firstName, lastName : data.lastName, userName:data.userName, photoURL:data.photoURL})
+          this.setState({firstName : data.firstName, lastName : data.lastName})
         } 
         else {
             console.error("No such user!");
@@ -70,7 +68,7 @@ render() {
   return (
     <View style={styles.container}>
         <View style={styles.header}></View>
-        <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
+        <Image style={styles.avatar} source={{uri: this.state.user.photoURL}}/>
         <View style={styles.body}>
           <View style={styles.bodyContent}>
           <Text style={styles.name}> {this.state.userName}</Text>

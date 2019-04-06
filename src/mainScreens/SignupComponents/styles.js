@@ -58,6 +58,25 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 10,
     },
+    profile_item: {
+        paddingBottom: 15,
+        marginLeft: 15,
+        marginRight: 15,
+        
+    },
+    button_text: {
+        color: 'black',
+        marginLeft: 10,
+    },
+    avatar_container: {
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    avatar_image: {
+        width: 200,
+        height: 200,
+        borderRadius: 30,
+    },
     backButton: {
         flexDirection: 'column',
         paddingLeft: 10
