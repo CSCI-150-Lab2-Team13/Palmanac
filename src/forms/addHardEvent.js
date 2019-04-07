@@ -155,32 +155,8 @@ export default class HardEventFormView extends Component {
 
         // declare this outside of render
         componentDidMount() {
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              this.setState({
-                region: {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }
-              });
-            },
-          (error) => console.log(error.message),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-          );
-          this.watchID = navigator.geolocation.watchPosition(
-            position => {
-              this.setState({
-                region: {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }
-              });
-            }
-          );
+          
+          this.setCurrentLocation();
     
           fields = this.formGenerator.props['fields'];
           // _.set(this.formGenerator)
@@ -206,7 +182,35 @@ export default class HardEventFormView extends Component {
     
           freq = data[freq_index];
           interval = data[interval_index];
+
+
+          
         }
+
+
+  setCurrentLocation() {
+    navigator.geolocation.getCurrentPosition(position => {
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      });
+    }, (error) => console.log(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+    this.watchID = navigator.geolocation.watchPosition(position => {
+      this.setState({
+        region: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        }
+      });
+    });
+  }
+
         componentWillUnmount() {
           navigator.geolocation.clearWatch(this.watchID);
         }
