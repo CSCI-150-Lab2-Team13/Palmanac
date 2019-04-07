@@ -140,11 +140,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
     Home: {
       screen: AppDrawerNavigator,
     },
-
-    //commented out for testing purpose 
-    //HardEvent: {
-    //  screen:HardEventFormScreen,
-   // },
+    HardEvent: {
+     screen:HardEventFormScreen,
+   },
   
   });
 
@@ -159,7 +157,8 @@ export default createSwitchNavigator(
       Signup:SignUpScreen, 
       Login:LoginScreen, 
       UserName: UserName,
-      profilePicture: profilePicture
+      profilePicture: profilePicture,
+      
     },
     {
       initialRouteName: 'AuthLoading',
