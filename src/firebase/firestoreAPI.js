@@ -56,9 +56,9 @@ export default class firestoreAPI {
         }
     }
 
-    static addEvent(userId, event) {
-        if (userId) {
-            return firebase.firestore().collection('users').doc(userId).collection('events').add(event)
+    static addEvent(username, event) {
+        if (username) {
+            return firebase.firestore().collection('users').doc(username).collection('events').add(event)
                 .then(() => {
                     console.log("Document successfully written!");
                 })

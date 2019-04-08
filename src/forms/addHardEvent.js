@@ -134,6 +134,7 @@ export default class HardEventFormView extends Component {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
+        username: firebase.auth().currentUser.displayName
       };
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
@@ -474,7 +475,7 @@ export default class HardEventFormView extends Component {
       //
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
-      firestoreAPI.addEvent(firebase.auth().currentUser.uid, formValues)
+      firestoreAPI.addEvent(username, formValues)
       this.props.navigation.navigate({ routeName: 'MainCalendar'})
       //
     }
