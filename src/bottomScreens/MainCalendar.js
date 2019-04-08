@@ -71,7 +71,6 @@ export default class MainCalendar extends Component {
       var items = {}
         for(let i = 0, l = this.state.events.length; i < l; i++) {
         //  if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
-
           
             var dateVal = new Date(this.state.events[i]["startTime"]["seconds"] * 1000);
             var eventStr = moment(dateVal).format("YYYY-MM-DD")
@@ -128,7 +127,7 @@ export default class MainCalendar extends Component {
 
       <View style={styles.container}>
         <Button title= "Create Event"
-          onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
+          onPress={() => this.props.navigation.navigate({ routeName: 'QuickAddScreen'})}>
         </Button>
 
      {/*

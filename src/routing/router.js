@@ -18,7 +18,7 @@ import profilePicture from '../mainScreens/SignupComponents/getUserInfo/profileP
 
 
 import HardEventFormScreen from '../forms/addHardEvent'
-
+import QuickAddScreen from '../forms/quickAddScreen'
 
 //import the different screens for different scenario's for tabNav
 import Feed from '../bottomScreens/Feed'
@@ -140,11 +140,12 @@ const DashboardTabNavigator = createBottomTabNavigator({
     Home: {
       screen: AppDrawerNavigator,
     },
-
-    //commented out for testing purpose 
-    //HardEvent: {
-    //  screen:HardEventFormScreen,
-   // },
+    HardEvent: {
+     screen:HardEventFormScreen,
+    },
+    QuickAddScreen : {
+      screen: QuickAddScreen
+    }
   
   });
 
@@ -159,7 +160,8 @@ export default createSwitchNavigator(
       Signup:SignUpScreen, 
       Login:LoginScreen, 
       UserName: UserName,
-      profilePicture: profilePicture
+      profilePicture: profilePicture,
+      
     },
     {
       initialRouteName: 'AuthLoading',

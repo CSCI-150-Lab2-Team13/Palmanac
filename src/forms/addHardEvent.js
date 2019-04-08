@@ -6,7 +6,7 @@ import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
 import firebase from 'react-native-firebase'
 import { generatePushID } from '../util/generatePushID';
-
+import { chrono } from 'chrono-node'
 
 
 import firestoreAPI from '../firebase/firestoreAPI'
@@ -134,6 +134,7 @@ export default class HardEventFormView extends Component {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
+        username: firebase.auth().currentUser.displayName
       };
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
@@ -155,32 +156,8 @@ export default class HardEventFormView extends Component {
 
         // declare this outside of render
         componentDidMount() {
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              this.setState({
-                region: {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }
-              });
-            },
-          (error) => console.log(error.message),
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-          );
-          this.watchID = navigator.geolocation.watchPosition(
-            position => {
-              this.setState({
-                region: {
-                  latitude: position.coords.latitude,
-                  longitude: position.coords.longitude,
-                  latitudeDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA,
-                }
-              });
-            }
-          );
+          
+          this.setCurrentLocation();
     
           fields = this.formGenerator.props['fields'];
           // _.set(this.formGenerator)
@@ -206,10 +183,53 @@ export default class HardEventFormView extends Component {
     
           freq = data[freq_index];
           interval = data[interval_index];
+
+          if(this.props.navigation.state.params.eventString){
+            var chrono = require('chrono-node');
+            var results = chrono.parse(this.props.navigation.state.params.eventString)
+           // results[0].index;  
+            const getDiff = (string, diffBy) => string.split(diffBy).join('')
+            const title = getDiff(this.props.navigation.state.params.eventString, results[0].text)
+
+            
+            // results[0].text;   // 'tomorrow from 10 to 11 AM'
+            // results[0].ref;    // Sat Dec 13 2014 21:50:14 GMT-0600 (CST)
+            this.formGenerator.setValues({
+              title: title,
+              startTime: results[0].start.date(),
+              endTime: results[0].end.date()
+            })
+          }
+
         }
-        componentWillUnmount() {
-          navigator.geolocation.clearWatch(this.watchID);
-        }
+
+
+    setCurrentLocation() {
+      navigator.geolocation.getCurrentPosition(position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      }, (error) => console.log(error.message), { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 });
+      this.watchID = navigator.geolocation.watchPosition(position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      });
+    }
+
+    componentWillUnmount() {
+      navigator.geolocation.clearWatch(this.watchID);
+    }
     
 
     onValueChange(){
@@ -455,8 +475,9 @@ export default class HardEventFormView extends Component {
       //
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
-      firestoreAPI.addEvent(firebase.auth().currentUser.displayName, formValues)
-      //
+
+      firestoreAPI.addEvent(username, formValues)
+
     }
 
 
