@@ -187,10 +187,14 @@ export default class HardEventFormView extends Component {
             var chrono = require('chrono-node');
             var results = chrono.parse(this.props.navigation.state.params.eventString)
            // results[0].index;  
+            const getDiff = (string, diffBy) => string.split(diffBy).join('')
+            const title = getDiff(this.props.navigation.state.params.eventString, results[0].text)
 
+            
             // results[0].text;   // 'tomorrow from 10 to 11 AM'
             // results[0].ref;    // Sat Dec 13 2014 21:50:14 GMT-0600 (CST)
             this.formGenerator.setValues({
+              title: title,
               startTime: results[0].start.date(),
               endTime: results[0].end.date()
             })
