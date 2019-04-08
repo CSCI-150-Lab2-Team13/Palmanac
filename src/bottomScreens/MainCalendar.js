@@ -48,7 +48,7 @@ export default class MainCalendar extends Component {
   }
 
   componentDidMount() {
-      firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (eventList) =>
+      firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
         {
           this.assignEvent(eventList)
         }
