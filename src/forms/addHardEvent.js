@@ -4,7 +4,7 @@ import { View, Text, Button } from 'native-base';
 import GenerateForm from 'react-native-form-builder';
 import MapView, {Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import _ from 'lodash';
-import firebase from '@firebase/app'
+import firebase from 'react-native-firebase'
 import { generatePushID } from '../util/generatePushID';
 import { chrono } from 'chrono-node'
 
@@ -475,6 +475,7 @@ export default class HardEventFormView extends Component {
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
       firestoreAPI.addEvent(firebase.auth().currentUser.uid, formValues)
+      this.props.navigation.navigate({ routeName: 'MainCalendar'})
       //
     }
 
