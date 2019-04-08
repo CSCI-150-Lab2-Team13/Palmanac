@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 
 
 import { searchPals } from '../../firebase/firestoreAPI'
-
+import SearchPalInfo from '../Pals/SearchedPalInfo'
 
 import styles from '../Pals/styles'
 
@@ -14,7 +14,7 @@ export default class Pals extends Component {
     super(props)
     this.state = {
       palName: "",
-      errorMessage: '',
+      errorMessage: null,
       loading: false, 
       datafetched : []
     }
@@ -22,10 +22,10 @@ export default class Pals extends Component {
 
 
 search = async (input) => {
-  this.setState({ contactName: text, errorMessage: null, loading: true })
-  searchPals(text)
-  .then(res => this.setState({ datafetched: res, loading: false }))
-  .catch(err => this.setState({ errorMessage: err }))
+  this.setState({ contactName: input, errorMessage: null, loading: true })
+  searchPals(input)
+  .then((results) => this.setState({ datafetched: results, loading: false }))
+  .catch((error) => this.setState({ errorMessage: error }))
 
 }
 
@@ -58,33 +58,35 @@ render() {
           </SafeAreaView>
           <TextInput
               placeholder="Search"
-              //onChangeText={(text) => this.search(text)}
+              onChangeText={(text) => this.search(text)}
               autoFocus={false}
               style={styles.text_input}
               underlineColorAndroid={'transparent'}
               autoCorrect={false}
               ref={component => this.messageInput = component}
           />
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-                {this.state.errorMessage !== '' &&
+                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                    {this.state.errorMessage &&
                         <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
                             {this.state.errorMessage}
                         </Text>
-                }
-                {this.state.loading === true &&
+                    }
+                    {this.state.loading &&
                         <ActivityIndicator
                             size={'large'}
                             style={{ flex: 1, justifyContent: 'center' }}
                         />
-                }
-                {this.state.loading == false && <FlatList
-                        data={this.state.data}
+                    }
+                    {this.state.loading == false && <FlatList
+                        data={this.state.datafetched}
                         keyboardShouldPersistTaps={'handled'}
                         keyExtractor={(item) => item.id.toString()}
-
-                        setErrorMessage={(error) => this.setErrorMessage(error)}
-                />}
-            </View>
+                        renderItem={({ item }) => <SearchPalInfo
+                            contact={item}
+                            setErrorMessage={(error) => this.setErrorMessage(error)}
+                        />}
+                    />}
+                </View>
       </View>
     )
   } 

@@ -358,18 +358,18 @@ export const searchPals = async (search) => {
     let results = []
     // Query for exact match bewteen 'search' and a username
     await ref
-        .where('UserName', '==', search)
+        .where('Username', '==', search)
         .get()
         .then(querySnapshot => {
-            if (!querySnapshot.empty) {
+            if (querySnapshot.empty) {
+                return 
+            } else {
                 // if successful, return search
                 results = [{ id: 0, name: search }]
                 return
-            } else {
-                return
             }
         })
-        .catch(err => {
+        .catch((err) => {
             return 'an error has occurred while searching for pals: ', err
         })
 
@@ -380,13 +380,13 @@ export const searchPals = async (search) => {
         // if search length > 2 chars (avoid query for one, two or three letters), 
         // Query for contact's names starting with the search
         await ref
-            .orderBy('UserName')
+            .orderBy('Username')
             .startAfter(search)
             .limit(10)
             .get()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    const name = doc.get('UserName')
+                    const name = doc.get('Username')
                     if (name.charAt(0) === search.charAt(0)) {
                         const newId = results.length + 1
                         const newPotentialContact = { id: newId, name: name }
