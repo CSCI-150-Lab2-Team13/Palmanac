@@ -477,6 +477,7 @@ export default class HardEventFormView extends Component {
       //
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
+
       firestoreAPI.addEvent(this.state.username, formValues)
       this.props.navigation.navigate({ routeName: 'MainCalendar'})
       //
