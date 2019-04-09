@@ -70,11 +70,11 @@ export default class firestoreAPI {
         }
     }
 
-    static getEvents(userId) {
+    static getEvents(username) {
         
-        if (userId) {
+        if (username) {
             let doc_list = [];
-            return firebase.firestore().collection('users').doc(userId).collection('events').get()
+            return firebase.firestore().collection('users').doc(username).collection('events').get()
             .then((querySnapshot) => {
                 doc_list = querySnapshot.docs.map(doc => doc.data());
                 return doc_list

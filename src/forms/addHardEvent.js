@@ -184,12 +184,14 @@ export default class HardEventFormView extends Component {
           freq = data[freq_index];
           interval = data[interval_index];
 
-          if(this.props.navigation.state.params.eventString){
+          const { params } = this.props.navigation.state;
+          const eventString = params ? params.eventString: null;
+          if(eventString){
             var chrono = require('chrono-node');
-            var results = chrono.parse(this.props.navigation.state.params.eventString)
+            var results = chrono.parse(eventString)
            // results[0].index;  
             const getDiff = (string, diffBy) => string.split(diffBy).join('')
-            const title = getDiff(this.props.navigation.state.params.eventString, results[0].text)
+            const title = getDiff(eventString, results[0].text)
 
             
             // results[0].text;   // 'tomorrow from 10 to 11 AM'
@@ -475,7 +477,7 @@ export default class HardEventFormView extends Component {
       //
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
-      firestoreAPI.addEvent(username, formValues)
+      firestoreAPI.addEvent(this.state.username, formValues)
       this.props.navigation.navigate({ routeName: 'MainCalendar'})
       //
     }

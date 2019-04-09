@@ -21,8 +21,7 @@ export default class MainCalendar extends Component {
      events: [],
      softEvents: [],
      items: {},
-     isLoading: true,
-
+     isLoading: true
     };
     this.onDayPress = this.onDayPress.bind(this);
     this.renderSoftEvents = this.renderSoftEvents.bind(this);
@@ -48,7 +47,7 @@ export default class MainCalendar extends Component {
   }
 
   componentDidMount() {
-      firestoreAPI.getEvents(firebase.auth().currentUser.uid).then( (eventList) =>
+      firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
         {
           this.assignEvent(eventList)
         }
