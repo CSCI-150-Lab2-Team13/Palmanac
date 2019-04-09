@@ -53,15 +53,15 @@ export default class MainCalendar extends Component {
         }
       )
       .then(() =>{
-        events = []
+        eventsList = []
         softEvents = []
         this.state.events.forEach( (event) => {
-          if( !(event["startTime"] && event["endTime"])) 
+          if( !(event["startTime"] && event["endTime"]) ) 
             softEvents.push(event)
-          else events.push(event)
+          else eventsList.push(event)
          })
         this.setState({
-          events: events,
+          events: eventsList,
           softEvents: softEvents
         })
       })
@@ -69,11 +69,12 @@ export default class MainCalendar extends Component {
     if(this.state.events){
       var items = {}
         for(let i = 0, l = this.state.events.length; i < l; i++) {
-        //  if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
+         if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
           
-            var dateVal = new Date(this.state.events[i]["startTime"]["seconds"] * 1000);
+            var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
+           
             var eventStr = moment(dateVal).format("YYYY-MM-DD")
-            var endVal = new Date(this.state.events[i]["endTime"]["seconds"] * 1000);
+            var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
             var startStr = moment(dateVal).format("HH:mm");
             var endStr = moment(endVal).format("HH:mm");
             items[eventStr] = 
@@ -100,7 +101,7 @@ export default class MainCalendar extends Component {
             Case of soft events, where item is created but there is no 
             startTime or endTime
           */
-   //   }
+     }
       this.setState({
         items: items,
       })
@@ -129,13 +130,13 @@ export default class MainCalendar extends Component {
           onPress={() => this.props.navigation.navigate({ routeName: 'QuickAddScreen'})}>
         </Button>
 
-     {/*
-
-        <Text style={styles.text}>Calendar with selectable date and arrows</Text>
-        <Text style={styles.text}>{JSON.stringify(this.state.items)}</Text>
-        <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
-        <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
-   
+     
+{
+      
+//         <Text style={styles.text}>{JSON.stringify(this.state.items)}</Text>
+//         <Text style={styles.text}>{JSON.stringify(this.state.events)}</Text>
+//         <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
+}
        
         <Text style={styles.text}>{JSON.stringify(this.state.softEvents)}</Text>
         {/* <Calendar
