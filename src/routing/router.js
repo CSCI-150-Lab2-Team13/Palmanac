@@ -164,6 +164,9 @@ export default createSwitchNavigator(
       
     },
     {
+      navigationOptions:({navigation})=>{
+        Header:null
+      },
       initialRouteName: 'AuthLoading',
     }
   );

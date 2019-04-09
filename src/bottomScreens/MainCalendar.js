@@ -21,8 +21,7 @@ export default class MainCalendar extends Component {
      events: [],
      softEvents: [],
      items: {},
-     isLoading: true,
-
+     isLoading: true
     };
     this.onDayPress = this.onDayPress.bind(this);
     this.renderSoftEvents = this.renderSoftEvents.bind(this);
