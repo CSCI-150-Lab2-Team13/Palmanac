@@ -35,33 +35,24 @@ export default class QuickAddScreen extends Component {
     renderButtons(){
         if(!this.state.clicked){
             return(
-
-        
-                <View style = {styles.container}>
-
                 <LinearGradient
                 start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                style = {styles.container}
+                style = {styles.linGrad}
                 colors={['#30336b', '#2c3e50']}>
-
-                 <View style = {{paddingVertical: 5, marginTop: 90}}> 
-                    <Button style = {styles.buttonQuick} onPress={ () => {this.setState({clicked: true})}}>
+                
+                <View style={styles.buttonView}>
+                    <Button block style = {styles.buttonQuick} onPress={ () => {this.setState({clicked: true})}}>
                         <Title>Quick Add Event</Title>
                     </Button>
-                 </View>
-                
-
-                    <View style = {{paddingVertical: 50, marginBottom: 150}}>
-                    <Button style = {styles.buttonQuick} onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
+                </View>
+                <View style={styles.buttonView}>
+                    <Button block style = {styles.buttonHard} onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
                         <Title>Add Event</Title>
                     </Button>
-                    </View>
+                </View>
                  
 
                 </LinearGradient>
-
-                </View>
-
                 )
         }
 
@@ -69,7 +60,7 @@ export default class QuickAddScreen extends Component {
 
     render(){
         return(
-            <View>
+            <View style={styles.container}>
                 { this.renderButtons() }
                 { this.renderText() }
             </View>
@@ -82,25 +73,62 @@ export default class QuickAddScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        backgroundColor: 'black'
+  
+        //flexDirection: 'column',
+      //  backgroundColor: 'black',
         //paddingTop: 110
+        flex: 10
+    },
+    linGrad : {
+        flex: 10,
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center',
+    },
+    buttonView : {
+        flex: 1,
+        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        flexWrap: 'wrap',
     },
     buttonQuick: {
+        textAlign: 'center',
+        alignSelf: 'center',
         borderRadius: 250,
-        height: 100,
-        paddingLeft: 100,
-        paddingRight: 100,
-        paddingTop: 10,
-        paddingBottom: 10,
-        marginBottom: 20,
+        flexDirection: 'row',
+        flex: 1,
+        // paddingLeft: 100,
+        // paddingRight: 100,
+        paddingTop: 50,
+        paddingBottom: 50,
+        // marginTop: 20,
+        marginBottom: -200,
+        elevation: 4,
+        shadowColor: "white",
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        //backgroundColor = "#841584"
+       // paddingLeft: 10
+    },
+    buttonHard: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        borderRadius: 250,
+        flexDirection: 'row',
+        flex: 1,
+        // paddingLeft: 100,
+        // paddingRight: 100,
+        paddingTop: 50,
+        paddingBottom: 50,
+        // marginTop: 20,
+        marginBottom: 200,
         elevation: 4,
         shadowColor: "white",
         shadowOpacity: 0.5,
         shadowRadius: 10
         //backgroundColor = "#841584"
        // paddingLeft: 10
-    }
+    },
+
 })
