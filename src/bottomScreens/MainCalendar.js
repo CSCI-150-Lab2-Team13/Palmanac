@@ -170,7 +170,7 @@ export default class MainCalendar extends Component {
                     // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
                     //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
                   />
-        <ScrollView horizontal={true}>
+        <ScrollView style={styles.softEvents} horizontal={true}>
           {this.renderSoftEvents()}
         </ScrollView>
 
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     marginTop: 17
   },
   calendar: {
-    flex: 1,
+    flex: 2,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#eee',
@@ -314,10 +314,10 @@ const styles = StyleSheet.create({
   },
   emptyDate: {
     height: 15,
-    flex:1,
+    flex: 1,
     paddingTop: 30
   },
   softEvents:{
-    
+    flex: 1
   }
 });
