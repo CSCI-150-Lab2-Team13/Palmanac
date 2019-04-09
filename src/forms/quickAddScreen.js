@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { View, Text, Button, Title, Container } from 'native-base';
+import { View, Text, Button, Title, Container,  Item, Input } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient'
 
 export default class QuickAddScreen extends Component {
@@ -17,15 +17,26 @@ export default class QuickAddScreen extends Component {
     renderText(){
         if(this.state.clicked){
             return(
-                <View>
-                    <TextInput
-                        name="text"
-                        onChangeText={(text) => this.setState({text})}
-                        value={this.state.text}>
-                    </TextInput>
-                    <Button onPress= {() => this.props.navigation.navigate({ routeName: 'HardEvent', params: {eventString: this.state.text}}) }>
+                <View style={styles.linGrad}>
+                <View style={styles.buttonView}>
+                    <Item regular >
+                        <Input 
+                            style={styles.inputBox}
+                            placeholder='Event Description' 
+                            name="text"
+                            onChangeText={(text) => this.setState({text})}
+                            value={this.state.text}
+                        />
+                    </Item>
+                </View>
+                <View style={styles.buttonView}>
+                    <Button 
+                        block 
+                        style={styles.buttonHard}
+                        onPress= {() => this.props.navigation.navigate({ routeName: 'HardEvent', params: {eventString: this.state.text}}) }>
                        <Text>Submit</Text> 
                     </Button>
+                </View>
                 </View>
             )
         }
@@ -35,24 +46,18 @@ export default class QuickAddScreen extends Component {
     renderButtons(){
         if(!this.state.clicked){
             return(
-                <LinearGradient
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                style = {styles.linGrad}
-                colors={['#30336b', '#2c3e50']}>
-                
-                <View style={styles.buttonView}>
-                    <Button block style = {styles.buttonQuick} onPress={ () => {this.setState({clicked: true})}}>
-                        <Title>Quick Add Event</Title>
-                    </Button>
+                <View style={styles.linGrad}>
+                    <View style={styles.buttonView}>
+                        <Button block style = {styles.buttonQuick} onPress={ () => {this.setState({clicked: true})}}>
+                            <Title>Quick Add Event</Title>
+                        </Button>
+                    </View>
+                    <View style={styles.buttonView}>
+                        <Button block style = {styles.buttonHard} onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
+                            <Title>Add Event</Title>
+                        </Button>
+                    </View>
                 </View>
-                <View style={styles.buttonView}>
-                    <Button block style = {styles.buttonHard} onPress={() => this.props.navigation.navigate({ routeName: 'HardEvent'})}>
-                        <Title>Add Event</Title>
-                    </Button>
-                </View>
-                 
-
-                </LinearGradient>
                 )
         }
 
@@ -61,8 +66,14 @@ export default class QuickAddScreen extends Component {
     render(){
         return(
             <View style={styles.container}>
+                <LinearGradient
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+                style = {styles.linGrad}
+                colors={['#30336b', '#2c3e50']}>
                 { this.renderButtons() }
                 { this.renderText() }
+                
+                </LinearGradient>
             </View>
         )
     }
@@ -130,5 +141,10 @@ const styles = StyleSheet.create({
         //backgroundColor = "#841584"
        // paddingLeft: 10
     },
+    inputBox : {
+        flex: 1,
+        backgroundColor: 'white'
+        
+    }
 
 })
