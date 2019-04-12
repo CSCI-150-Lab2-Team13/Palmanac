@@ -128,6 +128,7 @@ export default class HardEventFormView extends Component {
         placeId: "",
         placeDetails: "",
         rec: "",
+        events: [],
         region: {
           latitude: LATITUDE,
           longitude: LONGITUDE,
@@ -189,6 +190,7 @@ export default class HardEventFormView extends Component {
           if(eventString){
             var chrono = require('chrono-node');
             var results = chrono.parse(eventString)
+            try{
            // results[0].index;  
             const getDiff = (string, diffBy) => string.split(diffBy).join('')
             const title = getDiff(eventString, results[0].text)
@@ -201,6 +203,8 @@ export default class HardEventFormView extends Component {
               startTime: results[0].start.date(),
               endTime: results[0].end.date()
             })
+          }
+          catch(err){}
           }
 
         }
@@ -478,8 +482,47 @@ export default class HardEventFormView extends Component {
       //INSERT CODE FOR WRITING TO DB
       delete formValues.reccurrance;
 
-      firestoreAPI.addEvent(this.state.username, formValues)
-      this.props.navigation.navigate({ routeName: 'MainCalendar'})
+
+
+          firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+            {
+              this.setState(
+                {
+                  events: this.state.events.concat(eventList)
+                }
+              );
+            }
+          )
+        .finally( () => {
+          var col = false
+          this.state.events.forEach((event) =>{
+            if( (event["startTime"] && event["endTime"]) ){
+              //check if collision
+              if(formValues['startTime'] <= event['endTime'] && formValues['endTime'] >= event["startTime"]){
+                col = true
+              }
+            } 
+          })
+          if(!col){
+            // No collission
+            firestoreAPI.addEvent(this.state.username, formValues)
+            this.props.navigation.navigate({ routeName: 'MainCalendar'})
+          }
+          else{
+            // on colision redirect, using passed in values if applicable
+            const { params } = this.props.navigation.state;
+            const eventString = params ? params.eventString: null;
+            if(eventString){
+              this.props.navigation.navigate({ routeName: 'HardEvent'})
+            }
+            else{
+              this.props.navigation.navigate({ routeName: 'HardEvent', params: {eventString: eventString} })
+            }
+          }
+        })
+        .catch((error) => {
+          console.log("Could not submit", error)
+        })
       //
     }
 
