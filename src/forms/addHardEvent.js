@@ -512,6 +512,8 @@ export default class HardEventFormView extends Component {
             // on colision redirect, using passed in values if applicable
             const { params } = this.props.navigation.state;
             const eventString = params ? params.eventString: null;
+            // Edit later to allow more params
+            
             if(eventString){
               this.props.navigation.navigate({ routeName: 'HardEvent'})
             }
