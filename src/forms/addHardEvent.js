@@ -9,7 +9,7 @@ import { generatePushID } from '../util/generatePushID';
 import { chrono } from 'chrono-node'
 
 
-import firestoreAPI from '../firebase/firestoreAPI'
+import Firebase from '../firebase/firestore'
 import { RRule, RRuleSet, rrulestr } from 'rrule'
 
 
@@ -484,7 +484,7 @@ export default class HardEventFormView extends Component {
 
 
 
-          firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+          Firebase.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
             {
               this.setState(
                 {
@@ -505,7 +505,7 @@ export default class HardEventFormView extends Component {
           })
           if(!col){
             // No collission
-            firestoreAPI.addEvent(this.state.username, formValues)
+            Firebase.addEvent(this.state.username, formValues)
             this.props.navigation.navigate({ routeName: 'MainCalendar'})
           }
           else{

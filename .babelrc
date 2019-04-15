@@ -1,0 +1,28 @@
+{
+  "presets": [
+    "module:metro-react-native-babel-preset"
+  ],
+  "plugins": [
+    "@babel/transform-react-jsx-source",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    [
+      "module-resolver",
+      {
+        "extensions": [
+          ".js",
+          ".ios.js",
+          ".android.js",
+          ".tsx",
+          ".ts"
+        ],
+        "alias": {
+          "@components": "./src/components",
+          "@constants": "./src/constants"
+        }
+      }
+    ]
+  ]
+}
+
+
+

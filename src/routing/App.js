@@ -21,8 +21,8 @@ import HardEventFormScreen from '../forms/addHardEvent'
 import QuickAddScreen from '../forms/quickAddScreen'
 
 //import the different screens for different scenario's for tabNav
-import Feed from '../bottomScreens/Feed'
-import Pals from '../bottomScreens/Pals/Pals'
+import Feed from '../bottomScreens/Feed/Feed'
+import Pals from '../bottomScreens/Search/Pals'
 import Messages from '../bottomScreens/Messages'
 import Profile from '../bottomScreens/Profile'
 import MainCalendar from '../bottomScreens/MainCalendar'
@@ -31,8 +31,14 @@ import MainCalendar from '../bottomScreens/MainCalendar'
 
 import Settings from '../swipeLeftScreens/SettingsScreen'
 
-import { Header } from 'native-base';
 
+
+import { configure } from 'mobx';
+import { Provider } from 'mobx-react';
+import store from '../store'
+
+
+configure({ enforceActions: 'always' });
 
 
 
@@ -149,27 +155,51 @@ const DashboardTabNavigator = createBottomTabNavigator({
   
   });
 
+
+const AuthStack = createStackNavigator(
+  {
+     AuthLoadingScreen : { screen : AuthLoadingScreen},
+     SignUpScreen: { screen : SignUpScreen},
+     LoginScreen: { screen : LoginScreen},
+     UserName: { screen: UserName} ,
+     profilePicture: {screen : profilePicture } ,
+
+  },
+  {
+    initialRouteName: 'AuthLoadingScreen',
+    headerMode: 'none',
+  },
+);
+
   
   
 
 
-export default createSwitchNavigator(
+const AppSwitch =  createSwitchNavigator(
     {
-      AuthLoading: AuthLoadingScreen,
+      AuthStack,
       App: AppStack,
-      Signup:SignUpScreen, 
-      Login:LoginScreen, 
-      UserName: UserName,
-      profilePicture: profilePicture,
       
     },
     {
       navigationOptions:({navigation})=>{
         Header:null
       },
-      initialRouteName: 'AuthLoading',
-    }
+      initialRouteName: 'AuthStack',
+      headerMode: 'none',
+    },
   );
+
+const AppContainer = createAppContainer(AppSwitch);
+
+const App = () => (
+  <Provider> 
+    <AppContainer/>
+  </Provider>
+);
+
+export default (App);
+
 
   const styles = StyleSheet.create({
     item: {

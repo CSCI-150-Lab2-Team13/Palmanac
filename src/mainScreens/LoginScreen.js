@@ -9,9 +9,8 @@ import LinearGradient from 'react-native-linear-gradient'
 
 
 import firebase from 'react-native-firebase'
-import { signInUser} from '../firebase/FirebaseAPI';
+import { signInUser} from '../firebase/context';
 
-import firestoreAPI from '../firebase/firestoreAPI'
 
 
 

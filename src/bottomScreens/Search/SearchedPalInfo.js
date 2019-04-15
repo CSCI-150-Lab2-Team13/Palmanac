@@ -18,7 +18,6 @@ export default class SearchPalInfo extends React.Component {
 
 
 
-
 render(){
     return (
         <TouchableOpacity>

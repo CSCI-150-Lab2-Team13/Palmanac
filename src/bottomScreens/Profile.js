@@ -2,17 +2,17 @@ import React, { Component } from 'react'
 import {  View, StyleSheet, Image, TouchableOpacity,Text } from 'react-native'
 import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
 
-import ImagePicker from 'react-native-image-picker'
+
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
+import { withAuthorization} from '../Session';
+import { withFirebase } from '../firebase';
 import firebase from 'react-native-firebase'
 
 
 
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { getUserData }  from '../firebase/firestoreAPI'
-
-export default class Profile extends Component {
+class Profile extends Component {
 
     static navigationOptions = {
 
@@ -28,44 +28,46 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          user: firebase.auth().currentUser,
-          userName: '',
-          firstName: '',
-          lastName: '',
-          photoURL: '',
-          errorMessage: null,
-          isLoading: false,
-
+          loading: false,
         };
     }
     
-
-    async componentDidMount() {
-
-      const {currentUser} = await firebase.auth();
-      const displayName = currentUser.displayName;
-      this.setState({userName: displayName});
-      const ref = firebase.firestore().collection('users').doc(this.state.userName);
-
-      return ref.get().then(doc => {
-        if (doc.exists) {
-          let data = doc.data()
-          this.setState({firstName : data.firstName, lastName : data.lastName})
-        } 
-        else {
-            console.error("No such user!");
-        }
-    })
-        .catch(function (error) {
-            console.error("Error getting user:", error);
+    componentDidMount() {
+      if (
+        !(
+          this.props.userStore.users &&
+          this.props.userStore.users[this.props.match.params.id]
+        )
+      ) {
+        this.setState({ loading: true });
+      }
+  
+      this.props.firebase
+        .user(this.props.match.params.id)
+        .on('value', snapshot => {
+          this.props.userStore.setUser(
+            snapshot.val(),
+            this.props.match.params.id,
+          );
+  
+          this.setState({ loading: false });
         });
+}
+
+componentWillUnmount() {
+  this.props.firebase.user(this.props.match.params.id).off();
 }
 
 
 
-
 render() {
+  const user = (this.props,userStore.users || {})[
+    this.props.match.params.id
+  ];
+  const { loading } = this.state;
   return (
+    <View>
+    {user && (
     <View style={styles.container}>
         <View style={styles.header}></View>
         <Image style={styles.avatar} source={{uri: this.state.user.photoURL}}/>
@@ -76,10 +78,17 @@ render() {
           </View>
       </View>
     </View>
-  );
+    )}
+    </View>
+   );
+ }
 }
 
-}
+export default compose(
+  withFirebase,
+  inject('userStore'),
+  observer,
+)(Profile);
 
 
 const styles = StyleSheet.create({

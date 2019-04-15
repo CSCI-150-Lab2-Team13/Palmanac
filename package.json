@@ -9,7 +9,10 @@
   "dependencies": {
     "chrono-node": "^1.3.11",
     "firebase": "^5.8.5",
+    "firestorter": "^1.2.2",
     "lodash": "^4.17.11",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
     "moment": "^2.24.0",
     "native-base": "^2.12.0",
     "react": "16.6.3",
@@ -32,17 +35,23 @@
     "react-native-twitter-signin": "^1.1.1",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.3.2",
+    "recompose": "^0.30.0",
     "rn-fetch-blob": "^0.10.15",
     "rrule": "^2.6.0",
     "url-parse": "^1.4.4",
-    "validator": "^10.11.0"
+    "validator": "^10.11.0",
+    "jsc-android": "241213.x.x"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
     "@babel/preset-env": "^7.3.4",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "24.1.0",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "babel-polyfill": "^6.26.0",
+    "babel-preset-react-native": "^4.0.1",
     "jest": "24.1.0",
     "metro-react-native-babel-preset": "0.51.1",
     "react-test-renderer": "16.6.3"

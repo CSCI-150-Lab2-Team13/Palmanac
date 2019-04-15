@@ -8,10 +8,11 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {Calendar, Agenda} from 'react-native-calendars';
-import firestoreAPI from '../firebase/firestoreAPI'
+import Firebase from '../firebase/firestore'
 import firebase from 'react-native-firebase'
 import moment from "moment"
 import _ from 'lodash';
+import { firestore } from 'firebase';
 
 
 export default class MainCalendar extends Component {
@@ -57,7 +58,7 @@ export default class MainCalendar extends Component {
   componentDidMount() {
     this.subs = [
       this.props.navigation.addListener("didFocus", () => 
-          firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+      Firebase.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
           {
             this.assignEvent(eventList)
           }

@@ -1,12 +1,13 @@
+    
 import React, {Component} from 'react';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, FlatList, ActivityIndicator} from 'react-native';
 import { Icon } from 'react-native-elements'
 
 
-import { searchPals } from '../../firebase/firestoreAPI'
-import SearchPalInfo from '../Pals/SearchedPalInfo'
+import { searchPals } from '../../firebase/firestore'
+import SearchPalInfo from '../Search/SearchedPalInfo'
 
-import styles from '../Pals/styles'
+import styles from '../Search/styles'
 
 export default class Pals extends Component {
 

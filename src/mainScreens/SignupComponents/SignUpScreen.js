@@ -8,7 +8,7 @@ import isEmail from "validator/lib/isEmail";
 import LinearGradient from 'react-native-linear-gradient'
 
 
-import {signUpToFirebase} from '../../firebase/firestoreAPI'
+import {signUpToFirebase} from '../../firebase/firestore'
 import LoginScreen from '../LoginScreen';
 
 

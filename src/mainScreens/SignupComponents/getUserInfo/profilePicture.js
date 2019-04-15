@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 import firebase from 'react-native-firebase'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import { setDownloadLinktoFirebase,setDownloadLinktoFirestore} from "../../../firebase/firestoreAPI"
+import { setDownloadLinktoFirebase,setDownloadLinktoFirestore} from '../../../firebase/firestore'
 import styles from '../styles'
 
 

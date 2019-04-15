@@ -1,66 +1,27 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import {createAppContainer} from "react-navigation";
-import firebase from 'react-native-firebase'
+import React from 'react';
+import  { Provider } from 'mobx-react'
+
+import store from './src/store'
+
+import App from './src/routing/App'
+import Firebase, {FirebaseContext} from './src/firebase'
 
 
-//importing router 
-
-
-import createSwitchNavigator from './src/routing/router';
-
-
-
-
-//import the different screens for drawNav
-
-import Settings from './src/swipeLeftScreens/SettingsScreen'
-
-/**
- * - AppSwitchNavigator
- *    - WelcomeScreen
- *      - Login Buttons
- *      - Sign Up Buttons
- *    - AppDrawerNavigator
- *          - Dashboard - DashboardStackNavigator(needed for header and to change the header based on the                     tab)
- *            - DashboardTabNavigator
- *              - Tab 1 - Feed
- *              - Tab 2 - Profile
- *              - Tab 3 - Messafes
- *            - Any files you don't want to be a part of the Tab Navigator can go here.
- */
-
-
-export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    
-   
-}
-  render() {
-    return (
+export default class AppStart extends React.Component {
+    constructor(props) {
+      super(props);
       
-        <AppContainer />
-      
-    );
+     
   }
-}
-
-// const AppStackNavigator = createStackNavigator({
-//   Login: LoginScreen,
-//   Home : HomeScreen
-// })
-
-console.log(createSwitchNavigator);
-
-const AppSwitchNavigator = createSwitchNavigator;
-
-const AppContainer = createAppContainer(AppSwitchNavigator);
+    render() {
+      return (
+        <Provider {...store}>
+        <FirebaseContext.Provider value={new Firebase()}>
+          <App />
+        </FirebaseContext.Provider>
+      </Provider>
+        
+      );
+    }
+  }
+  

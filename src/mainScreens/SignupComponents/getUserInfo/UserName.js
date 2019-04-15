@@ -4,7 +4,7 @@ import { View, TextInput, Text, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 import firebase from 'react-native-firebase'
-import { createFireStoreDoc, loginToFirebase , sendFirstandLastName} from '../../../firebase/firestoreAPI'
+import { createFireStoreDoc, loginToFirebase , sendFirstandLastName} from '../../../firebase/firestore'
 import styles from '../styles';
 
 
