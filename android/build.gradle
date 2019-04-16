@@ -10,6 +10,7 @@ buildscript {
         buildToolsVersion = "28.0.3"
         //googlePlayServicesVersion = "15.0.1"
         // googlePlayServicesVersion = "12.0.0"
+        googlePlayServicesVisionVersion = "15.0.2"
         // googlePlayMapsVersion = "12.0.0"
         androidMapsUtilsVersion = "0.5+"
     }

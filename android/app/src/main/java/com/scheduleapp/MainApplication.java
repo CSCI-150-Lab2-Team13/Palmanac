@@ -9,6 +9,8 @@ import com.BV.LinearGradient.LinearGradientPackage;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
+
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -62,6 +64,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
             new PickerPackage(),
           new RNFetchBlobPackage(),
           new LinearGradientPackage(),

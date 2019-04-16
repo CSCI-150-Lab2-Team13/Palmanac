@@ -21,6 +21,9 @@ export default class firestoreAPI {
      * Adding user to database,
      * user must be an object with valid id property
      */
+    constructor(){
+        this.getFollowingEvents = this.getFollowingEvents.bind(this)
+    }
     static addUser(user) {
         if (user.id) {
             return firebase.firestore().collection('users').doc(user.id).set(user)
@@ -81,6 +84,52 @@ export default class firestoreAPI {
             })
             .catch(error => {
                 console.error("Error getting document: ", error);
+            })
+        }
+        else{
+            console.log("No user found!");
+        }
+
+    }
+
+    static getFollowingEvents(username) {
+        
+        if (username) {
+            let doc_list = [];
+            
+            return firebase.firestore().collection('users').doc(username).get()
+            .then((querySnapshot) => {
+                // get data from docs
+                doc_list = querySnapshot.docs.map(doc => doc.data());
+                return doc_list
+            })
+            .then((dataObj) => {
+                //get followers from docs
+                if(dataObj['followList']){
+                  return dataObj['followList']
+                }
+                return []
+            })
+            .then((followList) => {
+                //get all events
+                let friendsEvents = []
+                followList.forEach( (following) => {
+                    this.getEvents(following)
+                    .then( (eventList) =>{
+                        friendsEvents.concat(eventList)
+                    })
+                    .catch((error) => {
+                        console.error("Couldn't get friends list", error)
+                    })
+                })
+                return friendsEvents
+            })
+            .then( (friendsEvents) => {
+                //return events
+                return friendsEvents
+            })
+            .catch(error => {
+                console.error("Error getting friends events", error);
             })
         }
         else{
