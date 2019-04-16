@@ -19,7 +19,7 @@ import profilePicture from '../mainScreens/SignupComponents/getUserInfo/profileP
 
 import HardEventFormScreen from '../forms/addHardEvent'
 import QuickAddScreen from '../forms/quickAddScreen'
-
+import CamEventScreen from '../forms/camEvent'
 //import the different screens for different scenario's for tabNav
 import Feed from '../bottomScreens/Feed'
 import Pals from '../bottomScreens/Pals/Pals'
@@ -145,6 +145,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
     },
     QuickAddScreen : {
       screen: QuickAddScreen
+    },
+    CamEvent : {
+      screen: CamEventScreen
     }
   
   });

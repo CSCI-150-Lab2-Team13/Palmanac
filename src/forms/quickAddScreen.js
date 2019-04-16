@@ -57,6 +57,11 @@ export default class QuickAddScreen extends Component {
                             <Title>Add Event</Title>
                         </Button>
                     </View>
+                    <View style={styles.buttonView}>
+                        <Button block style = {styles.buttonCam} onPress={() => this.props.navigation.navigate({ routeName: 'CamEvent'})}>
+                            <Title>Add By Picture</Title>
+                        </Button>
+                    </View>
                 </View>
                 )
         }
@@ -97,18 +102,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonView : {
-        flex: 1,
+        flex: 3,
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        flexWrap: 'wrap',
+     
     },
     buttonQuick: {
         textAlign: 'center',
         alignSelf: 'center',
         borderRadius: 250,
         flexDirection: 'row',
-        flex: 1,
+        flex: 3,
         // paddingLeft: 100,
         // paddingRight: 100,
         paddingTop: 50,
@@ -127,7 +132,26 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         borderRadius: 250,
         flexDirection: 'row',
-        flex: 1,
+        flex: 3,
+        // paddingLeft: 100,
+        // paddingRight: 100,
+        paddingTop: 50,
+        paddingBottom: 50,
+        // marginTop: 20,
+        marginBottom: 0,
+        elevation: 4,
+        shadowColor: "white",
+        shadowOpacity: 0.5,
+        shadowRadius: 10
+        //backgroundColor = "#841584"
+       // paddingLeft: 10
+    },
+    buttonCam: {
+        textAlign: 'center',
+        alignSelf: 'center',
+        borderRadius: 250,
+        flexDirection: 'row',
+        flex: 3,
         // paddingLeft: 100,
         // paddingRight: 100,
         paddingTop: 50,

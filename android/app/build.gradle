@@ -107,6 +107,7 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
+        missingDimensionStrategy 'react-native-camera', 'mlkit'
     }
     splits {
         abi {
@@ -122,6 +123,11 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -139,6 +145,7 @@ android {
 
 
 dependencies {
+    implementation project(':react-native-camera')
     implementation project(':react-native-image-crop-picker')
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-fetch-blob')

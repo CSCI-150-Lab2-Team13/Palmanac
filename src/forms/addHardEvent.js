@@ -187,24 +187,49 @@ export default class HardEventFormView extends Component {
 
           const { params } = this.props.navigation.state;
           const eventString = params ? params.eventString: null;
+          const titleParam = params ? params.title : null
           if(eventString){
             var chrono = require('chrono-node');
             var results = chrono.parse(eventString)
+         
             try{
            // results[0].index;  
-            const getDiff = (string, diffBy) => string.split(diffBy).join('')
-            const title = getDiff(eventString, results[0].text)
+              // Extract description/ title (if quickAdd) from parsed text
+              const getDiff = (string, diffBy) => string.split(diffBy).join('')
+              const extracted = getDiff(eventString, results[0].text)
 
+              this.formGenerator.setValues({
+                startTime: results[0].start.date(),
+                endTime: results[0].end.date()
+              })
+
+              if(titleParam){
+               // console.warn("Here")
+                this.formGenerator.setValues({
+                  title: titleParam,
+                  desc: extracted,
+                })
+              }
+              else{
+                this.formGenerator.setValues({
+                  title: extracted,
+                })
+              }
             
             // results[0].text;   // 'tomorrow from 10 to 11 AM'
             // results[0].ref;    // Sat Dec 13 2014 21:50:14 GMT-0600 (CST)
-            this.formGenerator.setValues({
-              title: title,
-              startTime: results[0].start.date(),
-              endTime: results[0].end.date()
-            })
+
           }
           catch(err){}
+            if(eventString){
+              var newDesc = eventString
+              if(titleParam){
+                newDesc += titleParam
+              }
+              this.formGenerator.setValues({
+                desc: newDesc
+              })
+            }
           }
 
         }
