@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
+import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-base';
 import {Calendar, Agenda} from 'react-native-calendars';
 import firestoreAPI from '../firebase/firestoreAPI'
 import firebase from 'react-native-firebase'
@@ -90,7 +91,7 @@ export default class MainCalendar extends Component {
               items[eventStr] = 
                 [{
                   name: this.state.events[i]['title'],
-                  height: Math.max(80, Math.floor(Math.random() * 150)),
+              //    height: Math.max(80, Math.floor(Math.random() * 150)),
                   desc: this.state.events[i]['desc'],
                   startTime: startStr,
                   endTime: endStr,
@@ -204,7 +205,14 @@ export default class MainCalendar extends Component {
       return this.state.softEvents.map(function(event) {
         return(
           <View key={event["id"]}>
-            <Text>{event.title}</Text>
+            <Card style={styles.softEventsCard}>
+              <Text style={{fontWeight: 'bold'}}>
+                {event.title}
+              </Text>
+              <Text style={{width: 75}}>
+                {event.desc ? event.desc :"" }
+              </Text>
+            </Card>
           </View>
         )
       });
@@ -215,36 +223,9 @@ export default class MainCalendar extends Component {
      <View style={styles.emptyDate}><Text> No Events Yet!</Text></View>
     );
   }
-  renderEmptyData(){
-        // TODO: Provide styling for empty events
-    return (
-      <View style={styles.emptyDate}><Text> No Events Yet!</Text></View>
-    );
-  }
-
-
-  renderItem(item) {
-    return (
-      <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.name} </Text>
-        <Text>{item.startTime} to {item.endTime}</Text>
-        {
-          //TODO: Add padding below/other styling
-        }
-        <Text style={styles.text}>{item.desc}</Text>
-     
-      </View>
-    );
-  }
 
 
 
-  renderEmptyDate() {
-    // TODO: Provide styling for dates with deleted/removed events
-    return (
-     <View style={styles.emptyDate}><Text> No Events Yet!</Text></View>
-    );
-  }
   renderEmptyData(){
         // TODO: Provide styling for empty events
     return (
@@ -254,8 +235,10 @@ export default class MainCalendar extends Component {
 
   renderItem(item) {
     return (
-      <View style={[styles.item, {height: item.height}]}>
-        <Text>{item.name} </Text>
+            // {height: item.height}]}>
+      <View style={[styles.item]}>
+
+        <Text style={{fontWeight: 'bold'}} >{item.name} </Text>
         <Text>{item.startTime} to {item.endTime}</Text>
         {
           //TODO: Add padding below/other styling
@@ -308,19 +291,21 @@ export default class MainCalendar extends Component {
 const styles = StyleSheet.create({
   item: {
     backgroundColor: 'white',
-    flex: 1,
+    flex: 2,
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
-    marginTop: 17
+    marginTop: 17,
+
   },
   calendar: {
-    flex: 2,
+    flex: 5,
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: '#eee',
   },
   text: {
+    flex: 5,
     textAlign: 'center',
     borderColor: '#bbb',
    // padding: 10,
@@ -329,14 +314,21 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'gray'
+    backgroundColor: 'gray',
   },
   emptyDate: {
-    height: 15,
     flex: 1,
     paddingTop: 30
+ 
   },
   softEvents:{
-    flex: 1
+    flex: 3,
+    paddingLeft: 10
+  },
+  softEventsCard : {
+    flex: 3,
+    textAlign: 'center',
+    alignSelf: 'center',
+    padding: 10
   }
 });
