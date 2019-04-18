@@ -92,6 +92,25 @@ export default class firestoreAPI {
 
     }
 
+    static getEventById(username, id) {
+        
+        if (username) {
+            let doc_list = [];
+            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id).get()
+            .then((querySnapshot) => {
+                doc_list = querySnapshot.docs.map(doc => doc.data());
+                return doc_list
+            })
+            .catch(error => {
+                console.error("Error getting document: ", error);
+            })
+        }
+        else{
+            console.log("No user found!");
+        }
+
+    }
+
     static getFollowingEvents(username) {
         
         if (username) {
