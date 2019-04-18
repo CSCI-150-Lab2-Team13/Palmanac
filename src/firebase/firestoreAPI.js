@@ -93,14 +93,24 @@ export default class firestoreAPI {
     }
 
     static updateEvent(username, event, id) {
-        //console.warn('updateEvent reached')
+       
         if (username) {
-            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id).set(event)
-                .then(() => {
-                    console.warn("Document successfully written!");
+            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id).get()
+                .then((querySnapshot) => {
+                    //should return single document
+                    
+                    var docRef = querySnapshot.docs[0].ref
+                   
+                    docRef.set(event).then( () => {
+                        
+                    })
+                    .catch( (err) =>{
+                        
+                        console.error("Could not update: ", err)
+                    })
                 })
                 .catch(error => {
-                    console.error("Error writing document: ", error);
+                    console.error("Error updating document: ", error);
                 });
         } else {
             console.error("event error");
