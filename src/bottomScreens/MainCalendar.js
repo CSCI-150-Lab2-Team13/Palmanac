@@ -95,6 +95,7 @@ export default class MainCalendar extends Component {
                   desc: this.state.events[i]['desc'],
                   startTime: startStr,
                   endTime: endStr,
+                  id: this.state.events[i]['id']
                     //selected: true, 
                     //disableTouchEvent: true, 
                     // name: 'Item: ' + eventStr,
@@ -259,16 +260,22 @@ export default class MainCalendar extends Component {
   renderItem(item) {
     return (
             // {height: item.height}]}>
-      <View style={[styles.item]}>
+      <TouchableOpacity onPress={() => { 
+        // alert("Clicked")
+         this.onEventPress(item['id']) 
 
-        <Text style={{fontWeight: 'bold'}} >{item.name} </Text>
-        <Text>{item.startTime} to {item.endTime}</Text>
-        {
-          //TODO: Add padding below/other styling
-        }
-        <Text style={styles.text}>{item.desc}</Text>
-     
-      </View>
+         } }>
+        <View style={[styles.item]}>
+
+          <Text style={{fontWeight: 'bold'}} >{item.name} </Text>
+          <Text>{item.startTime} to {item.endTime}</Text>
+          {
+            //TODO: Add padding below/other styling
+          }
+          <Text style={styles.text}>{item.desc}</Text>
+      
+        </View>
+      </TouchableOpacity>
     );
   }
 
