@@ -80,35 +80,77 @@ export default class MainCalendar extends Component {
       if(this.state.events){
         var items = {}
           for(let i = 0, l = this.state.events.length; i < l; i++) {
-          if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
-            
-              var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
-            
-              var eventStr = moment(dateVal).format("YYYY-MM-DD")
-              var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
-              var startStr = moment(dateVal).format("HH:mm");
-              var endStr = moment(endVal).format("HH:mm");
-              items[eventStr] = 
-                [{
-                  name: this.state.events[i]['title'],
-              //    height: Math.max(80, Math.floor(Math.random() * 150)),
-                  desc: this.state.events[i]['desc'],
-                  startTime: startStr,
-                  endTime: endStr,
-                  id: this.state.events[i]['id']
-                    //selected: true, 
-                    //disableTouchEvent: true, 
-                    // name: 'Item: ' + eventStr,
-                    // height: Math.max(50, Math.floor(Math.random() * 150))
-                    
-                    //selectedColor: 'blue',
-                    // text: {
-                    //   color: 'black',
-                    //   fontWeight: 'bold'
-                    // }
-                }]
-              }
+            var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
+            var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
+
+            if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
+                // if(this.state.events[i]['rruleString'] != ""){
+                //   const rule = this.state.events[i]['rruleString'].fromString()
+                //   for(date in rule.all() ){
+                //       var startDate = date
+                //       startDate.setHours(dateVal.getMinutes())
+                //       startDate.setMinutes(dateVal.getHours())
+
+                //       var endDate = date
+                //       endDate.setHours(endVal.getMinutes())
+                //       endDate.setMinutes(endVal.getHours())
+
+                //     // var eventStr = moment(dateVal).format("YYYY-MM-DD")
+                //     // var endVal = //["seconds"] * 1000);
+                //       var startStr = moment(startDate).format("HH:mm");
+                //       var endStr = moment(endDate).format("HH:mm");
+
+                //       items[eventStr] = 
+                //       [{
+                //         name: this.state.events[i]['title'],
+                //     //    height: Math.max(80, Math.floor(Math.random() * 150)),
+                //         desc: this.state.events[i]['desc'],
+                //         startTime: startStr,
+                //         endTime: endStr,
+                //         id: this.state.events[i]['id']
+                //           //selected: true, 
+                //           //disableTouchEvent: true, 
+                //           // name: 'Item: ' + eventStr,
+                //           // height: Math.max(50, Math.floor(Math.random() * 150))
+                          
+                //           //selectedColor: 'blue',
+                //           // text: {
+                //           //   color: 'black',
+                //           //   fontWeight: 'bold'
+                //           // }
+                //       }]
+                //     }
+                //   }
+                
+             //   else{
+                  var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
+                  var eventStr = moment(dateVal).format("YYYY-MM-DD")
+                  var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
+                  var startStr = moment(dateVal).format("HH:mm");
+                  var endStr = moment(endVal).format("HH:mm");
+                  items[eventStr] = 
+                      [{
+                        name: this.state.events[i]['title'],
+                    //    height: Math.max(80, Math.floor(Math.random() * 150)),
+                        desc: this.state.events[i]['desc'],
+                        startTime: startStr,
+                        endTime: endStr,
+                        id: this.state.events[i]['id']
+                          //selected: true, 
+                          //disableTouchEvent: true, 
+                          // name: 'Item: ' + eventStr,
+                          // height: Math.max(50, Math.floor(Math.random() * 150))
+                          
+                          //selectedColor: 'blue',
+                          // text: {
+                          //   color: 'black',
+                          //   fontWeight: 'bold'
+                          // }
+                      }]
+               // }
+
             }
+          }
             /*
               Case of soft events, where item is created but there is no 
               startTime or endTime
