@@ -118,6 +118,7 @@ var fields;
 var data;
 var freq;
 var interval;
+
 export default class HardEventFormView extends Component {
     constructor() {
       super();
@@ -141,7 +142,7 @@ export default class HardEventFormView extends Component {
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)
       this.create = this.create.bind(this);
-
+      
     }
 
 
@@ -422,6 +423,7 @@ export default class HardEventFormView extends Component {
 
 
     create() {
+      //console.warn('create reached')
       var formValues = this.formGenerator.getValues();
       // rule: {
       //   freq: "",
@@ -444,8 +446,15 @@ export default class HardEventFormView extends Component {
         var oneDay = 1000 * 60 * 60 * 24;
         var day = Math.floor(diff / oneDay);
       }
-      var id = generatePushID()
-      _.set(formValues,'id', id)
+      if(!this.state.edit){
+        var id = generatePushID()
+        _.set(formValues,'id', id)
+      }
+      else{
+        const { params } = this.props.navigation.state;
+        //if this.state.edit, params.id != null
+        _.set(formValues, 'id', params.id)
+      }
 
       if(freq.value != "Select"){
         if(freq.value == "Weekly" || freq.value == "Monthly"){
@@ -542,9 +551,10 @@ export default class HardEventFormView extends Component {
       delete formValues.reccurrance;
 
 
-
+          // Code to check for time conflicts
           firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
             {
+              //console.warn('getEvents reached')
               this.setState(
                 {
                   events: this.state.events.concat(eventList)
@@ -553,9 +563,10 @@ export default class HardEventFormView extends Component {
             }
           )
         .finally( () => {
+          //console.warn('finally reached')
           var col = false
           this.state.events.forEach((event) =>{
-            if( (event["startTime"] && event["endTime"]) ){
+            if( (event["startTime"] && event["endTime"]) && formValues['id'] != event['id'] ){
               //check if collision
               if(formValues['startTime'] <= event['endTime'] && formValues['endTime'] >= event["startTime"]){
                 col = true
@@ -563,8 +574,16 @@ export default class HardEventFormView extends Component {
             } 
           })
           if(!col){
-            // No collission
-            firestoreAPI.addEvent(this.state.username, formValues)
+            // No colission
+            if(this.state.edit){
+              // console.warn('update reached')
+              const { params } = this.props.navigation.state;
+              // if this.state.edit, params.id != null
+              firestoreAPI.updateEvent(this.state.username, formValues, params.id)
+            }
+            else{
+              firestoreAPI.addEvent(this.state.username, formValues)
+            }
             this.props.navigation.navigate({ routeName: 'MainCalendar'})
           }
           else{
@@ -766,7 +785,7 @@ export default class HardEventFormView extends Component {
     {
         type: 'text',
         name: 'desc',
-        required: true,
+        required: false,
         label: 'Desc. (optional)',
         props: {
             multiline: true,

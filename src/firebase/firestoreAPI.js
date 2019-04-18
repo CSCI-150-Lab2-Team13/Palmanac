@@ -92,11 +92,38 @@ export default class firestoreAPI {
 
     }
 
+    static updateEvent(username, event, id) {
+       
+        if (username) {
+            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id).get()
+                .then((querySnapshot) => {
+                    //should return single document
+                    
+                    var docRef = querySnapshot.docs[0].ref
+                   
+                    docRef.set(event).then( () => {
+                        
+                    })
+                    .catch( (err) =>{
+                        
+                        console.error("Could not update: ", err)
+                    })
+                })
+                .catch(error => {
+                    console.error("Error updating document: ", error);
+                });
+        } else {
+            console.error("event error");
+        }
+
+    }
+
     static getEventById(username, id) {
         
         if (username) {
             let doc_list = [];
-            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id).get()
+            return firebase.firestore().collection('users').doc(username).collection('events').where("id", "==", id)
+            .get()
             .then((querySnapshot) => {
                 doc_list = querySnapshot.docs.map(doc => doc.data());
                 return doc_list
