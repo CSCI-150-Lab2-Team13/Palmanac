@@ -10,11 +10,13 @@
     "chrono-node": "^1.3.11",
     "firebase": "^5.8.5",
     "firestorter": "^1.2.2",
+    "jsc-android": "241213.x.x",
     "lodash": "^4.17.11",
     "mobx": "^5.9.4",
     "mobx-react": "^5.4.3",
     "moment": "^2.24.0",
     "native-base": "^2.12.0",
+    "prop-types": "^15.7.2",
     "react": "16.6.3",
     "react-native": "^0.58.5",
     "react-native-base": "^1.1.0",
@@ -39,8 +41,7 @@
     "rn-fetch-blob": "^0.10.15",
     "rrule": "^2.6.0",
     "url-parse": "^1.4.4",
-    "validator": "^10.11.0",
-    "jsc-android": "241213.x.x"
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

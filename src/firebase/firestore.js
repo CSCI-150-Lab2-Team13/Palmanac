@@ -1,7 +1,8 @@
 
 import firebase from 'react-native-firebase'
 
-import { initFirestorter} from 'firestorter'
+
+import { initFirestorter, Collection, Document } from 'firestorter';
 import { Platform, AppState, Alert } from 'react-native'
 var ImagePicker = require('react-native-image-picker');
 
@@ -204,6 +205,8 @@ class Firebase {
 
   messages = () => this.db.collection('messages');
 
+ //** export collections and documents   ***
+
 
 
 
@@ -211,7 +214,6 @@ class Firebase {
 
 export default Firebase;
 // User Functions 
-
 
 
 

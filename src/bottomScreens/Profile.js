@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import {  View, StyleSheet, Image, TouchableOpacity,Text } from 'react-native'
 import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
-
+import PropTypes from 'prop-types'
 
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
-import { withAuthorization} from '../Session';
+import { withAuthentication} from '../Session';
 import { withFirebase } from '../firebase';
-import firebase from 'react-native-firebase'
+import { userRef } from '../firebase/firestore'
 
 
 
@@ -21,75 +21,36 @@ class Profile extends Component {
             
         )
     };
-    
-
   
-
-    constructor(props) {
-        super(props);
-        this.state = {
-          loading: false,
-        };
-    }
-    
-    componentDidMount() {
-      if (
-        !(
-          this.props.userStore.users &&
-          this.props.userStore.users[this.props.match.params.id]
-        )
-      ) {
-        this.setState({ loading: true });
-      }
-  
-      this.props.firebase
-        .user(this.props.match.params.id)
-        .on('value', snapshot => {
-          this.props.userStore.setUser(
-            snapshot.val(),
-            this.props.match.params.id,
-          );
-  
-          this.setState({ loading: false });
-        });
-}
-
-componentWillUnmount() {
-  this.props.firebase.user(this.props.match.params.id).off();
-}
-
-
+    static propTypes = {
+      userRef: PropTypes.object
+    };
 
 render() {
-  const user = (this.props,userStore.users || {})[
-    this.props.match.params.id
-  ];
-  const { loading } = this.state;
+  const userRef = this.props;
+  const { firstName,lastName,userName,photoURL } = userRef;
   return (
     <View>
-    {user && (
     <View style={styles.container}>
         <View style={styles.header}></View>
-        <Image style={styles.avatar} source={{uri: this.state.user.photoURL}}/>
+        <Image style={styles.avatar} source={{uri:photoURL}}/>
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-          <Text style={styles.name}> {this.state.userName}</Text>
-          <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
+          <Text style={styles.name}> {userName}</Text>
+          <Text style={styles.info}>{firstName} {lastName}</Text> 
           </View>
       </View>
     </View>
-    )}
+    }
     </View>
    );
  }
 }
-
 export default compose(
   withFirebase,
-  inject('userStore'),
-  observer,
-)(Profile);
-
+  inject('userInfoStore'),
+  observer
+)(Profile)
 
 const styles = StyleSheet.create({
 header:{
