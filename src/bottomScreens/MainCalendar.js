@@ -14,7 +14,7 @@ import firebase from 'react-native-firebase'
 import moment from "moment"
 import _ from 'lodash';
 
-
+ 
 export default class MainCalendar extends Component {
   constructor(props) {
     super(props);
@@ -28,7 +28,7 @@ export default class MainCalendar extends Component {
     this.onDayPress = this.onDayPress.bind(this);
     this.renderSoftEvents = this.renderSoftEvents.bind(this);
     this.assignEvent = this.assignEvent.bind(this);
-
+   // this.onEventPress = this.onEventPress.bind(this);
   }
 
   state = {
@@ -200,23 +200,46 @@ export default class MainCalendar extends Component {
     );
   }
 
-
+  
   renderSoftEvents(){
-      return this.state.softEvents.map(function(event) {
-        return(
-          <View key={event["id"]}>
-            <Card style={styles.softEventsCard}>
-              <Text style={{fontWeight: 'bold'}}>
-                {event.title}
-              </Text>
-              <Text style={{width: 75}}>
-                {event.desc ? event.desc :"" }
-              </Text>
-            </Card>
-          </View>
-        )
-      });
+    return this.state.softEvents.map( (event) => {
+      return(
+        <View key={event["id"]} >
+          <Card style={styles.softEventsCard}>
+          <TouchableOpacity             
+            onPress={() => { 
+             // alert("Clicked")
+              this.onEventPress(event['id']) 
+  
+              } }
+          >
+            <Text style={{fontWeight: 'bold'}}>
+              {event.title}
+            </Text>
+            <Text style={{width: 75}}>
+              {event.desc ? event.desc :"" }
+            </Text>
+            </TouchableOpacity>
+          </Card>
+        </View>
+      )
+    });
+}
+
+  onEventPress(id){
+    this.props.navigation.navigate({ routeName: 'HardEvent', params: {id: id}})
+    //   firestoreAPI.getEventById(firebase.auth().currentUser.displayName, id).then( (eventList) =>
+    //   {
+    //    return eventList[0]
+    //   }
+    //  )
+    //  .then(event){
+      
+    //  }
   }
+
+
+
   renderEmptyDate() {
     // TODO: Provide styling for dates with deleted/removed events
     return (

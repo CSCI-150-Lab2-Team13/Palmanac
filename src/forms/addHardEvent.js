@@ -122,6 +122,7 @@ export default class HardEventFormView extends Component {
     constructor() {
       super();
       this.state = {
+        edit: false,
         error: "",
         destination: "",
         predictions: [],
@@ -188,6 +189,7 @@ export default class HardEventFormView extends Component {
           const { params } = this.props.navigation.state;
           const eventString = params ? params.eventString: null;
           const titleParam = params ? params.title : null
+          const idParam = params ? params.id : null
           if(eventString){
             var chrono = require('chrono-node');
             var results = chrono.parse(eventString)
@@ -220,7 +222,7 @@ export default class HardEventFormView extends Component {
             // results[0].ref;    // Sat Dec 13 2014 21:50:14 GMT-0600 (CST)
 
           }
-          catch(err){}
+          catch(err){
             if(eventString){
               var newDesc = eventString
               if(titleParam){
@@ -230,6 +232,37 @@ export default class HardEventFormView extends Component {
                 desc: newDesc
               })
             }
+          }
+          }
+
+          if(idParam){
+            this.setState({
+              edit: true
+            })
+              firestoreAPI.getEventById(firebase.auth().currentUser.displayName, idParam).then( (eventList) =>
+              {
+               return eventList[0]
+              }
+             )
+             .then( (event) => {
+               // test purposes -> works
+              // this.formGenerator.setValues({
+              //   title: 'a'
+              // })
+               for(var prop in event){
+                 
+                if(this.formGenerator.hasOwnProperty(prop)){
+                  var eventProp = event[prop]
+                  this.formGenerator.setValues({
+                    // using bracket notation lets you use var instead of string 'prop'
+                    [prop]: eventProp
+                  })
+                }
+              }
+             })
+             .catch( (error) => {
+                console.error("Could not retrieve event to edit")
+             })
           }
 
         }
@@ -265,125 +298,126 @@ export default class HardEventFormView extends Component {
 
     onValueChange(){
      // if (name == 'location'){
-      const formValues = this.formGenerator.getValues();
-      if (formValues.location != '' || (this.state.placeId == '' && this.state.destination != '') ){
-        this.onChangeDestinationDebounced(formValues.location);
-      }
-      else if(this.state.placeId != '' && formValues.location == ''){
+      if(this.formGenerator){
+        const formValues = this.formGenerator.getValues();
+        if (formValues.location != '' || (this.state.placeId == '' && this.state.destination != '') ){
+          this.onChangeDestinationDebounced(formValues.location);
+        }
+        else if(this.state.placeId != '' && formValues.location == ''){
+          this.setState({
+            placeId: '',
+            placeDetails: '',
+            predictions: [],
+            
+          });
+        }
+
+
+
+
+        // NOTE: VERY IMPORTANT
+        // Originally only used for debugging, but this function call is
+        // actually necessary for onValueChange to display properly
+        // this seems to allow onValueChange to update before exiting
+        // which does not happen otherwise
         this.setState({
-          placeId: '',
-          placeDetails: '',
-          predictions: [],
+          error: JSON.stringify(interval.value)
+      })
+
+        fields[end_index].hidden = false;
+        fields[start_index].mode = 'datetime';
+        //Show fields based on which value is filled in
+        if(freq.value != "Select"){
+          // Unhide selected value corresponding form
           
-        });
-      }
 
-
-
-
-      // NOTE: VERY IMPORTANT
-      // Originally only used for debugging, but this function call is
-      // actually necessary for onValueChange to display properly
-      // this seems to allow onValueChange to update before exiting
-      // which does not happen otherwise
-      this.setState({
-        error: JSON.stringify(interval.value)
-     })
-
-      fields[end_index].hidden = false;
-      fields[start_index].mode = 'datetime';
-      //Show fields based on which value is filled in
-      if(freq.value != "Select"){
-        // Unhide selected value corresponding form
-        
-
-        var found_days = false;
-        var found_months = false;
-        if(interval.type != "date" && interval.value){
-         for(let i = 0, l = days.length; i < l; i++) {
-           //for(let j = 0, k = interval.value.length; j < k; j++){
-              if(days[i] == interval.value[0]){
-                found_days = true;
-                break;
-              }
-          //  }
-          //  if(found_days) break;
-         } 
-         for(let i = 0, l = months.length; i < l; i++) {
-           // for(let j = 0, k = interval.value.length; j < k; j++){
-              if(months[i] == interval.value[0]){
-                found_months = true;
-                break;
-              }
-          //  }
-          //  if(found_months) break;
-        }
-      }
-
-        fields[start_index].required = true;
-        fields[end_index].required = true;
-        freq.required = true;
-
-
-
-        if(freq.value == "Weekly"){
-          if( found_months ||  interval.type == "date"){
-            interval.value = [];
+          var found_days = false;
+          var found_months = false;
+          if(interval.type != "date" && interval.value){
+          for(let i = 0, l = days.length; i < l; i++) {
+            //for(let j = 0, k = interval.value.length; j < k; j++){
+                if(days[i] == interval.value[0]){
+                  found_days = true;
+                  break;
+                }
+            //  }
+            //  if(found_days) break;
+          } 
+          for(let i = 0, l = months.length; i < l; i++) {
+            // for(let j = 0, k = interval.value.length; j < k; j++){
+                if(months[i] == interval.value[0]){
+                  found_months = true;
+                  break;
+                }
+            //  }
+            //  if(found_months) break;
           }
-          interval.type = 'select';
-          interval.objectType = true;
-          interval.labelKey = 'name';
-          interval.primaryKey = 'id';
-          interval.options = days;
-          
-
-          //interval.multiple = true;
-          interval.hidden = false;
         }
-        else if (freq.value == "Monthly"){
-          //Used to reset value if switched weekly
-          if ( found_days || interval.type == "date" ){
-            interval.value = []
+
+          fields[start_index].required = true;
+          fields[end_index].required = true;
+          freq.required = true;
+
+
+
+          if(freq.value == "Weekly"){
+            if( found_months ||  interval.type == "date"){
+              interval.value = [];
+            }
+            interval.type = 'select';
+            interval.objectType = true;
+            interval.labelKey = 'name';
+            interval.primaryKey = 'id';
+            interval.options = days;
+            
+
+            //interval.multiple = true;
+            interval.hidden = false;
           }
-          //
-          
-          interval.type = 'select';       
-          interval.objectType = true;
-          interval.labelKey = 'name';
-          interval.primaryKey = 'id';
-          interval.options = months;
+          else if (freq.value == "Monthly"){
+            //Used to reset value if switched weekly
+            if ( found_days || interval.type == "date" ){
+              interval.value = []
+            }
+            //
+            
+            interval.type = 'select';       
+            interval.objectType = true;
+            interval.labelKey = 'name';
+            interval.primaryKey = 'id';
+            interval.options = months;
 
-          interval.hidden = false;
+            interval.hidden = false;
 
+            
+          }
           
+          else if(freq.value == "Yearly"){
+            fields[end_index].required = false;
+            // Replace interval value with
+            // implementation that uses start date
+            // and has no end date
+
+
+            // if(found_days || found_months ){
+            //   interval.value = new Date();
+            // }        
+            // interval.type = "date";
+            // interval.mode = 'date';
+            interval.hidden = true;
+            fields[end_index].hidden = true;
+            fields[start_index].mode = 'date';
+          }
         }
-        
-        else if(freq.value == "Yearly"){
+        else{
+          fields[start_index].required = false;
           fields[end_index].required = false;
-          // Replace interval value with
-          // implementation that uses start date
-          // and has no end date
-
-
-          // if(found_days || found_months ){
-          //   interval.value = new Date();
-          // }        
-          // interval.type = "date";
-          // interval.mode = 'date';
+          freq.required = false;
+          // Set all value to hidden
           interval.hidden = true;
-          fields[end_index].hidden = true;
-          fields[start_index].mode = 'date';
         }
+        
       }
-      else{
-        fields[start_index].required = false;
-        fields[end_index].required = false;
-        freq.required = false;
-        // Set all value to hidden
-        interval.hidden = true;
-      }
-      
-
     }
 
 
