@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { observer } from 'mobx-react/native';
 import store from '../store';
-import AuthStore from '../store/authStore';
+
 
 
 @observer

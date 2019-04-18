@@ -4,11 +4,6 @@ import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Lef
 import PropTypes from 'prop-types'
 
 import { inject, observer } from 'mobx-react';
-import { compose } from 'recompose';
-import { withAuthentication} from '../Session';
-import { withFirebase } from '../firebase';
-import { userRef } from '../firebase/firestore'
-
 
 
 
@@ -21,14 +16,12 @@ class Profile extends Component {
             
         )
     };
-  
-    static propTypes = {
-      userRef: PropTypes.object
-    };
+
+
+
 
 render() {
-  const userRef = this.props;
-  const { firstName,lastName,userName,photoURL } = userRef;
+
   return (
     <View>
     <View style={styles.container}>
@@ -46,11 +39,7 @@ render() {
    );
  }
 }
-export default compose(
-  withFirebase,
-  inject('userInfoStore'),
-  observer
-)(Profile)
+export default observer(Profile);
 
 const styles = StyleSheet.create({
 header:{

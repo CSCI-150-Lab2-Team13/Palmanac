@@ -1,30 +1,25 @@
-import { observable, action, computed } from 'mobx';
+    
+import React from 'react';
+import { observable, action, computed } from 'mobx'
+import { Document } from 'firestorter'
+
+
+
 
 class UserStore {
-  @observable users = null;
 
   constructor(rootStore) {
-    this.rootStore = rootStore;
+    this.user = new Document()
   }
 
-  @action setUsers = users => {
-    this.users = users;
-  };
-
-  @action setUser = (user, displayname) => {
-    if (!this.users) {
-      this.users = {};
-    }
-
-    this.users[displayname] = user;
-  };
-
-  @computed get userList() {
-    return Object.keys(this.users || {}).map(key => ({
-      ...this.users[displayname],
-      displayname: key,
-    }));
+@action setUser = path => {
+  if(this.user.path !== path)
+  {
+    this.user.path = path;
   }
+} 
+
 }
 
-export default UserStore;
+
+export default UserStore

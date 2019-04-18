@@ -16,9 +16,7 @@ export default class AppStart extends React.Component {
     render() {
       return (
         <Provider {...store}>
-        <FirebaseContext.Provider value={new Firebase()}>
           <App />
-        </FirebaseContext.Provider>
       </Provider>
         
       );
