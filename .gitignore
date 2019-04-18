@@ -54,3 +54,4 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+.vscode/ipch/2d56ca4ce55284b7/mmap_address.bin
