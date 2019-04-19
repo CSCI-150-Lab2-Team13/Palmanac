@@ -17,7 +17,7 @@ export default class SearchPalInfo extends React.Component {
             defaultContainer: true,
             confirmationContainer: false,
             results: [],
-            errorMessage: null
+            errorMessage: null, 
 
         }
     }
@@ -46,12 +46,12 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 
 render(){
     return (
-    <View>
+    <View> 
         {this.state.errorMessage &&
              <Text style={{ color: 'red', fontStyle: 'italic' }}>
                    {this.state.errorMessage}
              </Text>
-        }        
+        }
         <TouchableOpacity onPress={() => this.checkIfContactAlreadyInUserContactListThenAddContact()}>
         {this.state.defaultContainer &&
             <View style={styles.defaultContainer}>
@@ -90,8 +90,6 @@ render(){
             </View>
         }
     </TouchableOpacity>
-</View>
-    )
-
-}
+    </View>
+    )}
 }
