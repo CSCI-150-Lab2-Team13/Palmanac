@@ -482,9 +482,12 @@ export const searchPals = async (search) => {
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     const name = doc.get('Username')
+                    const picture = doc.get('photoURL')
+                    const firstName = doc.get('firstName')
+                    const lastName = doc.get('lastName')
                     if (name.charAt(0) === search.charAt(0)) {
                         const newId = results.length + 1
-                        const newPotentialContact = { id: newId, name: name }
+                        const newPotentialContact = { id: newId, name: name, picture:picture, firstName:firstName, lastName:lastName }
                         results = [...results, newPotentialContact]
                     }
                     return

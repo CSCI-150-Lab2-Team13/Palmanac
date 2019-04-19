@@ -16,17 +16,24 @@ export default class SearchPalInfo extends React.Component {
         }
     }
 
+
 render(){
     return (
         <TouchableOpacity>
         {this.state.defaultContainer &&
             <View style={styles.defaultContainer}>
                 <Image
-                    source={this.picture}
+                    source={{uri: this.props.contact.picture}}
                     style={styles.rounds}
                 />
                     <Text style={styles.text}>
                             {this.props.contact.name}
+                    </Text>
+                    <Text >
+                            {this.props.contact.firstName}
+                    </Text>
+                    <Text>
+                            {this.props.contact.lastName}
                     </Text>
             </View>
         }
