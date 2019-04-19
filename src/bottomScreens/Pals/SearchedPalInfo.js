@@ -16,9 +16,6 @@ export default class SearchPalInfo extends React.Component {
         }
     }
 
-
-
-
 render(){
     return (
         <TouchableOpacity>
@@ -28,9 +25,9 @@ render(){
                     source={this.picture}
                     style={styles.rounds}
                 />
-                <Text style={styles.text}>
-                  
-                </Text>
+                    <Text style={styles.text}>
+                            {this.props.contact.name}
+                    </Text>
             </View>
         }
         {this.state.confirmationContainer &&

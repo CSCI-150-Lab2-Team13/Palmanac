@@ -16,7 +16,7 @@ export default class Pals extends Component {
       palName: "",
       errorMessage: null,
       loading: false, 
-      datafetched : []
+      datafetched : [],
     }
   }
 
