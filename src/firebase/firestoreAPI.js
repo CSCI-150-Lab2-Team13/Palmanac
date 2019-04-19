@@ -373,36 +373,39 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
 // Functions for adding and removing friends 
 //--------------------
 //:-)
+//create firestore doc based on username 
+
 
 //function to add pals 
-export const addPalToFirestore = async (currentUser, paltoAdd) => {
 
-    // add friend to current user contact list in database
-    new Promise((resolve, reject) => {
-        firebase.firestore()
-            .collection('users')
-            .doc(currentUser)
-            .collection('pals')
-            .add({
-                username: paltoAdd
-            })
-            .then(resolve())
-            .catch(error => reject(error))
-    })
+export const addPalToFirestore = (currentUser, usertoAdd) => 
+    new Promise ((resolve, reject) => {
+        const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
 
-    // add current user to in the new contact contactList
-    new Promise((resolve, reject) => {
-        firebase.firestore()
-            .collection('users')
-            .doc(paltoAdd)
-            .collection('pals')
-            .add({
-                username: currentUser
-            })
-            .then(resolve())
-            .catch(error => reject(error))
-    })
-}
+        ref.doc(usertoAdd).get()
+                    .then(doc => {
+                        if (!doc.exists) {
+                            ref.doc(username).set({
+                                Username: usertoAdd,
+                                firstName: null,
+                                lastName: null,
+                                Email: userEmail,
+                                UID: userUID,
+                                photoURL: null,
+                                photoName:null,
+                            })
+
+                                .then(resolve())
+                                .catch((error) => {
+                                    reject(error)
+                                })
+                        }
+                        else {
+                            reject("Already your friend")
+                        }
+                    })
+})
+
 
 //function to delete friends 
 export const deleteFriend = async (currentUser, palName) => {
@@ -448,6 +451,63 @@ export const deleteFriend = async (currentUser, palName) => {
  * 
  * 
  */
+  
+
+export const checkFriendList = async (currentUser, palName)=>
+{   
+
+    const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
+    let results = []
+    await ref
+        .where('Username', '==',palName )
+        .get()
+        .then(querySnapshot =>{
+            if (querySnapshot.empty)
+            {
+                return 
+            }
+            else 
+            {
+                // if successful, return search
+                results = [{ id: 0, name: palName }]
+                return
+            }
+        })
+            .catch((err) => {
+                return 'an error has occurred while searching for pals: ', err
+            })
+
+    // If previous query successful, return results, end the function
+    if (results.length != 0) {
+        return results
+    } else if (palName.length > 2) {
+        // if search length > 2 chars (avoid query for one, two or three letters), 
+        // Query for contact's names starting with the search
+        await ref
+            .orderBy('Username')
+            .startAfter(palName)
+            .limit(10)
+            .get()
+            .then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    const name = doc.get('Username')
+                    const picture = doc.get('photoURL')
+                    const firstName = doc.get('firstName')
+                    const lastName = doc.get('lastName')
+                    if (name.charAt(0) === palName.charAt(0)) {
+                        const newId = results.length + 1
+                        const newPotentialContact = { id: newId, name: name, picture:picture, firstName:firstName, lastName:lastName }
+                        results = [...results, newPotentialContact]
+                    }
+                    return
+                })
+            })
+            .catch(err => {
+                return 'an error has occurred while searching for pals: ', err
+            })
+        return results
+    }
+}
 export const searchPals = async (search) => {
     const ref = firebase.firestore().collection('users')
     let results = []

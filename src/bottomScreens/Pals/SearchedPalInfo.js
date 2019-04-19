@@ -3,7 +3,10 @@ import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
 import { Icon } from 'react-native-elements'
 
 
+import firebase from 'react-native-firebase'
+import { checkFriendList, addPalToFirestore } from '../../firebase/firestoreAPI'
 import styles from './styles'
+
 
 export default class SearchPalInfo extends React.Component {
     constructor(props) {
@@ -13,13 +16,43 @@ export default class SearchPalInfo extends React.Component {
             sendRequest: false,
             defaultContainer: true,
             confirmationContainer: false,
+            results: [],
+            errorMessage: null
+
         }
     }
 
 
+checkIfContactAlreadyInUserContactListThenAddContact = async () => {
+    const currentUser = firebase.auth().currentUser.displayName
+    const PalToAdd = this.props.contact.name
+    checkFriendList(currentUser, PalToAdd)
+    .then((results)=> this.setState({results:results}))
+    .catch((error) =>this.setState({ errorMessage: error }))
+    if (!this.state.results.length )
+    {
+        addPalToFirestore(currentUser, PalToAdd)
+        .catch((error) =>this.setState({errorMessage:error}))
+    }
+    else 
+    {
+        console.log("hi");
+    }
+
+}
+
+
+
+
 render(){
     return (
-        <TouchableOpacity>
+    <View>
+        {this.state.errorMessage &&
+             <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                   {this.state.errorMessage}
+             </Text>
+        }        
+        <TouchableOpacity onPress={() => this.checkIfContactAlreadyInUserContactListThenAddContact()}>
         {this.state.defaultContainer &&
             <View style={styles.defaultContainer}>
                 <Image
@@ -57,6 +90,7 @@ render(){
             </View>
         }
     </TouchableOpacity>
+</View>
     )
 
 }
