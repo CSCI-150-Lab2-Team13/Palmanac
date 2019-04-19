@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 
 
 import firebase from 'react-native-firebase'
-import { checkFriendList, addPalToFirestore } from '../../firebase/firestoreAPI'
+import { checkFriendList, addPalToFirestore, getUserToSubmit } from '../../firebase/firestoreAPI'
 import styles from './styles'
 
 
@@ -24,6 +24,10 @@ export default class SearchPalInfo extends React.Component {
 
 
 checkIfContactAlreadyInUserContactListThenAddContact = async () => {
+   
+    const firstName = this.props.contact.firstName
+    const lastName = this.props.contact.lastName
+    const photoURL = this.props.contact.picture
     const currentUser = firebase.auth().currentUser.displayName
     const PalToAdd = this.props.contact.name
     checkFriendList(currentUser, PalToAdd)
@@ -31,7 +35,8 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
     .catch((error) =>this.setState({ errorMessage: error }))
     if (!this.state.results.length )
     {
-        addPalToFirestore(currentUser, PalToAdd)
+
+        addPalToFirestore(currentUser, PalToAdd, firstName, lastName,photoURL)
         .catch((error) =>this.setState({errorMessage:error}))
     }
     else 

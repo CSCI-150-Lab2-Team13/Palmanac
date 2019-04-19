@@ -373,11 +373,11 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
 // Functions for adding and removing friends 
 //--------------------
 //:-)
-//create firestore doc based on username 
+
 
 //function to add pals 
 
-export const addPalToFirestore = (currentUser, usertoAdd) => 
+export const addPalToFirestore = (currentUser, usertoAdd, firstName, lastName, photoURL) => 
     new Promise ((resolve, reject) => {
         const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
 
@@ -386,10 +386,9 @@ export const addPalToFirestore = (currentUser, usertoAdd) =>
                         if (!doc.exists) {
                             ref.doc(usertoAdd).set({
                                 Username: usertoAdd,
-                                firstName: null,
-                                lastName: null,
-                                photoURL: null,
-                                photoName:null,
+                                firstName: firstName,
+                                lastName: lastName,
+                                photoURL: photoURL,
                             })
 
                                 .then(resolve())
