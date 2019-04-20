@@ -573,31 +573,38 @@ export const fetchEvents = async (userEvents) => {
             const startTime = doc.get('startTime')
             const endTime = doc.get('endTime')
             const location = doc.get('location')
-            const userEvent = { title:title , description:description, startTime:startTime, endTime:endTime, location:location, }
+            const newId = results.length + 1
+            const userEvent = { id:newId, title:title , description:description, startTime:startTime, endTime:endTime, location:location, }
             results = [...results, userEvent]
         })
     })
     .catch((err) => {
         return 'an error has occurred while searching for pals: ', err
     })
+
+    return results
     
 }
 
 export const fetchFriendList = async(currentUser) => {
     const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
     let results = []
-    ref.get()
+    await ref
+        .get()
         .then(querySnapshot => {
-            querySnapshot.forEach(doc =>{
-                const Username = doc.get('Username')
-                const newId = results.length + 1
-                const followingName = { id: newId, Username:Username}
-                results = [...results, followingName]
-
-            })
+            if (querySnapshot.empty) {
+                return 
+            } 
+            else {
+                querySnapshot.forEach(doc =>{
+                    const Username = doc.get('Username')
+                    const followingName = { Username:Username}
+                    results = [...results, followingName]
+                })
+            }
         })
         .catch((err) => {
             return 'an error has occurred while searching for pals: ', err
         })
-        return results
+    return results
 }

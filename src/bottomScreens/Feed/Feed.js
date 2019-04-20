@@ -26,7 +26,7 @@ export default class Feed extends Component {
   }
 
 
-componentDidMount() {
+  async componentDidMount()  {
   fetchFriendList(this.state.user)
   .then((results)=> this.setState({friendList:results}))
   .catch((error)=> this.setState({errorMessage:error}))
@@ -34,10 +34,12 @@ componentDidMount() {
 
 
 
+
+
 getEvents()
 {
    this.state.friendList.map(item=>(
-     fetchEvents(item)
+     fetchEvents(item.Username)
      .then((results)=> this.setState({datafetched: [...this.state.datafetched, results ]}))
      .catch((error) => this.setState({ errorMessage: error }))
         ))
@@ -88,6 +90,9 @@ render() {
                       size={'large'}
                       style={{ flex: 1, justifyContent: 'center' }}
                   />
+              }
+              { this.state.friendList && this.state.friendList.length <= 0 &&
+                <Text> hi </Text>
               }
               {this.state.loading == false && <FlatList
                   data={this.state.datafetched}
