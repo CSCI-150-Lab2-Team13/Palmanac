@@ -35,6 +35,8 @@ export default class Profile extends Component {
           photoURL: '',
           errorMessage: null,
           isLoading: false,
+          Following: 0,
+          Followers: 0, 
 
         };
     }
@@ -72,8 +74,18 @@ render() {
         <View style={styles.body}>
           <View style={styles.bodyContent}>
           <Text style={styles.name}> {this.state.userName}</Text>
-          <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
+          <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text>
+
+          <View style={{flexDirection: "row"}}>
+          <Button style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10 }}>
+          <Text style={styles.info}>Followers {this.state.Followers}</Text>
+          </Button>
+          
+          <Button style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 50 }}>
+          <Text style={styles.info}>Following {this.state.Following}</Text>
+          </Button>
           </View>
+        </View>
       </View>
     </View>
   );

@@ -1,6 +1,7 @@
 
 import firebase from 'react-native-firebase'
 import { Platform, AppState, Alert } from 'react-native'
+import { start } from 'repl';
 var ImagePicker = require('react-native-image-picker');
 
 const config = {
@@ -479,7 +480,7 @@ export const deleteFriend = async (currentUser, palName) => {
  * 
  */
   
-export const checkFriendList = async (currentUser, palName)=>
+export const checkfollowList = async (currentUser, palName)=>
 {   
 
     const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
@@ -555,4 +556,48 @@ export const searchPals = async (search) => {
             })
         return results
     }
+}
+
+
+
+export const fetchEvents = async (userEvents) => {
+    const ref = firebase.firestore().collection('users').doc(userEvents).collection('events')
+    let results = [] 
+
+    ref.orderBy("startTime")
+    .get()
+    .limit(4)
+    .then(querySnapshot =>{
+        querySnapshot.forEach(doc =>{
+            const title = doc.get('title')
+            const description = doc.get('desc')
+            const startTime = doc.get('startTime')
+            const endTime = doc.get('endTime')
+            const location = doc.get('location')
+            const userEvent = { title:title , description:description, startTime:startTime, endTime:endTime, location:location, }
+            results = [...results, userEvent]
+        })
+    })
+    .catch((err) => {
+        return 'an error has occurred while searching for pals: ', err
+    })
+    
+}
+
+export const fetchFriendList = async(currentUser) => {
+    const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
+    let results = []
+    ref.get()
+        .then(querySnapshot => {
+            querySnapshot.forEach(doc =>{
+                const Username = doc.get('Username')
+                const followingName = { Username:Username}
+                results = [...results, followingName]
+
+            })
+        })
+        .catch((err) => {
+            return 'an error has occurred while searching for pals: ', err
+        })
+        return results
 }

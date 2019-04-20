@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 
 
 import firebase from 'react-native-firebase'
-import { checkFriendList, followUser, addFollowertoUser } from '../../firebase/firestoreAPI'
+import { checkfollowList, followUser, addFollowertoUser } from '../../firebase/firestoreAPI'
 import styles from './styles'
 
 
@@ -56,7 +56,7 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
     const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.picture
     const PalToAdd = this.props.contact.name
-    checkFriendList(this.state.userName , PalToAdd)
+    checkfollowList(this.state.userName , PalToAdd)
     .then(results => {
          this.setState({ results: results})
     })
