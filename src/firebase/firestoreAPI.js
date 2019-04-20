@@ -1,7 +1,6 @@
 
 import firebase from 'react-native-firebase'
 import { Platform, AppState, Alert } from 'react-native'
-import { start } from 'repl';
 var ImagePicker = require('react-native-image-picker');
 
 const config = {
@@ -591,7 +590,8 @@ export const fetchFriendList = async(currentUser) => {
         .then(querySnapshot => {
             querySnapshot.forEach(doc =>{
                 const Username = doc.get('Username')
-                const followingName = { Username:Username}
+                const newId = results.length + 1
+                const followingName = { id: newId, Username:Username}
                 results = [...results, followingName]
 
             })
