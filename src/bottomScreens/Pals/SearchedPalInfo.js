@@ -4,8 +4,9 @@ import { Icon } from 'react-native-elements'
 
 
 import firebase from 'react-native-firebase'
-import { checkFriendList, addPalToFirestore, getUserToSubmit } from '../../firebase/firestoreAPI'
+import { checkFriendList, followUser, addFollowertoUser } from '../../firebase/firestoreAPI'
 import styles from './styles'
+
 
 
 export default class SearchPalInfo extends React.Component {
@@ -18,25 +19,58 @@ export default class SearchPalInfo extends React.Component {
             confirmationContainer: false,
             results: [],
             errorMessage: null, 
+            userName: '',
+            firstName:'',
+            lastName:'',
+            photoURL:'',
 
         }
     }
 
-
-checkIfContactAlreadyInUserContactListThenAddContact = async () => {
    
+async componentDidMount() {
+
+        const {currentUser} = await firebase.auth();
+        const displayName = currentUser.displayName;
+        this.setState({userName: displayName});
+        const ref = firebase.firestore().collection('users').doc(this.state.userName);
+  
+        return ref.get().then(doc => {
+          if (doc.exists) {
+            let data = doc.data()
+            this.setState({firstName : data.firstName, lastName : data.lastName, photoURL:data.photoURL})
+          } 
+          else {
+              console.error("No such user!");
+          }
+      })
+          .catch(function (error) {
+              console.error("Error getting user:", error);
+          });
+  }
+  
+checkIfContactAlreadyInUserContactListThenAddContact = async () => {
+
+    
     const firstName = this.props.contact.firstName
     const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.picture
-    const currentUser = firebase.auth().currentUser.displayName
     const PalToAdd = this.props.contact.name
-    checkFriendList(currentUser, PalToAdd)
-    .then((results)=> this.setState({results:results}))
-    .catch((error) =>this.setState({ errorMessage: error }))
+    checkFriendList(this.state.userName , PalToAdd)
+    .then(results => {
+         this.setState({ results: results})
+    })
+    .catch(error =>{
+        this.setState({ errorMessage: error})
+    })
     if (!this.state.results.length )
     {
 
-        addPalToFirestore(currentUser, PalToAdd, firstName, lastName,photoURL)
+        followUser(this.state.userName, PalToAdd, firstName, lastName,photoURL)
+        .then(
+            addFollowertoUser(PalToAdd, this.state.userName, this.state.firstName, this.state.lastName, this.state.photoURL)
+            .catch((error)=> this.setState({errorMessage:error}))
+        )
         .catch((error) =>this.setState({errorMessage:error}))
     }
     else 
@@ -52,11 +86,11 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 render(){
     return (
     <View> 
-        {this.state.errorMessage &&
-             <Text style={{ color: 'red', fontStyle: 'italic' }}>
-                   {this.state.errorMessage}
-             </Text>
-        }
+    {this.state.errorMessage &&
+        <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                {this.state.errorMessage}
+        </Text>
+    }
         <TouchableOpacity onPress={() => this.checkIfContactAlreadyInUserContactListThenAddContact()}>
         {this.state.defaultContainer &&
             <View style={styles.defaultContainer}>

@@ -288,7 +288,6 @@ export const getUserData = async () =>
                 userUID = user.uid
                 userEmail = user.email
                 userName = user.displayName
-
                 userInformations = { userUID, userEmail, userName }
                 resolve(userInformations)
             } else {
@@ -377,7 +376,7 @@ export const setDownloadLinktoFirestore = (downloadURL, username, imageName) => 
 
 //function to add pals 
 
-export const addPalToFirestore = (currentUser, usertoAdd, firstName, lastName, photoURL) => 
+export const followUser = (currentUser, usertoAdd, firstName, lastName, photoURL) => 
     new Promise ((resolve, reject) => {
         const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
 
@@ -397,7 +396,7 @@ export const addPalToFirestore = (currentUser, usertoAdd, firstName, lastName, p
                                 })
                         }
                         else {
-                            reject("Already your friend")
+                            reject("Already your following")
                         }
                     })
                     .catch((error)=>{
@@ -405,6 +404,36 @@ export const addPalToFirestore = (currentUser, usertoAdd, firstName, lastName, p
                     })
 })
 
+
+export const addFollowertoUser = async (paltoAdd, username, firstName, lastName, photoURL) => 
+
+    // add current user to in the new contact contactList
+    new Promise((resolve, reject) => {
+        const ref = firebase.firestore().collection('users').doc(paltoAdd).collection('followers')
+
+        ref.doc(username).get()
+            .then(doc =>{
+                if (!doc.exists) {
+                    ref.doc(username).set({
+                        Username: username,
+                        firstName: firstName,
+                        lastName: lastName,
+                        photoURL: photoURL,
+                    })
+
+                        .then(resolve())
+                        .catch((error) => {
+                            reject(error)
+                        })
+                }
+                else {
+                    reject("Already Following ")
+                }
+            })
+            .catch((error)=>{
+                reject(error)
+            })
+        })
 //function to delete friends 
 export const deleteFriend = async (currentUser, palName) => {
     new Promise(async (resolve, reject) => {
@@ -450,7 +479,6 @@ export const deleteFriend = async (currentUser, palName) => {
  * 
  */
   
-
 export const checkFriendList = async (currentUser, palName)=>
 {   
 
@@ -468,13 +496,13 @@ export const checkFriendList = async (currentUser, palName)=>
             {
                 // if successful, return search
                 results = [{ id: 0, name: palName }]
-                return
+                return 
             }
         })
             .catch((err) => {
                 return 'an error has occurred while searching for pals: ', err
             })
-
+        return results
 }
 export const searchPals = async (search) => {
     const ref = firebase.firestore().collection('users')
@@ -495,6 +523,7 @@ export const searchPals = async (search) => {
         .catch((err) => {
             return 'an error has occurred while searching for pals: ', err
         })
+        
 
     // If previous query successful, return results, end the function
     if (results.length != 0) {
