@@ -4,7 +4,7 @@ import { View, Text, SafeAreaView, TouchableOpacity, TextInput, FlatList, Activi
 import { Icon } from 'react-native-elements'
 
 import firebase from 'react-native-firebase'
-import { fetchEvents, fetchFriendList } from '../../firebase/firestoreAPI'
+import { fetchEvents, fetchFollowing } from '../../firebase/firestoreAPI'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
@@ -27,7 +27,7 @@ export default class Feed extends Component {
 
 
   async componentDidMount()  {
-  fetchFriendList(this.state.user)
+  fetchFollowing(this.state.user)
   .then((results)=> this.setState({friendList:results}))
   .catch((error)=> this.setState({errorMessage:error}))
 }
@@ -41,7 +41,7 @@ getEvents()
 
   this.setState({ errorMessage: null, loading: true })
    this.state.friendList.map((item)=>(
-     fetchEvents(item.Username.toString())
+     fetchEvents(item.Username)
      .then((results)=> this.setState({datafetched: [...this.state.datafetched, results ]}))
      .catch((error) => this.setState({ errorMessage: error }))
      .finally

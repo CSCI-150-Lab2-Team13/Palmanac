@@ -585,7 +585,7 @@ export const fetchEvents = async (userEvents) => {
     return results
     
 }  
-export const fetchFriendList = async(currentUser) => {
+export const fetchFollowing = async(currentUser) => {
     const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
     let results = []
     await ref
@@ -596,9 +596,12 @@ export const fetchFriendList = async(currentUser) => {
             } 
             else {
                 querySnapshot.forEach(doc =>{
-                    const Username = doc.get('Username')
-                    const followingName = { Username:Username}
-                    results = [...results, followingName]
+                    const name = doc.get('Username')
+                    const firstName = doc.get('firstName')
+                    const lastName = doc.get('lastName')
+                    const picture = doc.get('photoURL')
+                    const following = { id: newId, name: name, picture:picture, firstName:firstName, lastName:lastName }
+                    results = [...results, following]
                 })
             }
         })
