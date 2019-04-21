@@ -38,10 +38,16 @@ export default class Feed extends Component {
 
 getEvents()
 {
-   this.state.friendList.map(item=>(
-     fetchEvents(item.Username)
+
+  this.setState({ errorMessage: null, loading: true })
+   this.state.friendList.map((item)=>(
+     fetchEvents(item.Username.toString())
      .then((results)=> this.setState({datafetched: [...this.state.datafetched, results ]}))
      .catch((error) => this.setState({ errorMessage: error }))
+     .finally
+     (
+        this.setState({loading:false})
+     )
         ))
 }
 
@@ -91,18 +97,23 @@ render() {
                       style={{ flex: 1, justifyContent: 'center' }}
                   />
               }
-              { this.state.friendList && this.state.friendList.length <= 0 &&
-                <Text> hi </Text>
+              { this.state.friendList && this.state.friendList.length > 0 &&
+                <Text> hi 32322</Text>
+              }
+
+              { this.state.datafetched && this.state.datafetched.length > 0 &&
+                <Text> not empty</Text>
               }
               {this.state.loading == false && <FlatList
-                  data={this.state.datafetched}
-                  keyboardShouldPersistTaps={'handled'}
-                  keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }) => <EventInfo
-                      contact={item}
-                      setErrorMessage={(error) => this.setErrorMessage(error)}
-                  />}
-              />}
+                        data={this.state.datafetched}
+                        keyboardShouldPersistTaps={'handled'}
+                        keyExtractor={(item) => item.id}
+                        renderItem={({ item }) => <EventInfo
+                            contact={item}
+                            setErrorMessage={(error) => this.setErrorMessage(error)}
+                        />}
+                />}
+
           </View>
 </View>
   )

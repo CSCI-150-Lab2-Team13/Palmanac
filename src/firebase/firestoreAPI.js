@@ -563,9 +563,9 @@ export const fetchEvents = async (userEvents) => {
     const ref = firebase.firestore().collection('users').doc(userEvents).collection('events')
     let results = [] 
 
-    ref.orderBy("startTime")
-    .get()
+    await ref.orderBy("startTime")
     .limit(4)
+    .get()
     .then(querySnapshot =>{
         querySnapshot.forEach(doc =>{
             const title = doc.get('title')
@@ -584,8 +584,7 @@ export const fetchEvents = async (userEvents) => {
 
     return results
     
-}
-
+}  
 export const fetchFriendList = async(currentUser) => {
     const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
     let results = []
