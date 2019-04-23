@@ -585,9 +585,12 @@ export const fetchEvents = async (userEvents) => {
     return results
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 }  
 export const fetchFollowing = async(currentUser) => {
 =======
+=======
+>>>>>>> parent of 647145a... events from users are now showing up
 }
 
 export const fetchFriendList = async(currentUser) => {

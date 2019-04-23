@@ -39,9 +39,13 @@ export default class Feed extends Component {
 getEvents()
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   this.setState({ errorMessage: null, loading: true })
    this.state.friendList.map((item)=>(
+=======
+   this.state.friendList.map(item=>(
+>>>>>>> parent of 647145a... events from users are now showing up
 =======
    this.state.friendList.map(item=>(
 >>>>>>> parent of 647145a... events from users are now showing up
