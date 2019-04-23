@@ -563,9 +563,9 @@ export const fetchEvents = async (userEvents) => {
     const ref = firebase.firestore().collection('users').doc(userEvents).collection('events')
     let results = [] 
 
-    await ref.orderBy("startTime")
-    .limit(4)
+    ref.orderBy("startTime")
     .get()
+    .limit(4)
     .then(querySnapshot =>{
         querySnapshot.forEach(doc =>{
             const title = doc.get('title')
@@ -584,8 +584,14 @@ export const fetchEvents = async (userEvents) => {
 
     return results
     
+<<<<<<< HEAD
 }  
 export const fetchFollowing = async(currentUser) => {
+=======
+}
+
+export const fetchFriendList = async(currentUser) => {
+>>>>>>> parent of 647145a... events from users are now showing up
     const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
     let results = []
     await ref
