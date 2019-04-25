@@ -21,8 +21,9 @@ export default class firestoreAPI {
      * Adding user to database,
      * user must be an object with valid id property
      */
-    constructor(){
+    constructor(props){
         this.getFollowingEvents = this.getFollowingEvents.bind(this)
+        //this.getEventFromFollowList = this.getEventFromFollowList.bind(this)
     }
     static addUser(user) {
         if (user.id) {
@@ -143,50 +144,47 @@ export default class firestoreAPI {
         if (username) {
             let doc_list = [];
             
-            return firebase.firestore().collection('users').doc(username).get()
+            return firebase.firestore().collection('users').doc(username).collection('following').get()
             .then((querySnapshot) => {
                 // get data from docs
                 doc_list = querySnapshot.docs.map(doc => doc.data());
                 return doc_list
             })
-            .then((dataObj) => {
-                //get followers from docs
-                if(dataObj['followList']){
-                  return dataObj['followList']
-                }
-                return []
-            })
             .then((followList) => {
-                //get all events
-                let friendsEvents = []
-                followList.forEach( (following) => {
-                    this.getEvents(following)
+                var promises = followList.map( (following) => {
+                    return this.getEvents(following['Username'])
                     .then( (eventList) =>{
-                        friendsEvents.concat(eventList)
+                        //console.warn('Here')
+                        // NOTE: RETURNS LIST OF LISTS
+                        return eventList
                     })
                     .catch((error) => {
                         console.error("Couldn't get friends list", error)
                     })
                 })
-                return friendsEvents
-            })
-            .then( (friendsEvents) => {
-                //return events
-                return friendsEvents
+                return Promise.all(promises).then((results) =>{
+                   // console.warn(JSON.stringify(results))
+
+                    return results
+                })
+                .catch((err) => {
+                    console.error('Could not get results', err)
+                })
+                
             })
             .catch(error => {
                 console.error("Error getting friends events", error);
             })
         }
         else{
-            console.log("No user found!");
+            console.warn("No user found!");
         }
 
+
     }
-
-
 }
 // User Functions 
+
 
 
 
@@ -396,7 +394,7 @@ export const followUser = (currentUser, usertoAdd, firstName, lastName, photoURL
                                 })
                         }
                         else {
-                            reject("Already your following")
+                            reject("Already in your following list")
                         }
                     })
                     .catch((error)=>{
