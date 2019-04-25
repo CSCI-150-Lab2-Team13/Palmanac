@@ -27,7 +27,7 @@ export default class Feed extends Component {
      assignEvent(event){
         this.setState(
           {
-            events: this.state.events.concat(event)
+            events: event
           }
         );
     }
