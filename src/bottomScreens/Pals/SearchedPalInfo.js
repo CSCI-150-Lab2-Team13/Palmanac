@@ -101,12 +101,14 @@ render(){
                     <Text style={styles.text}>
                             {this.props.contact.name}
                     </Text>
-                    <Text >
-                            {this.props.contact.firstName}
-                    </Text>
-                    <Text>
-                            {this.props.contact.lastName}
-                    </Text>
+                    <View style={styles.defaultContainer}>
+                        <Text>
+                                {this.props.contact.firstName}
+                        </Text>
+                        <Text>
+                                {this.props.contact.lastName}
+                        </Text>
+                    </View>
             </View>
         }
         {this.state.confirmationContainer &&
