@@ -256,12 +256,16 @@ export default class MainCalendar extends Component {
   
               } }
           >
+          <CardItem>            
             <Text style={{fontWeight: 'bold'}}>
               {event.title}
             </Text>
-            <Text style={{width: 75}}>
+          </CardItem>
+          <CardItem>
+            <Text style={{width:75}}>
               {event.desc ? event.desc :"" }
             </Text>
+            </CardItem>
             </TouchableOpacity>
           </Card>
         </View>
