@@ -198,6 +198,9 @@ export default class Feed extends Component {
               <CardItem >
                 <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
               </CardItem>
+              <CardItem >
+                <Text>Event By: </Text><Text style={{fontStyle: 'italic'}}>{event.username}</Text>
+              </CardItem>
               <CardItem>
               <Text>{event.desc ? event.desc :"No description provided" }</Text> 
               </CardItem>
