@@ -19,10 +19,11 @@ import com.oblador.vectoricons.VectorIconsPackage;
 
 
 import io.invertase.firebase.RNFirebasePackage;
-import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.storage.RNFirebaseStoragePackage; 
 import io.invertase.firebase.auth.RNFirebaseAuthPackage; // <-- Added for auth() calls
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage; // added for firestore stuff
+import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;                       
+import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 
 import com.goldenowl.twittersignin.TwitterSigninPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -77,6 +78,8 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
           new TwitterSigninPackage(),
           new RNGoogleSigninPackage(),
           new RNGestureHandlerPackage(),
+          new RNFirebaseMessagingPackage(),
+          new RNFirebaseNotificationsPackage(),
           // added mCallbackManager as a parameter as a fix to the issue https://github.com/facebook/react-native-fbsdk/issues/429
           new FBSDKPackage(mCallbackManager),
           new MapsPackage()

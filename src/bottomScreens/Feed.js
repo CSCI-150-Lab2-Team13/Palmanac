@@ -5,6 +5,30 @@ import firebase from 'react-native-firebase'
 import moment from "moment"
 import _ from 'lodash';
 
+// export default class fcmHandler extends React.PureComponent {
+
+//   componentDidMount() {
+  
+//   firebase.messaging()
+//     .hasPermission()
+//     .then(enabled => {
+//       if (!enabled) {
+//         this._getPermission();
+//       }
+//     });
+//   }
+  
+//    _getPermission = () => {
+//     firebase.messaging()
+//       .requestPermission()
+//       .catch(error => {
+//         // User has rejected permissions
+//         this._getPermission();
+//       });
+//   };
+  
+//   }
+
 export default class Feed extends Component {
     constructor(props) {
       super(props);
