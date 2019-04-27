@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  ScrollView,
+  Button,
+  View,
+  TouchableOpacity
+} from 'react-native';
 import firestoreAPI from '../firebase/firestoreAPI'
 import firebase from 'react-native-firebase'
+import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-base';
 import moment from "moment"
 import _ from 'lodash';
 
@@ -9,6 +17,7 @@ export default class Feed extends Component {
     constructor(props) {
       super(props);
       this.state = {
+       myEvents: [],
        events: [],
        softEvents: [],
        items: {},
@@ -27,7 +36,7 @@ export default class Feed extends Component {
      assignEvent(event){
         this.setState(
           {
-            events: this.state.events.concat(event)
+            events: event
           }
         );
     }
@@ -35,7 +44,19 @@ export default class Feed extends Component {
     componentDidMount() {
       this.subs = [
         this.props.navigation.addListener("didFocus", () => 
-            firestoreAPI.getFollowingEvents(firebase.auth().currentUser.displayName)
+              firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+              {
+                //console.warn('getEvents reached')
+                this.setState(
+                  {
+                    myEvents: eventList
+                  }
+                );
+              }
+            )
+            .then(() => {
+              return firestoreAPI.getFollowingEvents(firebase.auth().currentUser.displayName)
+            })
             .then( (eventList) =>
             {
               this.assignEvent(eventList)
@@ -111,11 +132,125 @@ export default class Feed extends Component {
       this.subs.forEach(sub => sub.remove());
     }
 
+
+
   render() {
     return (
-      <View>
-        <Text> {JSON.stringify(this.state.events)} </Text>
-      </View>
+      <ScrollView style={styles.container}>
+        {
+        //  <Text> {JSON.stringify(this.state.events)} </Text>
+        }
+        
+        {this.renderEvents()}
+      </ScrollView>
     );
   }
+
+  renderEvents(){
+
+    return this.state.events.map( (event) => {
+      var dateVal = new Date(event["startTime"])//["seconds"] * 1000);
+      var eventStr = moment(dateVal).format("YYYY-MM-DD")
+      var endVal = new Date(event["endTime"])//["seconds"] * 1000);
+      var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
+      var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
+      var col = false
+      this.state.myEvents.map((myEvent) => {
+        if(myEvent['startTime'] <= event['endTime'] && myEvent['endTime'] >= event["startTime"]){
+          col = true
+        }
+      })
+      if(!col){
+        return(
+          <View key={event["id"]} >
+            <Card style={styles.EventsCard}>
+            <TouchableOpacity             
+              onPress={() => { 
+              // alert("Clicked")
+                //this.onEventPress(event['id']) 
+                return
+                } }
+            >
+              <CardItem >
+                <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
+              </CardItem>
+              <CardItem>
+              <Text>{event.desc ? event.desc :"No description provided" }</Text> 
+              </CardItem>
+              <CardItem>
+                <Text style={{fontWeight: 'bold'}}>{startStr}</Text> 
+                <Text> to </Text> 
+                <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
+              </CardItem>
+              
+              </TouchableOpacity>
+            </Card>
+          </View>
+        )
+       }
+    });
 }
+
+renderMap(location){
+  //TODO: Convert location string to region
+  if(location){
+    return <View>
+                    {/* <MapView
+              provider={ PROVIDER_GOOGLE }
+              style={ styles.container }
+              //customMapStyle={  }
+              showsUserLocation={ true }
+              region={ this.state.region }
+              //onRegionChange={ region => this.setState({region}) }
+              //onRegionChangeComplete={ region => this.setState({region}) }
+            >
+            </MapView> */}
+    </View>
+  }
+}
+
+}
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 2,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+
+  },
+  calendar: {
+    flex: 5,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#eee',
+  },
+  text: {
+    flex: 5,
+    textAlign: 'center',
+    borderColor: '#bbb',
+   // padding: 10,
+  // paddingBottom: 10,
+    backgroundColor: '#eee'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'gray',
+  },
+  emptyDate: {
+    flex: 1,
+    paddingTop: 30
+ 
+  },
+  eventsView:{
+    flex: 2,
+    paddingLeft: 10
+  },
+  EventsCard : {
+    flex: 5,
+    paddingLeft: 10
+   
+  }
+});
