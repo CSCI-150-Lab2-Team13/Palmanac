@@ -5,13 +5,15 @@ import {
   ScrollView,
   Button,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage
 } from 'react-native';
 import firestoreAPI from '../firebase/firestoreAPI'
 import firebase from 'react-native-firebase'
 import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-base';
 import moment from "moment"
 import _ from 'lodash';
+
 
 // export default class fcmHandler extends React.PureComponent {
 
@@ -45,6 +47,7 @@ export default class Feed extends Component {
        events: [],
        softEvents: [],
        items: {},
+       fcmToken : "",
        isLoading: true,
        isFocused: true
       };
@@ -66,6 +69,7 @@ export default class Feed extends Component {
     }
   
     componentDidMount() {
+      
       this.subs = [
         this.props.navigation.addListener("didFocus", () => 
               firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
@@ -150,7 +154,17 @@ export default class Feed extends Component {
         ),
         this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
       ];
-  
+      AsyncStorage.getItem('fcmToken').then((fcmToken) => {
+        
+        if (fcmToken) {
+          //console.warn(fcmToken)
+          {this.setState({fcmToken})}
+        }
+      })
+      .catch((error) =>{
+        console.error('Whytho',error)
+      })
+       
     }
     componentWillUnmount() {
       this.subs.forEach(sub => sub.remove());
@@ -163,6 +177,7 @@ export default class Feed extends Component {
       <ScrollView style={styles.container}>
         {
         //  <Text> {JSON.stringify(this.state.events)} </Text>
+       // <Text selectable={true} >{this.state.fcmToken}</Text>
         }
         
         {this.renderEvents()}
