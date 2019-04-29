@@ -14,7 +14,6 @@ import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-
 import moment from "moment"
 import _ from 'lodash';
 
-
 // export default class fcmHandler extends React.PureComponent {
 
 //   componentDidMount() {
@@ -69,102 +68,108 @@ export default class Feed extends Component {
     }
   
     componentDidMount() {
-      
-      this.subs = [
-        this.props.navigation.addListener("didFocus", () => 
-              firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+     
+        this.subs = [
+          this.props.navigation.addListener("didFocus", () => {
+            if(!typeof firebase.auth.currentUser === 'undefined') {
+                firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
+                {
+                  //console.warn('getEvents reached')
+                  this.setState(
+                    {
+                      myEvents: eventList
+                    }
+                  );
+                }
+              )
+              .then(() => {
+                return firestoreAPI.getFollowingEvents(firebase.auth().currentUser.displayName)
+              })
+              .then( (eventList) =>
               {
-                //console.warn('getEvents reached')
-                this.setState(
-                  {
-                    myEvents: eventList
-                  }
-                );
+                this.assignEvent(eventList)
               }
             )
-            .then(() => {
-              return firestoreAPI.getFollowingEvents(firebase.auth().currentUser.displayName)
-            })
-            .then( (eventList) =>
-            {
-              this.assignEvent(eventList)
-            }
-          )
-          .then(() =>{
-            var eventsList = []
-            var softEvents = []
-            this.state.events.forEach( (eventList) => {
-              eventList.forEach ((event) => {
-                if( !(event["startTime"] && event["endTime"]) ) 
-                  softEvents.push(event)
-                else eventsList.push(event)
-              })
-              this.setState({
-                events: eventsList,
-                softEvents: softEvents
+            .then(() =>{
+              var eventsList = []
+              var softEvents = []
+              this.state.events.forEach( (eventList) => {
+                eventList.forEach ((event) => {
+                  if( !(event["startTime"] && event["endTime"]) ) 
+                    softEvents.push(event)
+                  else eventsList.push(event)
+                })
+                this.setState({
+                  events: eventsList,
+                  softEvents: softEvents
+                })
               })
             })
+          // .finally( () => {
+          // if(this.state.events){
+          //   var items = {}
+          //     for(let i = 0, l = this.state.events.length; i < l; i++) {
+          //     if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
+                
+          //         var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
+                
+          //         var eventStr = moment(dateVal).format("YYYY-MM-DD")
+          //         var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
+          //         var startStr = moment(dateVal).format("HH:mm");
+          //         var endStr = moment(endVal).format("HH:mm");
+          //         items[eventStr] = 
+          //           [{
+          //             name: this.state.events[i]['title'],
+          //             height: Math.max(80, Math.floor(Math.random() * 150)),
+          //             desc: this.state.events[i]['desc'],
+          //             startTime: startStr,
+          //             endTime: endStr,
+          //               //selected: true, 
+          //               //disableTouchEvent: true, 
+          //               // name: 'Item: ' + eventStr,
+          //               // height: Math.max(50, Math.floor(Math.random() * 150))
+                        
+          //               //selectedColor: 'blue',
+          //               // text: {
+          //               //   color: 'black',
+          //               //   fontWeight: 'bold'
+          //               // }
+          //           }]
+          //         }
+          //       }
+          //       /*
+          //         Case of soft events, where item is created but there is no 
+          //         startTime or endTime
+          //       */
+          // }
+          //   this.setState({
+          //     items: items,
+          //     isFocused: true
+          //   })
+          //  })
+          .catch(error => {
+            console.error("Error parsing document: ", error);
           })
-        // .finally( () => {
-        // if(this.state.events){
-        //   var items = {}
-        //     for(let i = 0, l = this.state.events.length; i < l; i++) {
-        //     if(this.state.events[i]["startTime"] && this.state.events[i]["endTime"]){
-              
-        //         var dateVal = new Date(this.state.events[i]["startTime"])//["seconds"] * 1000);
-              
-        //         var eventStr = moment(dateVal).format("YYYY-MM-DD")
-        //         var endVal = new Date(this.state.events[i]["endTime"])//["seconds"] * 1000);
-        //         var startStr = moment(dateVal).format("HH:mm");
-        //         var endStr = moment(endVal).format("HH:mm");
-        //         items[eventStr] = 
-        //           [{
-        //             name: this.state.events[i]['title'],
-        //             height: Math.max(80, Math.floor(Math.random() * 150)),
-        //             desc: this.state.events[i]['desc'],
-        //             startTime: startStr,
-        //             endTime: endStr,
-        //               //selected: true, 
-        //               //disableTouchEvent: true, 
-        //               // name: 'Item: ' + eventStr,
-        //               // height: Math.max(50, Math.floor(Math.random() * 150))
-                      
-        //               //selectedColor: 'blue',
-        //               // text: {
-        //               //   color: 'black',
-        //               //   fontWeight: 'bold'
-        //               // }
-        //           }]
-        //         }
-        //       }
-        //       /*
-        //         Case of soft events, where item is created but there is no 
-        //         startTime or endTime
-        //       */
-        // }
-        //   this.setState({
-        //     items: items,
-        //     isFocused: true
-        //   })
-        //  })
-        .catch(error => {
-          console.error("Error parsing document: ", error);
+        }    
+      }
+
+          
+          ),
+          
+          
+          this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
+        ];
+        AsyncStorage.getItem('fcmToken').then((fcmToken) => {
+          
+          if (fcmToken) {
+            //console.warn(fcmToken)
+            {this.setState({fcmToken})}
+          }
         })
-        
-        ),
-        this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
-      ];
-      AsyncStorage.getItem('fcmToken').then((fcmToken) => {
-        
-        if (fcmToken) {
-          //console.warn(fcmToken)
-          {this.setState({fcmToken})}
-        }
-      })
-      .catch((error) =>{
-        console.error('Whytho',error)
-      })
-       
+        .catch((error) =>{
+          console.error('Whytho',error)
+        })
+
     }
     componentWillUnmount() {
       this.subs.forEach(sub => sub.remove());

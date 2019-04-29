@@ -75,6 +75,39 @@ export default class firestoreAPI {
         }
     }
 
+    static addMessage(username, msg) {
+        if (username) {
+            return firebase.firestore().collection('users').doc(username).collection('messages').add(msg)
+                .then(() => {
+                    console.log("Document successfully written!");
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                });
+        } else {
+            console.error("message error");
+        }
+    }
+
+    static getMessages(username) {
+        
+        if (username) {
+            let doc_list = [];
+            return firebase.firestore().collection('users').doc(username).collection('messages').get()
+            .then((querySnapshot) => {
+                doc_list = querySnapshot.docs.map(doc => doc.data());
+                return doc_list
+            })
+            .catch(error => {
+                console.error("Error getting document: ", error);
+            })
+        }
+        else{
+            console.log("No user found!");
+        }
+
+    }
+
     static getEvents(username) {
         
         if (username) {
@@ -187,6 +220,7 @@ export default class firestoreAPI {
 
 
     }
+    
 }
 // User Functions 
 
@@ -205,6 +239,8 @@ export const signUpToFirebase = (email, password) =>
             })
     })
 
+
+    
 // login to firebase
 export const loginToFirebase = async (email, password) =>
 new Promise((resolve, reject) => {
