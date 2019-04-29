@@ -29,7 +29,7 @@ import Feed from '../bottomScreens/Feed'
 import Pals from '../bottomScreens/Pals/Pals'
 
 import Messages from '../bottomScreens/MessageMenu'
-import Profile from '../bottomScreens/Profile'
+import Profile from '../bottomScreens/Profile/Profile'
 
 
 import MainCalendar from '../bottomScreens/MainCalendar'
