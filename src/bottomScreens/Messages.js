@@ -52,10 +52,12 @@ export default class Messages extends Component {
 
 
       snapshot.docs.map(doc => {
+        if(doc.data().user.name == this.state.username || doc.data().user.name == sendee){
           receivedMessages.push ({
             _id: doc.id,
             ...doc.data()
           })
+        }
       })
 
       
