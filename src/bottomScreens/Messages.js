@@ -11,7 +11,9 @@ import { Text,
 
 import firebase from 'react-native-firebase'
 import firestoreAPI from '../firebase/firestoreAPI'
- import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-native-gifted-chat'
+import _ from 'lodash';
+
 //import console = require('console');
 
 
@@ -31,6 +33,7 @@ export default class Messages extends Component {
         name: usernameStr, 
         avatar: firebase.auth().currentUser.photoURL
       },
+      firstMessage: false,
       messages: [],
       sendee:  ""
     }
@@ -48,11 +51,10 @@ export default class Messages extends Component {
 
     this.ref.orderBy("createdAt", "desc").onSnapshot(snapshot => {
       let receivedMessages = []
-      let sentMessages = []
 
 
       snapshot.docs.map(doc => {
-        if(doc.data().user.name == this.state.username || doc.data().user.name == sendee){
+        if(doc.data().sentTo == this.state.sendee || doc.data().user.name == sendee){
           receivedMessages.push ({
             _id: doc.id,
             ...doc.data()
@@ -75,8 +77,13 @@ export default class Messages extends Component {
       //     })
       //   }
       // })
-      
 
+
+      if(receivedMessages == []){
+        this.setState({
+          firstMessage: true
+        })
+      }
 
 
       this.setState(prevState => ({
@@ -88,7 +95,15 @@ export default class Messages extends Component {
 
 onSend([message]) {
   //this.ref.add(message)  
-  //console.warn(this.state.sendee)          
+  if(this.state.messages.length == 1) {
+    console.warn('Here')
+    firestoreAPI.addMessagedUser(this.state.username,{'username':this.state.sendee})
+    firestoreAPI.addMessagedUser(this.state.sendee,{'username':this.state.username})
+    this.setState({firstMessage: false})
+  }       
+
+  _.set(message,'sentTo',this.state.sendee)
+
   firestoreAPI.addMessage(this.state.username, message)
   firestoreAPI.addMessage(this.state.sendee, message)
 

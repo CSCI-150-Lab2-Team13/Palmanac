@@ -89,6 +89,20 @@ export default class firestoreAPI {
         }
     }
 
+    static addMessagedUser(username, user) {
+        if (username) {
+            return firebase.firestore().collection('users').doc(username).collection('messagedUsers').add(user)
+                .then(() => {
+                    console.log("Document successfully written!");
+                })
+                .catch(error => {
+                    console.error("Error writing document: ", error);
+                });
+        } else {
+            console.error("message error");
+        }
+    }
+
     static getMessages(username) {
         
         if (username) {
