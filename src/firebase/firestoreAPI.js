@@ -1,6 +1,7 @@
 
 import firebase from 'react-native-firebase'
 import { Platform, AppState, Alert } from 'react-native'
+import _ from 'lodash';
 var ImagePicker = require('react-native-image-picker');
 
 const config = {
@@ -154,9 +155,13 @@ export default class firestoreAPI {
                 var promises = followList.map( (following) => {
                     return this.getEvents(following['Username'])
                     .then( (eventList) =>{
+                        return eventList.map((event) => {
+                            _.set(event,'username',following['Username'])
+                            return event
+                        })
                         //console.warn('Here')
                         // NOTE: RETURNS LIST OF LISTS
-                        return eventList
+                        
                     })
                     .catch((error) => {
                         console.error("Couldn't get friends list", error)
