@@ -23,9 +23,10 @@ import CamEventScreen from '../forms/camEvent'
 //import the different screens for different scenario's for tabNav
 import Feed from '../bottomScreens/Feed'
 import Pals from '../bottomScreens/Pals/Pals'
-import Messages from '../bottomScreens/Messages'
+import Messages from '../bottomScreens/MessageMenu'
 import Profile from '../bottomScreens/Profile'
 import MainCalendar from '../bottomScreens/MainCalendar'
+import MessageScreen from '../bottomScreens/Messages'
 
 //import different screens for swipeleftscreens
 
@@ -148,6 +149,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
     },
     CamEvent : {
       screen: CamEventScreen
+    },
+    MessageScreen : {
+      screen: MessageScreen
     }
   
   });

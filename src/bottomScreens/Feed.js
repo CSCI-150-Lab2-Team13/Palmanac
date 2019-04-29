@@ -14,7 +14,6 @@ import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-
 import moment from "moment"
 import _ from 'lodash';
 
-
 // export default class fcmHandler extends React.PureComponent {
 
 //   componentDidMount() {

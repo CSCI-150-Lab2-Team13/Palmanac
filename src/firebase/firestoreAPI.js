@@ -215,6 +215,7 @@ export default class firestoreAPI {
 
 
     }
+    
 }
 // User Functions 
 
@@ -233,6 +234,8 @@ export const signUpToFirebase = (email, password) =>
             })
     })
 
+
+    
 // login to firebase
 export const loginToFirebase = async (email, password) =>
 new Promise((resolve, reject) => {

@@ -12,6 +12,7 @@ import { Text,
 import firebase from 'react-native-firebase'
 import firestoreAPI from '../firebase/firestoreAPI'
  import { GiftedChat } from 'react-native-gifted-chat'
+//import console = require('console');
 
 
 
@@ -24,7 +25,6 @@ export default class Messages extends Component {
     this.ref = firebase.firestore().collection('users').doc(usernameStr).collection('messages')
 
     this.state = {
-      formCompleted: false,
       username: usernameStr,
       user: {
         _id: firebase.auth().currentUser.uid,
@@ -32,19 +32,18 @@ export default class Messages extends Component {
         avatar: firebase.auth().currentUser.photoURL
       },
       messages: [],
-      sendee:  {}
+      sendee:  ""
     }
 
     this.onSend = this.onSend.bind(this)
-    this.completeForm = this.completeForm.bind(this)
+    
   }
 
 
   componentDidMount() {
 
-    // const { params } = this.props.navigation.state;
-    // const sendee = params ? params.sendee: null;
-    const sendee = 'Sloopy'
+    const { params } = this.props.navigation.state;
+    const sendee = params ? params.sendee: null;
     this.setState({sendee})
 
     this.ref.orderBy("createdAt", "desc").onSnapshot(snapshot => {
@@ -59,22 +58,22 @@ export default class Messages extends Component {
           })
       })
 
-      /*
-      snapshot.docs.map(doc => {
-        if(doc.user._id == this.state.username){
-          sentMessages.push({
-            _id: doc.id,
-            ...doc.data()
-          })
-        }
-        else{
-          receivedMessages.push ({
-            _id: doc.id,
-            ...doc.data()
-          })
-        }
-      })
-      */
+      
+      // snapshot.docs.map(doc => {
+      //   if(doc.user._id == this.state.username){
+      //     sentMessages.push({
+      //       _id: doc.id,
+      //       ...doc.data()
+      //     })
+      //   }
+      //   else{
+      //     receivedMessages.push ({
+      //       _id: doc.id,
+      //       ...doc.data()
+      //     })
+      //   }
+      // })
+      
 
 
 
@@ -86,66 +85,16 @@ export default class Messages extends Component {
 
 
 onSend([message]) {
-  //this.ref.add(message)            
+  //this.ref.add(message)  
+  //console.warn(this.state.sendee)          
   firestoreAPI.addMessage(this.state.username, message)
   firestoreAPI.addMessage(this.state.sendee, message)
+
 }
-
-
-completeForm() {
-  this.setState(prevState => ( {
-    formCompleted: !prevState.formCompleted
-  }))
-}
-
 
 
 render() {
-  const { formCompleted, username, messages , user } = this.state
-
-
-  if(formCompleted) {
-    return <GiftedChat messages={messages} onSend= {this.onSend} user={user} />
-  }
- 
-  return (
-    <View>
-      <Text>Form</Text>
-      <TextInput
-        placeholder="id"
-        onChangeText={text =>
-          this.setState(prevState => ({
-            user: {
-              ...prevState.user,
-              _id: text
-            }
-          }))
-        }
-      />
-      <TextInput
-        placeholder="name"
-        onChangeText={text =>
-          this.setState(prevState => ({
-            user: {
-              ...prevState.user,
-              name: text
-            }
-          }))
-        }
-      />
-      <TextInput
-        placeholder="avatar"
-        onChangeText={text =>
-          this.setState(prevState => ({
-            user: {
-              ...prevState.user,
-              avatar: text
-            }
-          }))
-        }
-      />
-      <Button onPress={this.completeForm} title="Complete Form" />
-    </View>
-   )
+  const { username, messages , user } = this.state
+    return( <GiftedChat messages={messages} onSend= {this.onSend} user={user} />)
   }
 }
