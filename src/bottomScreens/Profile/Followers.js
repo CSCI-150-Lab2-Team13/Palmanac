@@ -23,70 +23,75 @@ constructor(props) {
       
 
 componentDidMount() {
-    this.getFriends()
+    this.getFollowers()
 
 }
 
-getFriends () {
+getFollowers () {
     const ref  = firebase.firestore().collection("users").doc(this.state.user).collection('followers')
-    var friends = [];
+    var followers = [];
     ref.onSnapshot((querySnapshot)=> {
         querySnapshot.forEach((doc)=>
          {
-            friends.push({
-                userName :doc.data().userName,
+          followers.push({
+                Username :doc.data().Username,
                 firstName :doc.data().firstName,
                 lastName :doc.data().lastName,
                 photoURL:doc.data().photoURL,
                 id : doc.id
             })
         })
-        this.setState({friendList:friends})
+        this.setState({followerList:followers})
     })
 }
 
 render() {
   return (
-      <View> 
-      {this.state.errorMessage &&
-          <Text style={{ color: 'red', fontStyle: 'italic' }}>
-                  {this.state.errorMessage}
-          </Text>
-      }
-          <TouchableOpacity >
-              <View style={styles.defaultContainer}>
-                  <Image
-                      source={{uri: this.props.contact.picture}}
-                      style={styles.rounds}
-                  />
-                      <Text style={styles.text}>
-                              {this.props.contact.name}
-                      </Text>
-                      <Text >
-                              {this.props.contact.firstName}
-                      </Text>
-                      <Text>
-                              {this.props.contact.lastName}
-                      </Text>
-              </View>
-          
-              <View style={styles.confirmationContainer}>
-                  <Text style={styles.text}>
-                      send request
-                  </Text>
-                  <Text style={styles.text}>
-                      
-                  </Text>
-              </View> &&
-              <View style={styles.RequestSend}>
+      <View style={{ flex: 1, backgroundColor: '#63869f' }}>
+      <SafeAreaView>
+          <View style={styles.header_container}>
+              <TouchableOpacity
+                  style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10 }}
+              >
                   <Icon
-                      name='check'
-                      type='entypo'
-                      color='green'
+                      name='chevron-left'
+                      color='white'
+                      size={35}
+                      style={{ padding: 20, }}
+                      underlayColor='transparent'
                   />
+              </TouchableOpacity>
+              <View style={{ justifyContent: 'center', flex: 2, alignItems: 'center' }}>
+                  <Text style={styles.title}>Users who follow you </Text>
               </View>
-      </TouchableOpacity>
-      </View>
+              <View style={{ flex: 1 }} />
+          </View>
+      </SafeAreaView>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
+                {this.state.errorMessage &&
+                    <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
+                        {this.state.errorMessage}
+                    </Text>
+                }
+                {this.state.loading &&
+                    <ActivityIndicator
+                        size={'large'}
+                        style={{ flex: 1, justifyContent: 'center' }}
+                    />
+                }
+
+
+                {this.state.loading == false && <FlatList
+                    data={this.state.followerList}
+                    keyboardShouldPersistTaps={'handled'}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) =>  <Userinfo
+                        contact={item}
+                        setErrorMessage={(error) => this.setErrorMessage(error)}
+                    />}
+                />}
+            </View>
+  </View>
   )
 }
 }

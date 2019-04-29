@@ -23,18 +23,18 @@ constructor(props) {
       
 
 componentDidMount() {
-    this.getFriends()
+    this.getFollowing()
 
 }
 
-getFriends () {
+getFollowing () {
     const ref  = firebase.firestore().collection("users").doc(this.state.user).collection('following')
     var friends = [];
     ref.onSnapshot((querySnapshot)=> {
         querySnapshot.forEach((doc)=>
          {
             friends.push({
-                userName :doc.data().userName,
+                Username :doc.data().Username,
                 firstName :doc.data().firstName,
                 lastName :doc.data().lastName,
                 photoURL:doc.data().photoURL,

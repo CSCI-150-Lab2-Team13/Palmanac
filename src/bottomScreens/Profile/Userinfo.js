@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
+import { Icon } from 'react-native-elements'
 
+import styles from './styles'
 export default class Userinfo extends React.Component {
     constructor(props) {
         super(props)
@@ -19,34 +21,18 @@ export default class Userinfo extends React.Component {
             <TouchableOpacity >
                 <View style={styles.defaultContainer}>
                     <Image
-                        source={{uri: this.props.contact.picture}}
+                        source={{uri: this.props.contact.photoURL}}
                         style={styles.rounds}
                     />
                         <Text style={styles.text}>
-                                {this.props.contact.name}
-                        </Text>
-                        <Text >
                                 {this.props.contact.firstName}
                         </Text>
-                        <Text>
+                        <Text >
                                 {this.props.contact.lastName}
                         </Text>
-                </View>
-            
-                <View style={styles.confirmationContainer}>
-                    <Text style={styles.text}>
-                        send request
-                    </Text>
-                    <Text style={styles.text}>
-                        
-                    </Text>
-                </View> &&
-                <View style={styles.RequestSend}>
-                    <Icon
-                        name='check'
-                        type='entypo'
-                        color='green'
-                    />
+                        <Text>
+                                {this.props.contact.Username}
+                        </Text>
                 </View>
         </TouchableOpacity>
         </View>

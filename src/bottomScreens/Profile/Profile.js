@@ -28,7 +28,6 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          user: firebase.auth().currentUser,
           userName: '',
           firstName: '',
           lastName: '',
@@ -42,17 +41,16 @@ export default class Profile extends Component {
     }
     
 
-    async componentDidMount() {
+async componentDidMount() {
 
       const {currentUser} = await firebase.auth();
       const displayName = currentUser.displayName;
       this.setState({userName: displayName});
       const ref = firebase.firestore().collection('users').doc(this.state.userName);
-
       return ref.get().then(doc => {
         if (doc.exists) {
           let data = doc.data()
-          this.setState({firstName : data.firstName, lastName : data.lastName})
+          this.setState({firstName : data.firstName, lastName : data.lastName, photoURL:data.photoURL})
         } 
         else {
             console.error("No such user!");
@@ -60,10 +58,13 @@ export default class Profile extends Component {
     })
         .catch(function (error) {
             console.error("Error getting user:", error);
-        });
+        })
+        .finally(
+          this.setFollowerAndFollowingCount()
+        );
 }
 
-goToFollower =() => {
+goToFollowers =() => {
   this.props.navigation.navigate({routeName: "Followers"})
 }
 
@@ -73,14 +74,53 @@ goToFollowing = () => {
 
 
 
+setFollowerAndFollowingCount = () =>{
+
+  const ref  = firebase.firestore().collection("users").doc(this.state.userName).collection('following')
+  const ref2  = firebase.firestore().collection("users").doc(this.state.userName).collection('followers')
+  followerCount = 0 
+  followingCount = 0 
+  ref.onSnapshot((querySnapshot)=>{
+    querySnapshot.forEach((doc)=> {
+      followerCount +=1
+    })
+    this.setState({Following:followerCount})
+  })
 
 
+  ref2.onSnapshot((querySnapshot)=>{
+    querySnapshot.forEach((doc)=> {
+      followingCount +=1
+    })
+    this.setState({Followers:followingCount})
+  })
+  
+}
+
+
+getFollowing () {
+    const ref  = firebase.firestore().collection("users").doc(this.state.user).collection('following')
+    var friends = [];
+    ref.onSnapshot((querySnapshot)=> {
+        querySnapshot.forEach((doc)=>
+         {
+            friends.push({
+                Username :doc.data().Username,
+                firstName :doc.data().firstName,
+                lastName :doc.data().lastName,
+                photoURL:doc.data().photoURL,
+                id : doc.id
+            })
+        })
+        this.setState({friendList:friends})
+    })
+}
 
 render() {
   return (
     <View style={styles.container}>
         <View style={styles.header}></View>
-        <Image style={styles.avatar} source={{uri: this.state.user.photoURL}}/>
+        <Image style={styles.avatar} source={{uri:this.state.photoURL}}/>
         <View style={styles.body}>
           <View style={styles.bodyContent}>
           <Text style={styles.name}> {this.state.userName}</Text>
