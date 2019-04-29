@@ -10,7 +10,7 @@ import firebase from 'react-native-firebase'
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { getUserData }  from '../firebase/firestoreAPI'
+import { getUserData }  from '../../firebase/firestoreAPI'
 
 export default class Profile extends Component {
 
@@ -35,6 +35,8 @@ export default class Profile extends Component {
           photoURL: '',
           errorMessage: null,
           isLoading: false,
+          Following: 0,
+          Followers: 0, 
 
         };
     }
@@ -61,6 +63,16 @@ export default class Profile extends Component {
         });
 }
 
+goToFollower =() => {
+  this.props.navigation.navigate({routeName: "Followers"})
+}
+
+goToFollowing = () => {
+  this.props.navigation.navigate({routeName: "Following" })
+}
+
+
+
 
 
 
@@ -73,6 +85,18 @@ render() {
           <View style={styles.bodyContent}>
           <Text style={styles.name}> {this.state.userName}</Text>
           <Text style={styles.info}>{this.state.firstName} {this.state.lastName}</Text> 
+        
+          <View style={{flexDirection: "row"}}>
+          <Button style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10 }}
+                  onPress = {() => this.goToFollowers()}>
+          <Text style={styles.info}>Followers {this.state.Followers}</Text>
+          </Button>
+          
+          <Button style={{ flex: 1, alignItems: 'flex-end', paddingLeft: 10 }}
+                  onPress = {() => this.goToFollowing()}>
+          <Text style={styles.info}>Following {this.state.Following}</Text>
+          </Button>
+          </View>
           </View>
       </View>
     </View>
