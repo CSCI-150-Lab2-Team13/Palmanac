@@ -150,15 +150,12 @@ export default class Feed extends Component {
           .catch(error => {
             console.error("Error parsing document: ", error);
           })
-        }    
-      }
-
-          
-          ),
-          
-          
+          }    
+        }),
           this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
         ];
+
+        
         AsyncStorage.getItem('fcmToken').then((fcmToken) => {
           
           if (fcmToken) {

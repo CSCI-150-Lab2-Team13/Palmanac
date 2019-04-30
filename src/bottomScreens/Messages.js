@@ -50,7 +50,7 @@ export default class Messages extends Component {
     this.setState({sendee})
 
     this.ref.orderBy("createdAt", "desc").onSnapshot(snapshot => {
-      let receivedMessages = []
+      var receivedMessages = []
 
 
       snapshot.docs.map(doc => {
@@ -78,28 +78,20 @@ export default class Messages extends Component {
       //   }
       // })
 
-
-      if(receivedMessages == []){
-        this.setState({
-          firstMessage: true
-        })
-      }
-
-
       this.setState(prevState => ({
         messages: GiftedChat.append(prevState.message, receivedMessages)
       }))
     })
+
+    
   }
 
 
 onSend([message]) {
   //this.ref.add(message)  
-  if(this.state.messages.length == 1) {
-    console.warn('Here')
+  if(this.state.messages && this.state.messages.length == 0) {
     firestoreAPI.addMessagedUser(this.state.username,{'username':this.state.sendee})
     firestoreAPI.addMessagedUser(this.state.sendee,{'username':this.state.username})
-    this.setState({firstMessage: false})
   }       
 
   _.set(message,'sentTo',this.state.sendee)
