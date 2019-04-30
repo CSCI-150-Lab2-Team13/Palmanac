@@ -79,7 +79,18 @@ const styles = StyleSheet.create({
         minHeight: itemHeight,
         paddingTop: 10,
         paddingBottom: 10,
-    }
+    },
+    avatar: {
+        width: 130,
+        height: 130,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "white",
+        marginBottom:10,
+        alignSelf:'center',
+        position: 'absolute',
+        marginTop:130
+      },
 })
 
 export default styles

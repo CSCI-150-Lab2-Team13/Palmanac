@@ -1,6 +1,10 @@
 import React from 'react'
 import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
-import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body,Right } from 'native-base';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body,Right, InputGroup } from 'native-base';
+
+import Modal from 'react-native-modal'
+
+
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 
 import firebase from 'react-native-firebase'
@@ -14,7 +18,8 @@ export default class SearchPalInfo extends React.Component {
         super(props)
         this.state = {
             defaultContainer: true,
-            confirmationContainer: false,
+            confirmationContainer: true,
+            isModalVisible:false, 
             results: [],
             errorMessage: null, 
             userName: '',
@@ -78,17 +83,18 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 
 }
 
+_toggleModal = () =>
+this.setState({ isModalVisible: !this.state.isModalVisible });
 
-goToUserProfile = () => {
-    console.warn("hello")
-    this.props.navigation.navigate('Following');
-  }
+
+
   
 
 
 
 
 render(){
+    if(!this.state.isModalVisible)
     return (
     <View> 
     {this.state.errorMessage &&
@@ -96,38 +102,6 @@ render(){
                 {this.state.errorMessage}
         </Text>
     }
-        <TouchableOpacity onPress={() => this.checkIfContactAlreadyInUserContactListThenAddContact()}>
-        {this.state.defaultContainer &&
-            <View style={styles.defaultContainer}>
-                <Image
-                    source={{uri: this.props.contact.picture}}
-                    style={styles.rounds}
-                />
-                    <Text style={styles.text}>
-                            {this.props.contact.name}
-                    </Text>
-                    <View style={styles.defaultContainer}>
-                        <Text>
-                                {this.props.contact.firstName}
-                        </Text>
-                        <Text>
-                                {this.props.contact.lastName}
-                        </Text>
-                    </View>
-            </View>
-        }
-        {this.state.confirmationContainer &&
-            <View style={styles.confirmationContainer}>
-                <Text style={styles.text}>
-                    send request
-                </Text>
-                <Text style={styles.text}>
-                    
-                </Text>
-            </View>
-        }
-
-    </TouchableOpacity>
     <View>
     <Container>
         <Header />
@@ -143,16 +117,13 @@ render(){
               </Left>        
             <Right>    
                 <TouchableOpacity
-                   // onPress = {() => this.goToUserProfile()}
+                   onPress = {() => this._toggleModal()}
                 >
                     <SimpleLineIcons
                         name = 'user'
                         size = {40}
                     />
                 </TouchableOpacity>
-                <Body>
-                <Text>{this.props.contact.name}</Text>
-                </Body>
             </Right>              
             </CardItem>
           </Card>
@@ -161,5 +132,26 @@ render(){
     </View>
     </View>
     
-    )}
+    )
+    else {
+        return (
+        <View style={{marginTop: 22}}>
+            <Modal
+            animationType="slide" 
+            isVisible={this.state.isModalVisible}>
+           <View style={styles.container}>
+             <View style={styles.header}></View>
+             <Image style={styles.avatar} source={{uri: this.props.contact.picture}}/>
+           
+              <Text>{this.props.contact.firstName}</Text>
+              <TouchableOpacity onPress={this._toggleModal}>
+                <Text>Click ME</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
+        )
+    }
+    }
+
 }
