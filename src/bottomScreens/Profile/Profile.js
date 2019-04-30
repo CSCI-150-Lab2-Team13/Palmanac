@@ -6,12 +6,6 @@ import ImagePicker from 'react-native-image-picker'
 import firebase from 'react-native-firebase'
 
 
-
-import EntypoIcon from 'react-native-vector-icons/Entypo';
-import FeatherIcon from 'react-native-vector-icons/Feather';
-
-import { getUserData }  from '../../firebase/firestoreAPI'
-
 export default class Profile extends Component {
 
     static navigationOptions = {

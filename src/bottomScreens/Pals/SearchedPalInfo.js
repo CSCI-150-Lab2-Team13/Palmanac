@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
-import { Icon } from 'react-native-elements'
-
+import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body,Right } from 'native-base';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 
 import firebase from 'react-native-firebase'
 import { checkFriendList, followUser, addFollowertoUser } from '../../firebase/firestoreAPI'
@@ -12,9 +12,7 @@ import styles from './styles'
 export default class SearchPalInfo extends React.Component {
     constructor(props) {
         super(props)
-        this.picture = require('../../img/palmanacLogo.png'),
         this.state = {
-            sendRequest: false,
             defaultContainer: true,
             confirmationContainer: false,
             results: [],
@@ -81,6 +79,13 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 }
 
 
+goToUserProfile = () => {
+    console.warn("hello")
+    this.props.navigation.navigate('Following');
+  }
+  
+
+
 
 
 render(){
@@ -121,16 +126,40 @@ render(){
                 </Text>
             </View>
         }
-        {this.state.sendRequest &&
-            <View style={styles.RequestSend}>
-                <Icon
-                    name='check'
-                    type='entypo'
-                    color='green'
-                />
-            </View>
-        }
+
     </TouchableOpacity>
+    <View>
+    <Container>
+        <Header />
+        <Content>
+          <Card>
+            <CardItem>
+              <Left>
+                <Thumbnail  source={{uri: this.props.contact.picture}} />
+                <Body>
+                  <Text>{this.props.contact.name}</Text>
+                  <Text note>{this.props.contact.firstName && this.props.contact.lastName}</Text>
+                </Body>
+              </Left>        
+            <Right>    
+                <TouchableOpacity
+                   // onPress = {() => this.goToUserProfile()}
+                >
+                    <SimpleLineIcons
+                        name = 'user'
+                        size = {40}
+                    />
+                </TouchableOpacity>
+                <Body>
+                <Text>{this.props.contact.name}</Text>
+                </Body>
+            </Right>              
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
     </View>
+    </View>
+    
     )}
 }
