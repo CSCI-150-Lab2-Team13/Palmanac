@@ -103,6 +103,26 @@ export default class firestoreAPI {
         }
     }
 
+
+    static getMessagedUsers(username) {
+        
+        if (username) {
+            let doc_list = [];
+            return firebase.firestore().collection('users').doc(username).collection('messagedUsers').get()
+            .then((querySnapshot) => {
+                doc_list = querySnapshot.docs.map(doc => doc.data());
+                return doc_list
+            })
+            .catch(error => {
+                console.error("Error getting document: ", error);
+            })
+        }
+        else{
+            console.log("No user found!");
+        }
+
+    }
+
     static getMessages(username) {
         
         if (username) {
