@@ -7,7 +7,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 
 
-import { checkFriendList, followUser, addFollowertoUser } from "../../firebase/firestoreAPI"
+import { checkFriendList, followUser, addFollowertoUser, unfollowUser, removeFollowerfromUser } from "../../firebase/firestoreAPI"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import styles from './styles'
 
@@ -90,6 +90,23 @@ followContact = async () => {
 
 }
 
+unfollowContact =  () => {
+
+    const PalToAdd = this.props.contact.Username 
+    console.warn(this.state.userName, PalToAdd)
+    unfollowUser(this.state.userName, PalToAdd)
+    .then(
+        
+        removeFollowerfromUser(PalToAdd, this.state.userName)
+        .catch((error)=> this.setState({errorMessage:error}))
+    )
+    .catch((error) =>this.setState({errorMessage:error}))
+    .finally(
+    )
+
+
+}
+
 
 
 
@@ -144,10 +161,10 @@ checkFollowingContact = () => {
     ref.doc(this.props.contact.Username).get()
     .then(doc => {
         if(doc.exists) {
-            this.setState({FollowingContact: false})
+            this.setState({FollowingContact: true})
         }
         else {
-            this.setState({FollowingContact:true})
+            this.setState({FollowingContact:false})
         }
 
     })
@@ -203,7 +220,7 @@ profile() {
             }
             {this.state.FollowingContact &&
                 <TouchableOpacity
-
+                onPress={() => this.unfollowContact()}
                 >
                     <SimpleLineIcons
                         name = 'user-unfollow'
@@ -266,6 +283,11 @@ render() {
     else {
         return (
         <View>
+        {this.state.errorMessage &&
+            <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                    {this.state.errorMessage}
+            </Text>
+        }
             {this.profile()}
         </View>
         )

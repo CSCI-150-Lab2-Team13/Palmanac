@@ -37,9 +37,12 @@ export default class Profile extends Component {
 
 async componentDidMount() {
 
+
+
       const {currentUser} = await firebase.auth();
       const displayName = currentUser.displayName;
       this.setState({userName: displayName});
+      this.setFollowerAndFollowingCount();
       const ref = firebase.firestore().collection('users').doc(this.state.userName);
       return ref.get().then(doc => {
         if (doc.exists) {
@@ -53,9 +56,6 @@ async componentDidMount() {
         .catch(function (error) {
             console.error("Error getting user:", error);
         })
-        .finally(
-          this.setFollowerAndFollowingCount()
-        );
 }
 
 goToFollowers =() => {
