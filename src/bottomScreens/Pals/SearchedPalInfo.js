@@ -82,8 +82,7 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 
 }
 
-_toggleModal = () =>
-this.setState({ isModalVisible: !this.state.isModalVisible });
+
 
 
 

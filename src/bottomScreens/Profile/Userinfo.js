@@ -16,6 +16,10 @@ export default class Userinfo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            userName: '',
+            firstName: '',
+            lastName: '',
+            photoURL: '',
             errorMessage: null, 
             renderUserProfile: false,
             Followers: 0,
@@ -23,8 +27,71 @@ export default class Userinfo extends React.Component {
             FollowingCurrentUser: null,
             FollowingContact: null,
             errorMessage: null, 
+            results: [],
         }
     }
+
+
+async componentDidMount() {
+
+        const {currentUser} = await firebase.auth();
+        const displayName = currentUser.displayName;
+        this.setState({userName: displayName});
+        const ref = firebase.firestore().collection('users').doc(this.state.userName);
+        return ref.get().then(doc => {
+          if (doc.exists) {
+            let data = doc.data()
+            this.setState({firstName : data.firstName, lastName : data.lastName, photoURL:data.photoURL})
+          } 
+          else {
+              console.error("No such user!");
+          }
+      })
+          .catch(function (error) {
+              console.error("Error getting user:", error);
+          })
+          .finally(
+            this.setFollowerAndFollowingCount()
+          );
+  }
+
+
+
+followContact = async () => {
+
+    
+    const firstName = this.props.contact.firstName
+    const lastName = this.props.contact.lastName
+    const photoURL = this.props.contact.photoURL
+    const PalToAdd = this.props.contact.Username
+    console.warn(this.state.userName, PalToAdd,this.state.userName, this.state.firstName, this.state.lastName, this.state.photoURL)
+    checkFriendList(this.state.userName , PalToAdd)
+    .then(results => {
+         this.setState({ results: results})
+    })
+    .catch(error =>{
+        this.setState({ errorMessage: error})
+    })
+    if (!this.state.results.length )
+    {
+        followUser(this.state.userName, PalToAdd, firstName, lastName,photoURL)
+        .then(
+            
+            addFollowertoUser(PalToAdd, this.state.userName, this.state.firstName, this.state.lastName, this.state.photoURL)
+            .catch((error)=> this.setState({errorMessage:error}))
+        )
+        .catch((error) =>this.setState({errorMessage:error}))
+    }
+    else 
+    {
+        console.log("hi");
+    }
+
+
+}
+
+
+
 
 
 setFollowerAndFollowingCount = () =>{
@@ -39,6 +106,7 @@ setFollowerAndFollowingCount = () =>{
         console.warn(followerCount)
         })
         this.setState({Following:followerCount})
+        followerCount = 0
     })
         
     ref2.onSnapshot((querySnapshot)=>{
@@ -47,20 +115,23 @@ setFollowerAndFollowingCount = () =>{
         console.warn(followerCount)
         })
         this.setState({Followers:followingCount})
+        followingCount = 0 
     })
         
 }
 
 checkFollowingUser =() => {
+
+    console.warn(this.state.userName, this.props.contact.Username)
     const ref = firebase.firestore().collection("users").doc(this.props.contact.Username).collection('following')
 
-    ref.doc(firebase.auth().currentUser.displayName).get()
+    ref.doc(this.state.userName).get()
     .then(doc => {
         if(doc.exists) {
-            this.setState({FollowingCurrentUser: true})
+            this.setState({FollowingCurrentUser: false})
         }
         else {
-            this.setState({FollowingCurrentUser:false})
+            this.setState({FollowingCurrentUser:true})
         }
 
     })
@@ -73,15 +144,18 @@ checkFollowingContact = () => {
     ref.doc(this.props.contact.Username).get()
     .then(doc => {
         if(doc.exists) {
-            this.setState({FollowingContact: true})
+            this.setState({FollowingContact: false})
         }
         else {
-            this.setState({FollowingContact:false})
+            this.setState({FollowingContact:true})
         }
 
     })
     .catch((error) => this.setState({ errorMessage: error }))
 }
+
+
+
       
 
 renderProfile = () => {
@@ -118,19 +192,18 @@ profile() {
           }
             <View style={{flexDirection: "row"}}>
 
-            {!this.state.FollowingContactUser &&
+            {!this.state.FollowingContact &&
                 <TouchableOpacity
-                    onPress={this.renderProfile}
-                >
+                onPress={() => this.followContact()}> 
                 <SimpleLineIcons
                     name = 'user-follow'
                     size = {30}
                 />
                 </TouchableOpacity>
             }
-            {this.state.FollowingContactUser &&
+            {this.state.FollowingContact &&
                 <TouchableOpacity
-                onPress={this.renderProfile}
+
                 >
                     <SimpleLineIcons
                         name = 'user-unfollow'
