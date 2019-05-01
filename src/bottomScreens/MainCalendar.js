@@ -43,7 +43,7 @@ export default class MainCalendar extends Component {
   //  if(event.hasOwnProperty('startTime') && event.hasOwnProperty('endTime')){
       this.setState(
         {
-          events: this.state.events.concat(event)
+          events: event
         }
       );
   //  }
