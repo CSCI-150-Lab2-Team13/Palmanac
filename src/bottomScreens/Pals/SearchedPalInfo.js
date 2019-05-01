@@ -1,8 +1,7 @@
 import React from 'react'
 import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
-import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body,Right, InputGroup } from 'native-base';
+import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Left, Body,Right } from 'native-base';
 
-import Modal from 'react-native-modal'
 
 
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
@@ -16,10 +15,10 @@ import styles from './styles'
 export default class SearchPalInfo extends React.Component {
     constructor(props) {
         super(props)
+        
         this.state = {
             defaultContainer: true,
             confirmationContainer: true,
-            isModalVisible:false, 
             results: [],
             errorMessage: null, 
             userName: '',
@@ -94,7 +93,6 @@ this.setState({ isModalVisible: !this.state.isModalVisible });
 
 
 render(){
-    if(!this.state.isModalVisible)
     return (
     <View> 
     {this.state.errorMessage &&
@@ -115,16 +113,7 @@ render(){
                   <Text note>{this.props.contact.firstName && this.props.contact.lastName}</Text>
                 </Body>
               </Left>        
-            <Right>    
-                <TouchableOpacity
-                   onPress = {() => this._toggleModal()}
-                >
-                    <SimpleLineIcons
-                        name = 'user'
-                        size = {40}
-                    />
-                </TouchableOpacity>
-            </Right>              
+            
             </CardItem>
           </Card>
         </Content>
@@ -133,25 +122,6 @@ render(){
     </View>
     
     )
-    else {
-        return (
-        <View style={{marginTop: 22}}>
-            <Modal
-            animationType="slide" 
-            isVisible={this.state.isModalVisible}>
-           <View style={styles.container}>
-             <View style={styles.header}></View>
-             <Image style={styles.avatar} source={{uri: this.props.contact.picture}}/>
-           
-              <Text>{this.props.contact.firstName}</Text>
-              <TouchableOpacity onPress={this._toggleModal}>
-                <Text>Click ME</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </View>
-        )
-    }
     }
 
 }
