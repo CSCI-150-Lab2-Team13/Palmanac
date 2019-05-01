@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
+import { Container, Header, Content, Item, Input, Title } from 'native-base';
 import { View, Text, SafeAreaView, TouchableOpacity, TextInput, FlatList, ActivityIndicator} from 'react-native';
-import { Icon } from 'react-native-elements'
+//import { Icon } from 'react-native-elements'
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 
 import { searchPals } from '../../firebase/firestoreAPI'
@@ -36,36 +39,40 @@ setErrorMessage(error) {
 
 render() {
   return (
-      <View style={{ flex: 1, backgroundColor: '#63869f' }}>
-          <SafeAreaView>
-              <View style={styles.header_container}>
+      <View style = {{flex: 1, backgroundColor: 'green'}}>
+      <Container style={{flex: 1}}>
+          <SafeAreaView> 
+              <Header style = {{backgroundColor: 'black'}}>
                   <TouchableOpacity
-                      style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 10 }}
+                      style={{ paddingLeft: 0 }}
                   >
                       <Icon
-                          name='chevron-left'
+                          name='user-circle'
                           color='white'
                           size={35}
-                          style={{ padding: 20, }}
+                          style={{ padding: 10 }}
                           underlayColor='transparent'
                       />
                   </TouchableOpacity>
-                  <View style={{ justifyContent: 'center', flex: 2, alignItems: 'center' }}>
-                      <Text style={styles.title}>Search Pals</Text>
+                  <View style={{ justifyContent: 'center', flex: 3, alignItems: 'center', paddingRight: 45 }}>
+                      <Title>Pal Search</Title>
                   </View>
-                  <View style={{ flex: 1 }} />
-              </View>
+              </Header>
+
+
+              <View style={{ flex: 1, marginBottom: 10, alignContent: "center", backgroundColor: 'blue'}} />
           </SafeAreaView>
+          <Item rounded>
           <TextInput
-              placeholder="Search"
+              placeholder="  Find your pal"
               onChangeText={(text) => this.search(text)}
               autoFocus={false}
-              style={styles.text_input}
-              underlineColorAndroid={'transparent'}
+             // underlineColorAndroid={'transparent'}
               autoCorrect={false}
               ref={component => this.messageInput = component}
           />
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+          </Item>
+                <View style={{ flex: 2, backgroundColor: 'blue' }}>
                     {this.state.errorMessage &&
                         <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
                             {this.state.errorMessage}
@@ -87,6 +94,7 @@ render() {
                         />}
                     />}
                 </View>
+      </Container>
       </View>
     )
   } 

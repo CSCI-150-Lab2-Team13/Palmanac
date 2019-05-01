@@ -79,9 +79,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     MainCalendar,
   }, 
   {
-    navigationOptions:({navigation})=>{
-      Header:null
-    },
+     headerMode: 'none',
      tabBarOptions: {
      //activeTintColor: '#e91e63',
      activeTintColor: "#f5f6fa",      
@@ -119,11 +117,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
   
     },
     {
-      defaultNavigationOptions: ({navigation}) => {
-        return {
-          //headerLeft: <Icon name="md-menu" size={30} />
-        };
-      }
+      headerMode: 'none',
   
     }
   );
@@ -168,6 +162,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
     }
     
   
+  },
+  {
+    headerMode: 'none'
   });
 
   
@@ -176,21 +173,22 @@ const DashboardTabNavigator = createBottomTabNavigator({
 
 export default createSwitchNavigator(
     {
+      
       AuthLoading: AuthLoadingScreen,
       App: AppStack,
       Signup:SignUpScreen, 
       Login:LoginScreen, 
       UserName: UserName,
       profilePicture: profilePicture,
-      
     },
+    
     {
-      navigationOptions:({navigation})=>{
-        Header:null
-      },
+      headerMode: 'none',
       initialRouteName: 'AuthLoading',
     }
   );
+
+  
 
   const styles = StyleSheet.create({
     item: {

@@ -31,11 +31,8 @@ const styles = StyleSheet.create({
     },
 
     text_input: {
-        paddingLeft: 5,
-        backgroundColor: 'white',
-        borderBottomWidth: 1,
-        borderColor: 'lightgrey',
-        minHeight: 40
+
+        
     },
     empty_list: {
         textAlign: 'center',
