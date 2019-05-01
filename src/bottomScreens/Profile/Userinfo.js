@@ -3,10 +3,11 @@ import { Text, TouchableOpacity, Image, Alert, View } from 'react-native'
 import {  Container, Header, Content, Card, CardItem, Button, Thumbnail, Left, Body, Right, Icon } from "native-base";
 
 import firebase from 'react-native-firebase'
-
-
 import FontAwesome from "react-native-vector-icons/FontAwesome"
 
+
+
+import { checkFriendList, followUser, addFollowertoUser } from "../../firebase/firestoreAPI"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import styles from './styles'
 
@@ -20,6 +21,7 @@ export default class Userinfo extends React.Component {
             Followers: 0,
             Following: 0 , 
             FollowingCurrentUser: null,
+            FollowingContact: null,
             errorMessage: null, 
         }
     }
@@ -49,7 +51,7 @@ setFollowerAndFollowingCount = () =>{
         
 }
 
-checkFollow =() => {
+checkFollowingUser =() => {
     const ref = firebase.firestore().collection("users").doc(this.props.contact.Username).collection('following')
 
     ref.doc(firebase.auth().currentUser.displayName).get()
@@ -64,12 +66,29 @@ checkFollow =() => {
     })
     .catch((error) => this.setState({ errorMessage: error }))
 }
+
+checkFollowingContact = () => {
+    const ref = firebase.firestore().collection("users").doc(firebase.auth().currentUser.displayName).collection('following')
+
+    ref.doc(this.props.contact.Username).get()
+    .then(doc => {
+        if(doc.exists) {
+            this.setState({FollowingContact: true})
+        }
+        else {
+            this.setState({FollowingContact:false})
+        }
+
+    })
+    .catch((error) => this.setState({ errorMessage: error }))
+}
       
 
 renderProfile = () => {
     this.setState({ renderUserProfile: !this.state.renderUserProfile });
     this.setFollowerAndFollowingCount()
-    this.checkFollow()
+    this.checkFollowingUser()
+    this.checkFollowingContact()
 }
 profile() {
     return (
@@ -98,6 +117,18 @@ profile() {
             </Text>
           }
             <View style={{flexDirection: "row"}}>
+
+            {!this.state.FollowingContactUser &&
+                <TouchableOpacity
+                    onPress={this.renderProfile}
+                >
+                <SimpleLineIcons
+                    name = 'user-follow'
+                    size = {30}
+                />
+                </TouchableOpacity>
+            }
+            {this.state.FollowingContactUser &&
                 <TouchableOpacity
                 onPress={this.renderProfile}
                 >
@@ -106,6 +137,7 @@ profile() {
                         size = {30}
                     />
                 </TouchableOpacity>
+            }
                 <TouchableOpacity
                 onPress={this.renderProfile}
                 >
