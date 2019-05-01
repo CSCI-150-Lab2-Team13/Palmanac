@@ -159,6 +159,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
 
 export default createSwitchNavigator(
     {
+      
       AuthLoading: AuthLoadingScreen,
       App: AppStack,
       Signup:SignUpScreen, 
