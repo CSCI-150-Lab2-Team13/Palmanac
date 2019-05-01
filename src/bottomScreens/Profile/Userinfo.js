@@ -6,7 +6,10 @@ import firebase from 'react-native-firebase'
 
 
 import FontAwesome from "react-native-vector-icons/FontAwesome"
+
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import styles from './styles'
+
 
 export default class Userinfo extends React.Component {
     constructor(props) {
@@ -31,6 +34,7 @@ setFollowerAndFollowingCount = () =>{
     ref.onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=> {
         followerCount +=1
+        console.warn(followerCount)
         })
         this.setState({Following:followerCount})
     })
@@ -38,6 +42,7 @@ setFollowerAndFollowingCount = () =>{
     ref2.onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=> {
         followingCount +=1
+        console.warn(followerCount)
         })
         this.setState({Followers:followingCount})
     })
@@ -76,12 +81,31 @@ profile() {
           <Left>
             <Thumbnail source={{uri:this.props.contact.photoURL}} />
             <Body>
-              <Text>{this.props.contact.Username}</Text>
-              <Text note>{this.props.contact.firstName }{this.props.contact.lastName}</Text>
+              <Text> @{this.props.contact.Username} </Text>
+              <Text note>{this.props.contact.firstName }  {this.props.contact.lastName}</Text>
             </Body>
           </Left>
 
-          <Right>    
+          <Right> 
+          {!this.state.FollowingCurrentUser &&
+            <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                this user does not follow you 
+            </Text>
+          }
+          {this.state.FollowingCurrentUser &&
+            <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                this user follows you 
+            </Text>
+          }
+            <View style={{flexDirection: "row"}}>
+                <TouchableOpacity
+                onPress={this.renderProfile}
+                >
+                    <SimpleLineIcons
+                        name = 'user-unfollow'
+                        size = {30}
+                    />
+                </TouchableOpacity>
                 <TouchableOpacity
                 onPress={this.renderProfile}
                 >
@@ -90,6 +114,7 @@ profile() {
                         size = {40}
                     />
                 </TouchableOpacity>
+            </View>
             </Right>   
         </CardItem>
         <CardItem cardBody>
@@ -127,12 +152,6 @@ render() {
                         style={styles.rounds}
                     />
                         <Text style={styles.text}>
-                                {this.props.contact.firstName}
-                        </Text>
-                        <Text >
-                                {this.props.contact.lastName}
-                        </Text>
-                        <Text>
                                 {this.props.contact.Username}
                         </Text>
                 </View>
