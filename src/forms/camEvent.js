@@ -32,12 +32,12 @@ export default class CamEvent extends React.Component {
     type: 'back',
     whiteBalance: 'auto',
     ratio: '16:9',
-    recordOptions: {
-      mute: false,
-      maxDuration: 5,
-      quality: RNCamera.Constants.VideoQuality['288p'],
-    },
-    isRecording: false,
+    // recordOptions: {
+    //   mute: false,
+    //   maxDuration: 5,
+    //   quality: RNCamera.Constants.VideoQuality['288p'],
+    // },
+    // isRecording: false,
     canDetectText: false,
     textBlocks: [],
     paused: false
