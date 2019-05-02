@@ -6,7 +6,8 @@ import {
   View,
   TouchableOpacity,
   AsyncStorage,
-  SafeAreaView
+  SafeAreaView,
+  FlatList
 } from 'react-native';
 
 
@@ -19,7 +20,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import moment from "moment"
 import _ from 'lodash';
-import { RawButton } from 'react-native-gesture-handler';
+
+
+import Notifications from './Notifications'
 
 // export default class fcmHandler extends React.PureComponent {
 
@@ -49,13 +52,15 @@ export default class Feed extends Component {
     constructor(props) {
       super(props);
       this.state = {
+      notifications: [],
        myEvents: [],
        events: [],
        softEvents: [],
        items: {},
        fcmToken : "",
        isLoading: true,
-       isFocused: true
+       isFocused: true,
+       renderFeedorNoti: true,
       };
     
       this.assignEvent = this.assignEvent.bind(this);
@@ -75,6 +80,22 @@ export default class Feed extends Component {
     }
   
     componentDidMount() {
+      const ref = firebase.firestore().collection('users').doc(firebase.auth().currentUser.displayName).collection("notifications")
+      var notifications = [];
+
+      ref.onSnapshot((querySnapshot)=> {
+      querySnapshot.forEach((doc)=> {
+        notifications.push({
+        Username :doc.data().Username,
+        firstName :doc.data().firstName,
+        lastName :doc.data().lastName,
+        photoURL:doc.data().photoURL,
+        id : doc.id
+      })
+    })
+    this.setState({notifications:notifications})
+    console.warn("the hell is this", this.state.notifications.length)
+    })
      
         this.subs = [
           this.props.navigation.addListener("didFocus", () => {
@@ -173,6 +194,9 @@ export default class Feed extends Component {
         .catch((error) =>{
           console.error('Whytho',error)
         })
+        .finally(
+          
+        )
 
     }
     componentWillUnmount() {
@@ -202,6 +226,8 @@ fetchPhotoURL (user) {
   })
 }
   render() {
+    if(this.state.renderFeedorNoti)
+    {
     return (
     <Container>
       <SafeAreaView> 
@@ -209,6 +235,41 @@ fetchPhotoURL (user) {
           <Left>
             <Button transparent>
               <FontAwesome name='feed' 
+              size = {30} />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Palmanac</Title>
+          </Body>
+          <Right>
+            <Button transparent>
+              <MaterialIcons name='notifications'
+               onPress={ () => { this.setState({renderFeedorNoti:false})}}
+                size = {30} />
+            </Button>
+          </Right>
+        </Header>
+
+
+              <View style={{ flex: 1, marginBottom: 10, alignContent: "center", backgroundColor: 'blue'}} />
+          </SafeAreaView>
+      <ScrollView style={styles.container}>
+
+        
+        {this.renderEvents()}
+      </ScrollView>
+    </Container>
+    );
+  }
+  else {
+    return (
+      <Container>
+      <SafeAreaView> 
+      <Header>
+          <Left>
+            <Button transparent>
+              <FontAwesome name='feed' 
+               onPress={ () => { this.setState({renderFeedorNoti:true})}}
               size = {30} />
             </Button>
           </Left>
@@ -227,15 +288,16 @@ fetchPhotoURL (user) {
               <View style={{ flex: 1, marginBottom: 10, alignContent: "center", backgroundColor: 'blue'}} />
           </SafeAreaView>
       <ScrollView style={styles.container}>
-        {
-        //  <Text> {JSON.stringify(this.state.events)} </Text>
-       // <Text selectable={true} >{this.state.fcmToken}</Text>
-        }
+
         
-        {this.renderEvents()}
+      {this.renderNotifications()}
       </ScrollView>
     </Container>
+
     );
+
+  }
+
   }
 
   renderEvents(){
@@ -283,6 +345,57 @@ fetchPhotoURL (user) {
     });
 }
 
+
+renderNotifications () {
+  const length = this.state.notifications.length
+  if (length == 0)
+  return(
+    <Text>no notifications</Text>
+
+    
+  )
+  else {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      {this.state.errorMessage &&
+          <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
+              {this.state.errorMessage}
+          </Text>
+      }
+
+      {this.state.loading == false && <FlatList
+          data={this.state.friendList}
+          keyboardShouldPersistTaps={'handled'}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) =>  <Notifications
+              contact={item}
+              setErrorMessage={(error) => this.setErrorMessage(error)}
+          />}
+      />}
+  </View>
+
+    )
+  }
+}
+
+
+getFollowing () {
+  const ref  = firebase.firestore().collection("users").doc(this.state.userName).collection('following')
+  var friends = [];
+  ref.onSnapshot((querySnapshot)=> {
+      querySnapshot.forEach((doc)=>
+       {
+          friends.push({
+              Username :doc.data().Username,
+              firstName :doc.data().firstName,
+              lastName :doc.data().lastName,
+              photoURL:doc.data().photoURL,
+              id : doc.id
+          })
+      })
+      this.setState({friendList:friends})
+  })
+}
 renderMap(location){
   //TODO: Convert location string to region
   if(location){

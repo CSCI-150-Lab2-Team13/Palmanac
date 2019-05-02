@@ -7,7 +7,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome"
 
 
 
-import { checkFriendList, followUser, addFollowertoUser, unfollowUser, removeFollowerfromUser } from "../../firebase/firestoreAPI"
+import { checkFriendList, followUser, addFollowertoUser, unfollowUser, removeFollowerfromUser, sendNotification } from "../../firebase/firestoreAPI"
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import styles from './styles'
 
@@ -64,6 +64,7 @@ followContact = async () => {
     const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.photoURL
     const PalToAdd = this.props.contact.Username
+    const eventType = 1
     console.warn(this.state.userName, PalToAdd,this.state.userName, this.state.firstName, this.state.lastName, this.state.photoURL)
     checkFriendList(this.state.userName , PalToAdd)
     .then(results => {
@@ -81,6 +82,10 @@ followContact = async () => {
             .catch((error)=> this.setState({errorMessage:error}))
         )
         .catch((error) =>this.setState({errorMessage:error}))
+        .finally(
+            sendNotification(this.state.userName,PalToAdd, firstName, lastName,photoURL, eventType)
+            .catch((error)=>this.setState({errorMessage:error}))
+        )
     }
     else 
     {
