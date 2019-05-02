@@ -10,17 +10,24 @@ jest.mock('Platform', () => {
     return Platform;
   })
 
+
+
 it('Assign event test', ()=> {
-    props = event 
-    let MC = renderer.create(<MainCalendar {...props}/>).getInstance();
+    
+    const navigation = { navigate: jest.fn(),
+        addListener: jest.fn()
+      };
+    let MC = renderer.create(<MainCalendar navigation={navigation}/>).getInstance();
     let testArr = []
     MC.assignEvent(testArr)
     expect(MC.state.events).toEqual(testArr)
 })
 
 it('Assign event test2', ()=> {
-    props = event
-    let MC = renderer.create(<MainCalendar {...props}/>).getInstance();
+    const navigation = { navigate: jest.fn(),
+                         addListener: jest.fn()
+                       };
+    let MC = renderer.create(<MainCalendar navigation={navigation}/>).getInstance();
     let testArr = ['1','2','3']
     MC.assignEvent(testArr)
     expect(MC.state.events).toEqual(testArr)
