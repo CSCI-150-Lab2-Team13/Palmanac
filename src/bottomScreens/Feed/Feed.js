@@ -94,7 +94,6 @@ export default class Feed extends Component {
       })
     })
     this.setState({notifications:notifications})
-    console.warn("the hell is this", this.state.notifications.length)
     })
      
         this.subs = [
@@ -205,26 +204,6 @@ export default class Feed extends Component {
 
 
 
-fetchPhotoURL (user) {
-  console.warn("hello")
-  let photoURL = ''
-  const ref = firebase.firestore().collection('users').doc(user)
-  ref.get().then(doc => {
-    if(doc.exists)
-    {
-      let data  = doc.data()
-      photoURL = data.photoURL
-      console.warn(photoURL)
-      return photoURL
-    
-    }
-    
-  })
-  
-  .catch((error) =>{
-    console.error(error)
-  })
-}
   render() {
     if(this.state.renderFeedorNoti)
     {
@@ -309,26 +288,18 @@ fetchPhotoURL (user) {
       var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
       var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
       var col = false 
-      let photoURL = ''
-      photoURL = this.fetchPhotoURL(event.username)
-      this.state.myEvents.map((myEvent) => {
-        if(myEvent['startTime'] <= event['endTime'] && myEvent['endTime'] >= event["startTime"]){
-          col = true
-        }
-      })
       if(!col){
         return(
           <View key={event["id"]} >
             <Card style={styles.EventsCard}>
               <CardItem >
               <Left>
-              <Thumbnail source={{uri:photoURL}} />
-              <Text> {photoURL} </Text>
+              <Thumbnail source={{uri:event.photoURL}} />
               </Left>
                 <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
               </CardItem>
               <CardItem >
-                <Text>Event By: </Text><Text style={{fontStyle: 'italic'}}>{event.username}</Text>
+                <Text>Event By: </Text>
               </CardItem>
               <CardItem>
               <Text>{event.desc ? event.desc :"No description provided" }</Text> 
