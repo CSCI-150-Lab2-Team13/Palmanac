@@ -645,6 +645,34 @@ export const searchPals = async (search) => {
     }
 }
 
+export const sendNotification = async (currentUser, pal, firstName, lastName, photoURL, eventType) =>
+
+    new Promise((resolve,reject)=> {
+        const ref = firebase.firestore().collection('users').doc(pal).collection('notifications')
+
+        ref.get()
+            .then(doc => {
+                if(!doc.exists)
+                {
+                    console.warn(doc.id)
+                    ref.doc().set({
+                        Username: currentUser,
+                        firstName: firstName,
+                        lastName: lastName,
+                        photoURL: photoURL,
+                        eventType:eventType
+                    })
+                    .then(resolve())
+                    .catch((error) => {
+                        reject(error)
+                    })
+                }
+            })
+            .catch((error)=>{
+                reject(error)
+            })
+    })
+
 
 
 
