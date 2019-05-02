@@ -65,7 +65,6 @@ followContact = async () => {
     const photoURL = this.props.contact.photoURL
     const PalToAdd = this.props.contact.Username
     const eventType = 1
-    console.warn(this.state.userName, PalToAdd,this.state.userName, this.state.firstName, this.state.lastName, this.state.photoURL)
     checkFriendList(this.state.userName , PalToAdd)
     .then(results => {
          this.setState({ results: results})
@@ -98,7 +97,6 @@ followContact = async () => {
 unfollowContact =  () => {
 
     const PalToAdd = this.props.contact.Username 
-    console.warn(this.state.userName, PalToAdd)
     unfollowUser(this.state.userName, PalToAdd)
     .then(
         
@@ -125,7 +123,6 @@ setFollowerAndFollowingCount = () =>{
     ref.onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=> {
         followerCount +=1
-        console.warn(followerCount)
         })
         this.setState({Following:followerCount})
         followerCount = 0
@@ -134,7 +131,6 @@ setFollowerAndFollowingCount = () =>{
     ref2.onSnapshot((querySnapshot)=>{
         querySnapshot.forEach((doc)=> {
         followingCount +=1
-        console.warn(followerCount)
         })
         this.setState({Followers:followingCount})
         followingCount = 0 
@@ -144,7 +140,6 @@ setFollowerAndFollowingCount = () =>{
 
 checkFollowingUser =() => {
 
-    console.warn(this.state.userName, this.props.contact.Username)
     const ref = firebase.firestore().collection("users").doc(this.props.contact.Username).collection('following')
 
     ref.doc(this.state.userName).get()

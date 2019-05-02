@@ -3,6 +3,8 @@ import { Text, View , SafeAreaView, TouchableOpacity, FlatList} from 'react-nati
 import { Icon } from 'react-native-elements'
 
 
+import LottieView from 'lottie-react-native';
+
 import firebase from 'react-native-firebase'
 
 
@@ -80,7 +82,9 @@ getFollowing () {
                       />
                   }
               { this.state.friendList && this.state.friendList.length == 0 &&
-                <Text> hi 32322</Text>
+                <View>
+                    <Text>suppy</Text>
+                </View>
               }
 
                   {this.state.loading == false && <FlatList
