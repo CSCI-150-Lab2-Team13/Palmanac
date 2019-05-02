@@ -60,7 +60,7 @@ export default class Feed extends Component {
        fcmToken : "",
        isLoading: true,
        isFocused: true,
-       renderFeedorNoti: true,
+       renderFeedorNoti: false,
       };
     
       this.assignEvent = this.assignEvent.bind(this);

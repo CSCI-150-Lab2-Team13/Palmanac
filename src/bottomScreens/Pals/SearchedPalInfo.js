@@ -7,7 +7,7 @@ import { Container, Header, Content, Card, CardItem, Thumbnail, Button, Icon, Le
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 
 import firebase from 'react-native-firebase'
-import { checkFriendList, followUser, addFollowertoUser } from '../../firebase/firestoreAPI'
+import { checkFriendList, followUser, addFollowertoUser, sendNotification } from '../../firebase/firestoreAPI'
 import styles from './styles'
 
 
@@ -25,7 +25,7 @@ export default class SearchPalInfo extends React.Component {
             firstName:'',
             lastName:'',
             photoURL:'',
-
+            sendNotification: false
         }
     }
 
@@ -58,6 +58,7 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
     const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.picture
     const PalToAdd = this.props.contact.name
+    const eventType = 1
     checkFriendList(this.state.userName , PalToAdd)
     .then(results => {
          this.setState({ results: results})
@@ -74,6 +75,9 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
             .catch((error)=> this.setState({errorMessage:error}))
         )
         .catch((error) =>this.setState({errorMessage:error}))
+        .finally(
+          sendNotification(this.state.userName,PalToAdd, this.state.firstName,this.state.lastName,this.state.photoURL, eventType )
+        )
     }
     else 
     {
@@ -93,32 +97,32 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
 
 render(){
     return (
-    <View> 
-    {this.state.errorMessage &&
-        <Text style={{ color: 'red', fontStyle: 'italic' }}>
-                {this.state.errorMessage}
-        </Text>
-    }
-    <View>
-    <Container>
-        <Header />
-        <Content>
-          <Card>
-            <CardItem>
-              <Left>
-                <Thumbnail  source={{uri: this.props.contact.picture}} />
-                <Body>
-                  <Text>{this.props.contact.name}</Text>
-                  <Text note>{this.props.contact.firstName && this.props.contact.lastName}</Text>
-                </Body>
-              </Left>        
-            
-            </CardItem>
-          </Card>
-        </Content>
-      </Container>
-    </View>
-    </View>
+        <View> 
+        {this.state.errorMessage &&
+            <Text style={{ color: 'red', fontStyle: 'italic' }}>
+                    {this.state.errorMessage}
+            </Text>
+        }
+            <TouchableOpacity onPress={() => this.checkIfContactAlreadyInUserContactListThenAddContact()}>
+            {this.state.defaultContainer &&
+                <View style={styles.defaultContainer}>
+                    <Image
+                        source={{uri: this.props.contact.picture}}
+                        style={styles.rounds}
+                    />
+                        <Text style={styles.text}>
+                                {this.props.contact.name}
+                        </Text>
+                        <Text >
+                                {this.props.contact.firstName}
+                        </Text>
+                        <Text>
+                                {this.props.contact.lastName}
+                        </Text>
+                </View>
+            }
+        </TouchableOpacity>
+        </View>
     
     )
     }
