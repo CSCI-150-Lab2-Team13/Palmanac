@@ -24,6 +24,10 @@ import _ from 'lodash';
 
 import Notifications from './Notifications'
 
+import styles from './styles'
+import Events from './Events';
+
+
 // export default class fcmHandler extends React.PureComponent {
 
 //   componentDidMount() {
@@ -282,85 +286,52 @@ export default class Feed extends Component {
 
   renderEvents(){
 
-    return this.state.events.map( (event) => {
-      var dateVal = new Date(event["startTime"])//["seconds"] * 1000);
-      var eventStr = moment(dateVal).format("YYYY-MM-DD")
-      var endVal = new Date(event["endTime"])//["seconds"] * 1000);
-      var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
-      var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
-      var onlyOneLike = false
-      var col = false 
-      if(!col){
-        return(
-          <View key={event["id"]} >
-            <Card style={styles.EventsCard}>
-              <CardItem >
-              <Left>
-              <Thumbnail source={{uri:event.photoURL}} />
-              </Left>
-                <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
-              </CardItem>
-              <CardItem >
-                <Text>Event By: </Text>
-              </CardItem>
-              <CardItem>
-              <Text>{event.desc ? event.desc :"No description provided" }</Text> 
-              </CardItem>
-              <CardItem>
-                <Text style={{fontWeight: 'bold'}}>{startStr}</Text> 
-                <Text> to </Text> 
-                <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
-              </CardItem>
-              <CardItem>
-               {!onlyOneLike &&
-                        <Left>
-                        <Button transparent
-                          onPress 
-                        >
-                          <Icon active name="thumbs-up" />
-                          <Text>{event.likes}</Text>
-                        </Button>
-                      </Left>
-              }
-              {onlyOneLike && 
-                <Left>
-                  <Button transparent>
-                    <Icon active name="thumbs-up" />
-                      <Text>{event.likes}</Text>
-                  </Button>
-              </Left>
+    const length = this.state.events.length
+    if (length == 0){
+    return(
+      <Text>no Events</Text>
+  
+      
+    )
+    
+  }
 
-              }
-              <Body>
-                <Button transparent>
-                  <Icon active name="chatbubbles" />
-                  <Text>4 Comments</Text>
-                </Button>
-              </Body>
-              <Right>
-                <Button transparent>
-                  <FontAwesome active name="address-card" 
-                    size = {30}
-                  />
-                </Button>
-              </Right>
-            </CardItem>
-            </Card>
-          </View>
-        )
-       }
-    });
+  else {
+    return (
+    
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      {this.state.errorMessage &&
+        <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
+            {this.state.errorMessage}
+        </Text>
+      }
+
+      {this.state.loading == false && <FlatList
+          data={this.state.events}
+          keyboardShouldPersistTaps={'handled'}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) =>  <Events
+              contact={item}
+              setErrorMessage={(error) => this.setErrorMessage(error)}
+          />}
+      />}
+    </View>
+    )
+    
+    }
+    
 }
 
 
 renderNotifications () {
   const length = this.state.notifications.length
-  if (length == 0)
+  if (length == 0){
   return(
     <Text>no notifications</Text>
 
     
   )
+  }
   else {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -422,47 +393,3 @@ renderMap(location){
 }
 
 }
-
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: 'white',
-    flex: 2,
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10,
-    marginTop: 17,
-
-  },
-  calendar: {
-    flex: 5,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#eee',
-  },
-  text: {
-    flex: 5,
-    textAlign: 'center',
-    borderColor: '#bbb',
-   // padding: 10,
-  // paddingBottom: 10,
-    backgroundColor: '#eee'
-  },
-  container: {
-    flex: 1,
-    backgroundColor: 'gray',
-  },
-  emptyDate: {
-    flex: 1,
-    paddingTop: 30
- 
-  },
-  eventsView:{
-    flex: 2,
-    paddingLeft: 10
-  },
-  EventsCard : {
-    flex: 5,
-    paddingLeft: 10
-   
-  }
-});

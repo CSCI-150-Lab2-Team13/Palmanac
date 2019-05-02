@@ -9,6 +9,7 @@ import com.BV.LinearGradient.LinearGradientPackage;
 
 //adding to have facebook Login 
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.lottie.LottiePackage;
 
 import com.rnfs.RNFSPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -67,6 +68,7 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LottiePackage(),
             new RNFSPackage(),
             new RNCameraPackage(),
             new PickerPackage(),
