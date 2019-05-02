@@ -60,7 +60,8 @@ export default class Feed extends Component {
        fcmToken : "",
        isLoading: true,
        isFocused: true,
-       renderFeedorNoti: false,
+       loading:false,
+       renderFeedorNoti: true,
       };
     
       this.assignEvent = this.assignEvent.bind(this);
@@ -309,6 +310,23 @@ export default class Feed extends Component {
                 <Text> to </Text> 
                 <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
               </CardItem>
+              <CardItem>
+              <Left>
+                <Button transparent>
+                  <Icon active name="thumbs-up" />
+                  <Text>{event.likes}</Text>
+                </Button>
+              </Left>
+              <Body>
+                <Button transparent>
+                  <Icon active name="chatbubbles" />
+                  <Text>4 Comments</Text>
+                </Button>
+              </Body>
+              <Right>
+                <Text>11h ago</Text>
+              </Right>
+            </CardItem>
             </Card>
           </View>
         )
@@ -335,7 +353,7 @@ renderNotifications () {
       }
 
       {this.state.loading == false && <FlatList
-          data={this.state.friendList}
+          data={this.state.notifications}
           keyboardShouldPersistTaps={'handled'}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) =>  <Notifications
