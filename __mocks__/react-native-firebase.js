@@ -73,6 +73,13 @@ export class MockFirebase {
       }
       return this.databaseInstance
     }
+    this.auth = () => {
+      return {
+        currentUser : {
+          displayName : 'Bob'
+        }
+      }
+    }
   }
 }
 
