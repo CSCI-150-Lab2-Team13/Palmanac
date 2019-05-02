@@ -103,7 +103,7 @@ export default class Feed extends Component {
      
         this.subs = [
           this.props.navigation.addListener("didFocus", () => {
-          //  if(!typeof firebase.auth.currentUser === 'undefined') {
+          if(!typeof firebase.auth.currentUser === 'undefined') {
                 firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
                 {
                   //console.warn('getEvents reached')
@@ -182,7 +182,7 @@ export default class Feed extends Component {
           .catch(error => {
             console.error("Error parsing document: ", error);
           })
-        //  }    
+          }    
         }),
           this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
         ];
