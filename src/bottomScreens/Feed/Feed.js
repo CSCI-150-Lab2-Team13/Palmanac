@@ -24,10 +24,6 @@ import _ from 'lodash';
 
 import Notifications from './Notifications'
 
-import styles from './styles'
-import Events from './Events';
-
-
 // export default class fcmHandler extends React.PureComponent {
 
 //   componentDidMount() {
@@ -64,8 +60,7 @@ export default class Feed extends Component {
        fcmToken : "",
        isLoading: true,
        isFocused: true,
-       loading:false,
-       renderFeedorNoti: true,
+       renderFeedorNoti: false,
       };
     
       this.assignEvent = this.assignEvent.bind(this);
@@ -99,11 +94,12 @@ export default class Feed extends Component {
       })
     })
     this.setState({notifications:notifications})
+    console.warn("the hell is this", this.state.notifications.length)
     })
      
         this.subs = [
           this.props.navigation.addListener("didFocus", () => {
-          //  if(!typeof firebase.auth.currentUser === 'undefined') {
+          if(!typeof firebase.auth.currentUser === 'undefined') {
                 firestoreAPI.getEvents(firebase.auth().currentUser.displayName).then( (eventList) =>
                 {
                   //console.warn('getEvents reached')
@@ -182,7 +178,7 @@ export default class Feed extends Component {
           .catch(error => {
             console.error("Error parsing document: ", error);
           })
-        //  }    
+        }    
         }),
           this.props.navigation.addListener("willBlur", () => this.setState({ isFocused: false }))
         ];
@@ -209,6 +205,26 @@ export default class Feed extends Component {
 
 
 
+fetchPhotoURL (user) {
+  console.warn("hello")
+  let photoURL = ''
+  const ref = firebase.firestore().collection('users').doc(user)
+  ref.get().then(doc => {
+    if(doc.exists)
+    {
+      let data  = doc.data()
+      photoURL = data.photoURL
+      console.warn(photoURL)
+      return photoURL
+    
+    }
+    
+  })
+  
+  .catch((error) =>{
+    console.error(error)
+  })
+}
   render() {
     if(this.state.renderFeedorNoti)
     {
@@ -286,52 +302,58 @@ export default class Feed extends Component {
 
   renderEvents(){
 
-    const length = this.state.events.length
-    if (length == 0){
-    return(
-      <Text>no Events</Text>
-  
-      
-    )
-    
-  }
-
-  else {
-    return (
-    
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      {this.state.errorMessage &&
-        <Text style={{ color: 'red', textAlign: 'center', marginTop: 5 }}>
-            {this.state.errorMessage}
-        </Text>
-      }
-
-      {this.state.loading == false && <FlatList
-          data={this.state.events}
-          keyboardShouldPersistTaps={'handled'}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) =>  <Events
-              contact={item}
-              setErrorMessage={(error) => this.setErrorMessage(error)}
-          />}
-      />}
-    </View>
-    )
-    
-    }
-    
+    return this.state.events.map( (event) => {
+      var dateVal = new Date(event["startTime"])//["seconds"] * 1000);
+      var eventStr = moment(dateVal).format("YYYY-MM-DD")
+      var endVal = new Date(event["endTime"])//["seconds"] * 1000);
+      var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
+      var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
+      var col = false 
+      let photoURL = ''
+      photoURL = this.fetchPhotoURL(event.username)
+      this.state.myEvents.map((myEvent) => {
+        if(myEvent['startTime'] <= event['endTime'] && myEvent['endTime'] >= event["startTime"]){
+          col = true
+        }
+      })
+      if(!col){
+        return(
+          <View key={event["id"]} >
+            <Card style={styles.EventsCard}>
+              <CardItem >
+              <Left>
+              <Thumbnail source={{uri:photoURL}} />
+              <Text> {photoURL} </Text>
+              </Left>
+                <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
+              </CardItem>
+              <CardItem >
+                <Text>Event By: </Text><Text style={{fontStyle: 'italic'}}>{event.username}</Text>
+              </CardItem>
+              <CardItem>
+              <Text>{event.desc ? event.desc :"No description provided" }</Text> 
+              </CardItem>
+              <CardItem>
+                <Text style={{fontWeight: 'bold'}}>{startStr}</Text> 
+                <Text> to </Text> 
+                <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
+              </CardItem>
+            </Card>
+          </View>
+        )
+       }
+    });
 }
 
 
 renderNotifications () {
   const length = this.state.notifications.length
-  if (length == 0){
+  if (length == 0)
   return(
     <Text>no notifications</Text>
 
     
   )
-  }
   else {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -342,7 +364,7 @@ renderNotifications () {
       }
 
       {this.state.loading == false && <FlatList
-          data={this.state.notifications}
+          data={this.state.friendList}
           keyboardShouldPersistTaps={'handled'}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) =>  <Notifications
@@ -393,3 +415,47 @@ renderMap(location){
 }
 
 }
+
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 2,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+
+  },
+  calendar: {
+    flex: 5,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#eee',
+  },
+  text: {
+    flex: 5,
+    textAlign: 'center',
+    borderColor: '#bbb',
+   // padding: 10,
+  // paddingBottom: 10,
+    backgroundColor: '#eee'
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'gray',
+  },
+  emptyDate: {
+    flex: 1,
+    paddingTop: 30
+ 
+  },
+  eventsView:{
+    flex: 2,
+    paddingLeft: 10
+  },
+  EventsCard : {
+    flex: 5,
+    paddingLeft: 10
+   
+  }
+});
