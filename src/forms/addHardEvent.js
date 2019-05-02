@@ -130,6 +130,8 @@ export default class HardEventFormView extends Component {
         placeId: "",
         placeDetails: "",
         rec: "",
+        comments : [],
+        likes: 0,
         events: [],
         region: {
           latitude: LATITUDE,
@@ -258,6 +260,11 @@ export default class HardEventFormView extends Component {
                   this.formGenerator.setValues({
                     // using bracket notation lets you use var instead of string 'prop'
                     [prop]: eventProp
+                  })
+                }
+                else{
+                  this.setState({
+                    [prop]: event[prop]
                   })
                 }
               }
@@ -434,6 +441,11 @@ export default class HardEventFormView extends Component {
       //   byyearday: "",
       //   until: ""
       // },
+
+
+      _.set(formValues,'comments', this.state.comments)
+      _.set(formValues,'likes', this.state.likes)
+
       var rule;
       var rule_text = "";
       var min_range_list;
