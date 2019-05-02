@@ -224,6 +224,7 @@ export default class firestoreAPI {
                     .then( (eventList) =>{
                         return eventList.map((event) => {
                             _.set(event,'username',following['Username'])
+                            _.set(event,'photoUrl',following['photoUrl'])
                             return event
                         })
                         //console.warn('Here')
