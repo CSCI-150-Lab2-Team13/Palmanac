@@ -137,7 +137,8 @@ export default class HardEventFormView extends Component {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
-        username: firebase.auth().currentUser.displayName
+        username: firebase.auth().currentUser.displayName,
+        photoURL: '',
       };
       this.onValueChange = this.onValueChange.bind(this);
       this.onChangeDestinationDebounced = _.debounce(this.onChangeDestination, 750)

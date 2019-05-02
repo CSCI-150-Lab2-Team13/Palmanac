@@ -507,39 +507,54 @@ export const addFollowertoUser = async (paltoAdd, username, firstName, lastName,
                 reject(error)
             })
         })
-//function to delete friends 
-export const deleteFriend = async (currentUser, palName) => {
+//function to unfollow users 
+export const unfollowUser = async (currentUser, palName) => {
     new Promise(async (resolve, reject) => {
-        await firebase
-            .firestore()
-            .collection('users')
-            .doc(currentUser)
-            .collection('pals')
-            .where('username', '==', palName)
-            .get()
-            .then(docs => {
-                firebase.firestore().doc(docs.docs[0].ref._documentPath._parts.join('/').toString()).set({
-                    delete: true
-                }, { merge: true })
-            })
-            .catch(err => reject(err))
-        if (currentUser !== palName) {
-            await firebase
-                .firestore()
-                .collection('users')
-                .doc(contactName)
-                .collection('pals')
-                .where('username', '==', currentUser)
-                .get()
-                .then(docs => {
-                    firebase.firestore().doc(docs.docs[0].ref._documentPath._parts.join('/').toString()).set({
-                        delete: true
-                    }, { merge: true })
+      const ref = firebase.firestore().collection('users').doc(currentUser).collection('following')
 
+      ref.doc(palName).get()
+        .then(doc =>{
+            if(doc.exists)
+            {
+                ref.doc(palName).delete()
+                .then(resolve())
+                .catch((error) => {
+                    reject(error)
                 })
-                .catch(err => reject(err))
-        }
-        resolve()
+            }
+            else {
+                reject("you dont follow this user")
+            }
+        })
+        .catch((error)=>{
+            reject(error)
+        })
+})
+}
+
+
+
+export const removeFollowerfromUser = async (palName, currentUser) => {
+    new Promise(async (resolve,reject)=> {
+        const ref = firebase.firestore().collection('users').doc(palName).collection('followers')
+
+        ref.doc(currentUser).get()
+        .then(doc => {
+            if(doc.exists)
+            {
+                ref.doc(currentUser).delete()
+                .then(resolve())
+                .catch((error)=>{
+                    reject(error)
+                })
+            }
+            else{
+                reject("already following")
+            }
+        })
+        .catch((error)=>{
+            reject(error)
+        })
     })
 }
 

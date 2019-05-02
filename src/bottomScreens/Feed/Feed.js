@@ -3,16 +3,23 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  Button,
   View,
   TouchableOpacity,
-  AsyncStorage
+  AsyncStorage,
+  SafeAreaView
 } from 'react-native';
-import firestoreAPI from '../firebase/firestoreAPI'
+
+
+import firestoreAPI from '../../firebase/firestoreAPI'
 import firebase from 'react-native-firebase'
-import { Container, Header, Content, Card, CardItem, Body, Title } from 'native-base';
+import { Container, Header, Left, Body, Right, Button, Icon, Title , Card, CardItem, Thumbnail} from 'native-base';
+
+
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import moment from "moment"
 import _ from 'lodash';
+import { RawButton } from 'react-native-gesture-handler';
 
 // export default class fcmHandler extends React.PureComponent {
 
@@ -100,7 +107,7 @@ export default class Feed extends Component {
                   else eventsList.push(event)
                 })
                 this.setState({
-                  events: eventsList,
+                  events: eventList,
                   softEvents: softEvents
                 })
               })
@@ -174,8 +181,51 @@ export default class Feed extends Component {
 
 
 
+fetchPhotoURL (user) {
+  console.warn("hello")
+  let photoURL = ''
+  const ref = firebase.firestore().collection('users').doc(user)
+  ref.get().then(doc => {
+    if(doc.exists)
+    {
+      let data  = doc.data()
+      photoURL = data.photoURL
+      console.warn(photoURL)
+      return photoURL
+    
+    }
+    
+  })
+  
+  .catch((error) =>{
+    console.error(error)
+  })
+}
   render() {
     return (
+    <Container>
+      <SafeAreaView> 
+      <Header>
+          <Left>
+            <Button transparent>
+              <FontAwesome name='feed' 
+              size = {30} />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Palmanac</Title>
+          </Body>
+          <Right>
+            <Button transparent>
+              <MaterialIcons name='notifications'
+                size = {30} />
+            </Button>
+          </Right>
+        </Header>
+
+
+              <View style={{ flex: 1, marginBottom: 10, alignContent: "center", backgroundColor: 'blue'}} />
+          </SafeAreaView>
       <ScrollView style={styles.container}>
         {
         //  <Text> {JSON.stringify(this.state.events)} </Text>
@@ -184,6 +234,7 @@ export default class Feed extends Component {
         
         {this.renderEvents()}
       </ScrollView>
+    </Container>
     );
   }
 
@@ -195,7 +246,9 @@ export default class Feed extends Component {
       var endVal = new Date(event["endTime"])//["seconds"] * 1000);
       var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
       var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
-      var col = false
+      var col = false 
+      let photoURL = ''
+      photoURL = this.fetchPhotoURL(event.username)
       this.state.myEvents.map((myEvent) => {
         if(myEvent['startTime'] <= event['endTime'] && myEvent['endTime'] >= event["startTime"]){
           col = true
@@ -205,14 +258,11 @@ export default class Feed extends Component {
         return(
           <View key={event["id"]} >
             <Card style={styles.EventsCard}>
-            <TouchableOpacity             
-              onPress={() => { 
-              // alert("Clicked")
-                //this.onEventPress(event['id']) 
-                return
-                } }
-            >
               <CardItem >
+              <Left>
+              <Thumbnail source={{uri:photoURL}} />
+              <Text> {photoURL} </Text>
+              </Left>
                 <Text style={{fontWeight: 'bold'}}>{event.title}</Text>
               </CardItem>
               <CardItem >
@@ -226,8 +276,6 @@ export default class Feed extends Component {
                 <Text> to </Text> 
                 <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
               </CardItem>
-              
-              </TouchableOpacity>
             </Card>
           </View>
         )

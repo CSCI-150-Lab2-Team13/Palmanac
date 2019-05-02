@@ -17,7 +17,6 @@ import UserName from '../mainScreens/SignupComponents/getUserInfo/UserName'
 import profilePicture from '../mainScreens/SignupComponents/getUserInfo/profilePicture'
 
 
-
 import Following from '../bottomScreens/Profile/Following'
 import Followers from '../bottomScreens/Profile/Followers'
 
@@ -25,8 +24,10 @@ import HardEventFormScreen from '../forms/addHardEvent'
 import QuickAddScreen from '../forms/quickAddScreen'
 import CamEventScreen from '../forms/camEvent'
 //import the different screens for different scenario's for tabNav
-import Feed from '../bottomScreens/Feed'
+import Feed from '../bottomScreens/Feed/Feed'
 import Pals from '../bottomScreens/Pals/Pals'
+
+
 
 import Messages from '../bottomScreens/MessageMenu'
 import Profile from '../bottomScreens/Profile/Profile'
@@ -159,7 +160,7 @@ const DashboardTabNavigator = createBottomTabNavigator({
     },
     MessageScreen : {
       screen: MessageScreen
-    }
+    },
     
   
   },
