@@ -49,5 +49,51 @@ export default class Notifications extends React.Component {
 
       )
     }
+    else if (this.props.eventType = 2)
+    {
+      return (
+        <Container>
+        <Header />
+        <Content>
+          <Card>
+            <CardItem>
+            <Left>
+              <Thumbnail 
+              size={50}
+              source={{uri:this.props.contact.photoURL}} />
+              </Left>
+              <Body>
+              <Text>{this.props.contact.Username} has added your event from their feed</Text>
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
+
+      )
+    }
+    else if (this.props.eventType = 3)
+    {
+      return (
+        <Container>
+        <Header />
+        <Content>
+          <Card>
+            <CardItem>
+            <Left>
+              <Thumbnail 
+              size={50}
+              source={{uri:this.props.contact.photoURL}} />
+              </Left>
+              <Body>
+              <Text>{this.props.contact.Username} has unfollowed you </Text>
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
+
+      )
+    }
   }
 }

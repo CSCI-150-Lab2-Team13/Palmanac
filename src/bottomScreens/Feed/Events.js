@@ -30,15 +30,14 @@ export default class Events extends React.Component {
 addEvent =  () => {
 
 
-  const title = this.props.contact.title
   const location = this.props.contact.location
   const id = this.props.contact.id
   const startTime = this.props.contact.startTime
   const endTime = this.props.contact.endTime
   const desc = this.props.contact.desc
-
-  addEventFromFeed(this.state.userName, title,location, id, startTime, endTime,desc)
-  .catch((error)=> this.setState({errorMessage:error}))
+  console.warn( location, id,startTime,endTime,desc)
+  //addEventFromFeed(this.state.userName, title,location, id, startTime, endTime,desc)
+  //.catch((error)=> this.setState({errorMessage:error}))
 
         
         
