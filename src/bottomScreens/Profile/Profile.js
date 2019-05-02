@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {  View, StyleSheet, Image, TouchableOpacity,Text } from 'react-native'
-import { Container,Icon, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
+import { Container,Icon,Title, Header, Content, Card, CardItem, Thumbnail, Button, Left, Body, Right } from 'native-base'
 
 import ImagePicker from 'react-native-image-picker'
 import firebase from 'react-native-firebase'
 
-
+import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 export default class Profile extends Component {
 
     static navigationOptions = {
@@ -66,6 +66,10 @@ goToFollowing = () => {
   this.props.navigation.navigate({routeName: "Following" })
 }
 
+goToMessages = () => {
+  this.props.navigation.navigate({routeName:"Messages"})
+}
+
 
 
 setFollowerAndFollowingCount = () =>{
@@ -95,7 +99,27 @@ setFollowerAndFollowingCount = () =>{
 
 render() {
   return (
+
     <View style={styles.container}>
+        <Header>
+        <View style={{ justifyContent: 'center', flex: 3, alignItems: 'center', paddingRight: 45 }}>
+            <Title>Pal Search</Title>
+        </View>
+        <Right>
+        <TouchableOpacity
+            style={{ paddingLeft: 0 }}
+            onPress = {() => this.goToMessages()}
+        >
+            <MaterialIcons
+                name='message'
+                color='white'
+                size={35}
+                style={{ padding: 10 }}
+                underlayColor='transparent'
+            />
+        </TouchableOpacity>
+        </Right>
+    </Header>
         <View style={styles.header}></View>
         <Image style={styles.avatar} source={{uri:this.state.photoURL}}/>
         <View style={styles.body}>

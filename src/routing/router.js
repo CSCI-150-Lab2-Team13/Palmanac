@@ -76,7 +76,6 @@ const DashboardTabNavigator = createBottomTabNavigator({
     Feed,
     Pals,
     Profile,
-    Messages,
     MainCalendar,
   }, 
   {
@@ -160,6 +159,9 @@ const DashboardTabNavigator = createBottomTabNavigator({
     },
     MessageScreen : {
       screen: MessageScreen
+    },
+    Messages: {
+      screen:Messages
     },
     
   

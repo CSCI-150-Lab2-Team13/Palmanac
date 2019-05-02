@@ -288,6 +288,7 @@ export default class Feed extends Component {
       var endVal = new Date(event["endTime"])//["seconds"] * 1000);
       var startStr = moment(dateVal).format('MMMM Do YYYY, h:mm a');
       var endStr = moment(endVal).format('MMMM Do YYYY, h:mm a');
+      var onlyOneLike = false
       var col = false 
       if(!col){
         return(
@@ -311,12 +312,25 @@ export default class Feed extends Component {
                 <Text style={{fontWeight: 'bold'}}>{endStr}</Text>
               </CardItem>
               <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active name="thumbs-up" />
-                  <Text>{event.likes}</Text>
-                </Button>
+               {!onlyOneLike &&
+                        <Left>
+                        <Button transparent
+                          onPress 
+                        >
+                          <Icon active name="thumbs-up" />
+                          <Text>{event.likes}</Text>
+                        </Button>
+                      </Left>
+              }
+              {onlyOneLike && 
+                <Left>
+                  <Button transparent>
+                    <Icon active name="thumbs-up" />
+                      <Text>{event.likes}</Text>
+                  </Button>
               </Left>
+
+              }
               <Body>
                 <Button transparent>
                   <Icon active name="chatbubbles" />
@@ -324,7 +338,11 @@ export default class Feed extends Component {
                 </Button>
               </Body>
               <Right>
-                <Text>11h ago</Text>
+                <Button transparent>
+                  <FontAwesome active name="address-card" 
+                    size = {30}
+                  />
+                </Button>
               </Right>
             </CardItem>
             </Card>
