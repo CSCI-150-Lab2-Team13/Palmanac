@@ -58,7 +58,7 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
     const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.picture
     const PalToAdd = this.props.contact.name
-    const eventType = 1
+    const eventType = 0
     checkFriendList(this.state.userName , PalToAdd)
     .then(results => {
          this.setState({ results: results})
@@ -75,9 +75,11 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
             .catch((error)=> this.setState({errorMessage:error}))
         )
         .catch((error) =>this.setState({errorMessage:error}))
-        .finally(
-          sendNotification(this.state.userName,PalToAdd, this.state.firstName,this.state.lastName,this.state.photoURL, eventType )
-        )
+        if(!this.state.sendNotification)
+        {
+          sendNotification(this.state.userName,PalToAdd, this.state.firstName,this.state.lastName, this.state.photoURL, eventType)
+          this.setState({sendNotification:true})
+        }
     }
     else 
     {
