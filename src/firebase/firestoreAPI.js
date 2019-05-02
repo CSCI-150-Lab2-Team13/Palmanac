@@ -646,7 +646,7 @@ export const searchPals = async (search) => {
     }
 }
 
-export const sendNotification = async (currentUser, pal, firstName, lastName, photoURL, eventType) =>
+export const sendNotification = async (currentUser, pal,  photoURL, eventType) =>
 
     new Promise((resolve,reject)=> {
         const ref = firebase.firestore().collection('users').doc(pal).collection('notifications')
@@ -657,8 +657,6 @@ export const sendNotification = async (currentUser, pal, firstName, lastName, ph
                 {
                     ref.doc().set({
                         Username: currentUser,
-                        firstName: firstName,
-                        lastName: lastName,
                         photoURL: photoURL,
                         eventType:eventType
                     })
@@ -685,7 +683,7 @@ export const addEventFromFeed = async (currentUser, title, location, id, startTi
             if (!doc.exists) 
             {
                 ref.doc().set({
-                    title: firstName,
+                    title: title,
                     location: location,
                     id: id,
                     startTime:startTime,
@@ -698,6 +696,9 @@ export const addEventFromFeed = async (currentUser, title, location, id, startTi
                 .catch((error)=> {
                     reject(error)
                 })
+            }
+            else {
+                reject("You already added this event")
             }
         })
         .catch((error)=>{

@@ -77,7 +77,7 @@ checkIfContactAlreadyInUserContactListThenAddContact = async () => {
         .catch((error) =>this.setState({errorMessage:error}))
         if(!this.state.sendNotification)
         {
-          sendNotification(this.state.userName,PalToAdd, this.state.firstName,this.state.lastName, this.state.photoURL, eventType)
+          sendNotification(this.state.userName,PalToAdd, this.state.photoURL, eventType)
           this.setState({sendNotification:true})
         }
     }

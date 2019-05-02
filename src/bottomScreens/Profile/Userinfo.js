@@ -96,8 +96,6 @@ followContact = async () => {
 
 unfollowContact =  () => {
 
-    const firstName = this.props.contact.firstName
-    const lastName = this.props.contact.lastName
     const photoURL = this.props.contact.photoURL
     const PalToAdd = this.props.contact.Username
     const eventType = 3
@@ -107,7 +105,7 @@ unfollowContact =  () => {
         removeFollowerfromUser(PalToAdd, this.state.userName)
         .catch((error)=> this.setState({errorMessage:error}))
         .finally(
-            sendNotification(this.state.userName,PalToAdd, firstName, lastName, photoURL, eventType )
+            sendNotification(this.state.userName,PalToAdd, photoURL, eventType )
         )
     )
     .catch((error) =>this.setState({errorMessage:error}))

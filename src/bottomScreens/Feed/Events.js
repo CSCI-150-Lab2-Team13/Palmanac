@@ -9,8 +9,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 
-import {addEventFromFeed} from '../../firebase/firestoreAPI'
+import {addEventFromFeed, sendNotification} from '../../firebase/firestoreAPI'
 import styles from './styles'
+
 
 
 
@@ -23,6 +24,7 @@ export default class Events extends React.Component {
             likes: null,
             userName: firebase.auth().currentUser.displayName,
             errorMessage: null, 
+            onlyOneAdd: false, 
             }
           }
 
@@ -30,16 +32,30 @@ export default class Events extends React.Component {
 addEvent =  () => {
 
 
+  if (this.state.onlyOneAdd){
+
+  }
+  else {
+
+  const title = this.props.contact.title
   const location = this.props.contact.location
   const id = this.props.contact.id
   const startTime = this.props.contact.startTime
   const endTime = this.props.contact.endTime
   const desc = this.props.contact.desc
-  console.warn( location, id,startTime,endTime,desc)
-  //addEventFromFeed(this.state.userName, title,location, id, startTime, endTime,desc)
-  //.catch((error)=> this.setState({errorMessage:error}))
+  const pal = this.props.contact.username
+  const photoURL = this.props.contact.photoURL
+  const eventType = 2
+  addEventFromFeed(this.state.userName, title,location, id, startTime, endTime,desc)
+  .then(
+    this.setState({onlyOneAdd:true})
+  )
+  .catch((error)=> this.setState({errorMessage:error}))
+  .finally(
+    sendNotification(this.state.userName, pal, photoURL, eventType)
+  )
 
-        
+}  
         
 }
         
@@ -91,6 +107,7 @@ addEvent =  () => {
               <Text> 0 comments</Text>
             </Button>
           </Body>
+          {!this.state.onlyOneAdd &&
           <Right>
             <TouchableOpacity
            onPress = {() => this.addEvent()}>
@@ -99,6 +116,17 @@ addEvent =  () => {
               />
             </TouchableOpacity>
           </Right>
+          }
+          {this.state.onlyOneAdd &&
+          <Right>
+            <TouchableOpacity>
+              <FontAwesome active name="calendar-check-o" 
+                size = {30}
+              />
+            </TouchableOpacity>
+          </Right>
+          }
+          
         </CardItem>
         </Card>
       </View>
