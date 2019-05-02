@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { Container, Header, Left, Body, Right, Button, Icon, Title , Card, CardItem, Thumbnail} from 'native-base';
-
+import firebase from 'react-native-firebase'
 
 
 
 import MaterialIcons from "react-native-vector-icons/MaterialIcons"
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
+
+import {addEventFromFeed} from '../../firebase/firestoreAPI'
 import styles from './styles'
 
 
@@ -19,8 +21,29 @@ export default class Events extends React.Component {
         this.state = {
             onlyOneLike: false,
             likes: null,
+            userName: firebase.auth().currentUser.displayName,
+            errorMessage: null, 
             }
           }
+
+
+addEvent =  () => {
+
+
+  const title = this.props.contact.title
+  const location = this.props.contact.location
+  const id = this.props.contact.id
+  const startTime = this.props.contact.startTime
+  const endTime = this.props.contact.endTime
+  const desc = this.props.contact.desc
+
+  addEventFromFeed(this.state.userName, title,location, id, startTime, endTime,desc)
+  .catch((error)=> this.setState({errorMessage:error}))
+
+        
+        
+}
+        
 
 
     
@@ -48,7 +71,6 @@ export default class Events extends React.Component {
            {!this.state.onlyOneLike &&
                     <Left>
                     <Button transparent
-                    onPress={() => this.sendLiketoFireStore()}
                     >
                       <Icon active name="thumbs-up" />
                       <Text>{this.props.contact.likes}</Text>
@@ -71,11 +93,12 @@ export default class Events extends React.Component {
             </Button>
           </Body>
           <Right>
-            <Button transparent>
+            <TouchableOpacity
+           onPress = {() => this.addEvent()}>
               <FontAwesome active name="address-card" 
                 size = {30}
               />
-            </Button>
+            </TouchableOpacity>
           </Right>
         </CardItem>
         </Card>

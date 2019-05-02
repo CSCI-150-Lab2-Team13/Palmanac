@@ -655,7 +655,6 @@ export const sendNotification = async (currentUser, pal, firstName, lastName, ph
             .then(doc => {
                 if(!doc.exists)
                 {
-                    console.warn(doc.id)
                     ref.doc().set({
                         Username: currentUser,
                         firstName: firstName,
@@ -676,6 +675,33 @@ export const sendNotification = async (currentUser, pal, firstName, lastName, ph
 
 
 
-
-
+export const addEventFromFeed = async (currentUser, title, location, id, startTime , endTime, desc) =>
+    new Promise ((resolve,reject)=> {
+        const ref = firebase.firestore().collection('users').doc(currentUser).collection('events')
+        ref
+        .where('id', '==', id)
+        .get()
+        .then(doc => {
+            if (!doc.exists) 
+            {
+                ref.doc().set({
+                    title: firstName,
+                    location: location,
+                    id: id,
+                    startTime:startTime,
+                    endTime:endTime,
+                    desc:desc,
+                    likes: 0, 
+                
+                })
+                .then(resolve())
+                .catch((error)=> {
+                    reject(error)
+                })
+            }
+        })
+        .catch((error)=>{
+            reject(error)
+        })
+})
 

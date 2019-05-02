@@ -104,9 +104,6 @@ unfollowContact =  () => {
         .catch((error)=> this.setState({errorMessage:error}))
     )
     .catch((error) =>this.setState({errorMessage:error}))
-    .finally(
-    )
-
 
 }
 
